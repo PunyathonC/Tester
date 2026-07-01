@@ -292,19 +292,20 @@
 </div>
 
 <script>
+// --- อัปเดตข้อมูลรายละเอียด Check List ฉบับสมบูรณ์ ---
 const sections = [
     {
         title:"Section 1 : การตรวจสอบโครงสร้างและตู้ (Enclosure & Structure)",
         icon:"fa-building",
         critical:false,
         items:[
-            ["1.1","ขนาดตู้ (กว้างxยาวxสูง)","ตามแบบที่อนุมัติ"],
-            ["1.2","โครงสร้างตู้ทำจากเหล็กหนาไม่น้อยกว่า 3 มม.","Spec ข้อ 9.1"],
-            ["1.3","ฝาตู้ทุกด้านเป็นชนิด Electrogalvanize และพ่นสี มีความหนา 2 มม.","Spec ข้อ 9.2"],
-            ["1.4","สีตู้ RAL 9002 หรืออื่นๆ และความหนาสี ≥ 60 ไมครอน","Spec ข้อ 9.3"],
-            ["1.5","Mimic bus (ตรวจสอบความถูกต้องของสีและขนาด)","Spec ข้อ 13"],
-            ["1.6","Nameplate (ชื่อตู้, ระบุ From/To, ระบุชื่อ CB ทุกตัว)","Spec ข้อ 13"],
-            ["1.7","ป้าย (MEA logo, QR code, Logo ผู้ผลิต)","Spec ข้อ 13"]
+            ["1.1","ขนาดตู้ (กว้าง × ยาว × สูง)","ตามแบบที่อนุมัติ"],
+            ["1.2","โครงสร้างตู้ทำจากเหล็กหนา","ไม่น้อยกว่า 3 มม."],
+            ["1.3","ฝาตู้ทุกด้านเป็นชนิด Electrogalvanize และพ่นสี","มีความหนา 2 มม."],
+            ["1.4","สีตู้\n• สี RAL 9002 หรือสีอื่น\n• ความหนาสี ≥ 60 ไมครอน",""],
+            ["1.5","Mimic bus\n• Normal : สีดำ\n• Emergency : สีแดง\n• หนา ≥ 3 มม. / กว้าง ≥ 10 มม.",""],
+            ["1.6","Nameplate\n• ชื่อตู้ MDB\n• ระบุว่าจ่ายไฟมาจากที่ไหน (From) หรือ จ่ายไฟไปที่ไหน (To)\n• ระบุชื่อ CB Main และ Branch ทุกตัว",""],
+            ["1.7","ป้าย\n• MEA logo (ด้านหน้าตู้)\n• ป้ายที่มีรายละเอียด QR code (ด้านในตู้)\n• Logo ผู้ผลิต (ไม่กำหนด)",""]
         ]
     },
     {
@@ -312,10 +313,10 @@ const sections = [
         icon:"fa-network-wired",
         critical:false,
         items:[
-            ["2.1","ตรวจสอบขนาด Line และ Neutral Busbar","Spec ข้อ 10.3\nIEC 61439-1"],
-            ["2.2","ตรวจสอบขนาด Ground Busbar","Spec ข้อ 10"],
-            ["2.3","สาย Bonding ระหว่าง Neutral Busbar และ Ground Busbar (ถ้ามี)","ตามแบบ"],
-            ["2.4","ตรวจสอบความถูกต้องของสี Busbar แต่ละเฟส","Spec ข้อ 10.7"]
+            ["2.1","ขนาด Line และ Neutral Busbar\n• L1/L2/L3 ตามแบบ\n• N = L1/L2/L3",""],
+            ["2.2","ขนาด Ground Busbar\n• ≥ 95 ตร.มม. ถ้า Main CB ≤ 800 A\n• ≥ 120 ตร.มม. ถ้า Main CB > 800 A",""],
+            ["2.3","สาย Bonding ระหว่าง Neutral Busbar และ Ground Busbar (ถ้ามี)",""],
+            ["2.4","สี Busbar\n• L1/L2/L3 : น้ำตาล / ดำ / เทา\n• N : ฟ้า\n• G : เขียว",""]
         ]
     },
     {
@@ -323,7 +324,7 @@ const sections = [
         icon:"fa-bolt",
         critical:false,
         items:[
-            ["3.1","ตรวจสอบ CB ตามแบบ (ยี่ห้อ, รุ่น, Rating CB (AT/AF), จำนวน Pole (1/3), Ics, Icu)","ตามแบบ"]
+            ["3.1","ตรวจสอบ CB ตามแบบ\n• ยี่ห้อ / รุ่น\n• Rating CB (AT/AF)\n• จำนวน Pole (1/3)\n• Ics, Icu (kA)",""]
         ]
     },
     {
@@ -331,11 +332,11 @@ const sections = [
         icon:"fa-plug",
         critical:false,
         items:[
-            ["4.1","สายควบคุมเป็นชนิด IEC 08 (HVSF)","Spec ข้อ 11.1"],
-            ["4.2","ขนาดสายควบคุม 2.5 ตร.มม.","Spec ข้อ 11.1"],
-            ["4.3","สาย Ground บานประตู (ใช้สายทองแดงถัก 10 ตร.มม.)","Spec ข้อ 11.1"],
-            ["4.4","Wire mark สายควบคุม (ชนิดปลอกสวม ระบุต้นทางและปลายทาง)","Spec ข้อ 11.5"],
-            ["4.5","ตรวจสอบความถูกต้องของสีสายไฟฟ้าแต่ละวงจร","Spec ข้อ 10.6"]
+            ["4.1","สายควบคุมเป็นชนิด","IEC 08 (HVSF)"],
+            ["4.2","ขนาดสายควบคุม\n• Current / Voltage / Control circuit 2.5 ตร.มม.",""],
+            ["4.3","สาย Ground บานประตู\n• 10 ตร.มม.\n• ใช้สายทองแดงถัก (ไม่ใช่สาย IEC01)",""],
+            ["4.4","Wire mark สายควบคุม\n• เป็นชนิดปลอกสวม\n• ระบุชื่ออุปกรณ์ต้นทางและปลายทาง (2 บรรทัด) ที่ปลายสายทั้ง 2 ด้าน",""],
+            ["4.5","สีของสายไฟฟ้า\n• Voltage circuit : น้ำตาล / ดำ / เทา / ฟ้า\n• Current circuit : แดง / เหลือง / น้ำเงิน\n• Power supply circuit : น้ำตาล / ฟ้า\n• Control circuit : เทา",""]
         ]
     },
     {
@@ -343,9 +344,9 @@ const sections = [
         icon:"fa-gauge-high",
         critical:false,
         items:[
-            ["5.1","Current Transformer (ตรวจสอบ Ratio, Class, Burden)","ตามแบบ"],
-            ["5.2","Pilot lamp L1/L2/L3 ใช้สีขาว","Spec ข้อ 12.2"],
-            ["5.3","Fuse (ถ้ามี) จัดหาสำรอง 10% ของทั้งหมด","Spec ข้อ 12.3"]
+            ["5.1","Current Transformer\n• Ratio xxx/1 หรือ xxx/5\n• Class และ Burden",""],
+            ["5.2","Pilot lamp\n• L1/L2/L3 : สีขาว",""],
+            ["5.3","Fuse (ถ้ามี)\n• จัดหา Fuse (spare) 10% ของทั้งหมด",""]
         ]
     },
     {
@@ -353,9 +354,9 @@ const sections = [
         icon:"fa-gears",
         critical:false,
         items:[
-            ["6.1","ทดสอบการทำงานของวงจรควบคุม (Alarm, status, trip, interlock, …)",""],
-            ["6.2","ทดสอบการทำงานของ Meter (V/I/Watt/Var/VA/p.f.)",""],
-            ["6.3","ทดสอบ Test trip ของ MCCB",""],
+            ["6.1","ทดสอบการทำงานของวงจรควบคุม\n• Alarm, status, trip, interlock, …",""],
+            ["6.2","ทดสอบการทำงานของ Meter\n• ตรวจสอบ V/I/Watt/Var/VA/pf.",""],
+            ["6.3","ทดสอบ test trip ของ MCCB",""],
             ["6.4","ทดสอบ Trip unit ของ ACB",""]
         ]
     },
@@ -364,10 +365,10 @@ const sections = [
         icon:"fa-triangle-exclamation",
         critical:true,
         items:[
-            ["7.1","Dielectric test ด้วยแรงดัน 2000VAC เป็นเวลา 1 นาที (ไม่ Breakdown)","IEC 61439-1"],
-            ["7.2","Insulation Resistance Test ด้วยแรงดัน 1000VDC 1 นาที (≥ 1 MegaOhm)","IEC 61439-1"],
-            ["7.3","Ground Continuity Test (≤ 0.1 Ohm)","IEC 60335-1"],
-            ["7.4","ทดสอบ Contact resistance (ตาม datasheet)",""]
+            ["7.1","Dielectric test ของ Main circuit และ Control circuit\n• จ่ายแรงดัน 2000VAC เป็นเวลา 1 นาที\n• L1 เทียบกับ L2+L3+N+G\n• L2 เทียบกับ L1+L3+N+G\n• L3 เทียบกับ L1+L2+N+G\n• ค่าที่ยอมรับได้: ไม่ Breakdown","อ้างอิง : IEC 61439-1"],
+            ["7.2","Insulation Resistance Test\n• ก่อนและหลัง Dielectric test\n• จ่ายแรงดัน 1000VDC เป็นเวลา 1 นาที\n• L1 เทียบกับ L2+L3+N+G\n• L2 เทียบกับ L1+L3+N+G\n• L3 เทียบกับ L1+L2+N+G\n• ค่าที่ยอมรับได้ ≥ 1 MegaOhm","อ้างอิง : IEC 61439-1"],
+            ["7.3","Ground Continuity Test\n• ระหว่าง ground bar และ terminal\n• ระหว่างโครงและฝาตู้\n• ค่าที่ยอมรับได้ ≤ 0.1 Ohm","อ้างอิง : IEC 60335-1"],
+            ["7.4","ทดสอบ Contact resistance\n• Main CB\n• CB ทุกตัว ≥ 800 A\n• Main busbar (กรณีติดตู้)\n• ค่าที่ยอมรับได้: ตาม datasheet ของ CB",""]
         ]
     }
 ];
@@ -449,14 +450,12 @@ sections.forEach((section, sIndex) => {
                             <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all" 
                                       rows="1" placeholder=""></textarea>
                             
-                            <!-- เปลี่ยนตรงนี้เพื่อรองรับรูปภาพหลายรูป -->
                             <div class="photo-upload-container mt-2" data-radioname="${radioName}">
                                 <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
                                 <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 py-1.5 px-3 rounded flex items-center gap-2 border border-gray-300 transition-colors" onclick="document.getElementById('photo_${radioName}').click()">
                                     <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
                                 </button>
                                 <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden">
-                                    <!-- รูปภาพจะถูกเพิ่มลงที่นี่ผ่าน JS -->
                                 </div>
                             </div>
                         </div>
@@ -467,7 +466,6 @@ sections.forEach((section, sIndex) => {
                         <div class="print-layout mt-1 hidden print-photo-box">
                             <span class="text-[10px] font-bold text-gray-500 block mb-0.5">ภาพประกอบ:</span>
                             <div class="print-images-container flex flex-wrap gap-2">
-                                <!-- รูปภาพ Print จะถูกเพิ่มลงที่นี่ -->
                             </div>
                         </div>
 
@@ -492,7 +490,6 @@ document.addEventListener("change", async (e) => {
         const printBox = container.closest('.check-item').querySelector('.print-photo-box');
         const printImagesContainer = printBox.querySelector('.print-images-container');
 
-        // ทำการวนลูปอ่านและบีบอัดไฟล์ทีละไฟล์
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const reader = new FileReader();
@@ -515,7 +512,6 @@ document.addEventListener("change", async (e) => {
                     const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6); 
                     const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
                     
-                    // สร้าง Element รูปภาพสำหรับหน้าจอปกติ
                     const previewWrapper = document.createElement('div');
                     previewWrapper.className = 'relative inline-block photo-item';
                     previewWrapper.dataset.imgid = imgId;
@@ -527,7 +523,6 @@ document.addEventListener("change", async (e) => {
                     `;
                     previewContainer.appendChild(previewWrapper);
                     
-                    // สร้าง Element รูปภาพสำหรับหน้า Print
                     const printImg = document.createElement('img');
                     printImg.src = compressedBase64;
                     printImg.className = 'print-img rounded border border-gray-300 object-contain';
@@ -541,7 +536,6 @@ document.addEventListener("change", async (e) => {
             reader.readAsDataURL(file);
         }
         
-        // ล้างค่า input เพื่อให้สามารถเลือกไฟล์เดิมซ้ำได้ในครั้งต่อไป
         e.target.value = "";
     }
 });
@@ -554,14 +548,11 @@ document.addEventListener("click", (e) => {
         const imgId = photoItem.dataset.imgid;
         const checkItem = btn.closest('.check-item');
         
-        // ลบออกจากหน้าจอ
         photoItem.remove();
         
-        // ลบออกจากหน้า Print
         const printImg = checkItem.querySelector(`.print-img[data-imgid="${imgId}"]`);
         if (printImg) printImg.remove();
         
-        // ถ้าลบหมดแล้ว ให้ซ่อนกล่อง Print Photo
         const printImagesContainer = checkItem.querySelector('.print-images-container');
         if (printImagesContainer && printImagesContainer.children.length === 0) {
             checkItem.querySelector('.print-photo-box').classList.add('hidden');
@@ -741,7 +732,6 @@ async function exportToExcelJS() {
                 let resultText = "-";
                 let resultColor = 'FF000000';
                 
-                // นับจำนวนรูปในข้อนี้
                 const previewContainer = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"] .preview-container`);
                 const imgsCount = previewContainer ? previewContainer.querySelectorAll('.preview-img').length : 0;
                 
@@ -762,7 +752,10 @@ async function exportToExcelJS() {
                     pendingCount++;
                 }
                 
-                const row = sheet.addRow([ item[0], item[1], item[2], resultText, remarkText ]);
+                // คลีน Bullet ออกให้ Excel อ่านง่ายขึ้น
+                let plainDescription = item[1].replace(/\n• /g, '\n- ').replace(/• /g, '- ');
+                
+                const row = sheet.addRow([ item[0], plainDescription, item[2], resultText, remarkText ]);
                 row.eachCell((cell, colNum) => {
                     cell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
                     cell.alignment = { vertical: 'top', wrapText: true };
@@ -859,12 +852,17 @@ function printChecklist(){
         }
     });
 
-    updatePrintViews();   // ← FIX
+    updatePrintViews();
     updateCurrentTime();
 
     setTimeout(()=>{
-        window.print();
-    },300);
+        try {
+            window.print();
+        } catch (e) {
+            console.error("Print failed:", e);
+            alert("ไม่สามารถสั่งพิมพ์ได้ กรุณาตรวจสอบเบราว์เซอร์ของคุณ");
+        }
+    },500);
 }
 
 function clearChecklist(){
@@ -898,7 +896,6 @@ function updateSummary() {
             const itemNumberSafe = escapeHTML(item[0]);
             const itemDescSafe = escapeHTML(item[1].split('\n')[0]); 
 
-            // ดึงรูปภาพทั้งหมดของข้อนี้มาแสดงใน Summary
             const previewContainer = itemDom.querySelector('.preview-container');
             const imgs = previewContainer ? previewContainer.querySelectorAll('.preview-img') : [];
             let photoHtml = '';
@@ -954,13 +951,12 @@ function saveData(){
         inspector : document.getElementById("inspectorName")?.value || "",
         remarks : [],
         radios : {},
-        photos : {} // จะเก็บเป็น Array ของ Base64 ตาม radioName
+        photos : {} 
     };
 
     document.querySelectorAll(".remarks-input").forEach(input=>{ data.remarks.push(input.value); });
     document.querySelectorAll('input[type="radio"]:checked').forEach(radio=>{ data.radios[radio.name] = radio.value; });
     
-    // ดึงรูปภาพทั้งหมดมาเซฟ
     document.querySelectorAll(".photo-upload-container").forEach(container => {
         const radioName = container.dataset.radioname;
         const imgs = container.querySelectorAll('.preview-img');
@@ -1018,7 +1014,6 @@ window.addEventListener("load",()=>{
         }
     });
 
-    // โหลดรูปภาพที่บันทึกไว้
     Object.keys(data.photos || {}).forEach(radioName => {
         const container = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"]`);
         if(container) {
