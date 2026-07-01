@@ -853,18 +853,18 @@ function printChecklist(){
     document.querySelectorAll(".remarks-input").forEach(textarea=>{
         textarea.style.height = "auto";
         textarea.style.height = textarea.scrollHeight + "px";
-        
-        if(textarea.value.trim() === "") {
-            textarea.value = " ";
+
+        if(textarea.value.trim()===""){
+            textarea.value=" ";
         }
     });
-    
-    updatePrintRadios(); 
-    updateCurrentTime(); 
-    
-    setTimeout(() => {
+
+    updatePrintViews();   // ← FIX
+    updateCurrentTime();
+
+    setTimeout(()=>{
         window.print();
-    }, 300);
+    },300);
 }
 
 function clearChecklist(){
