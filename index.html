@@ -158,7 +158,7 @@
                 gap: 5px; 
                 color: #6b7280; 
                 background-color: #f9fafb; 
-                white-space: nowrap !important; /* 💥 ล็อกคำไว้ไม่ให้หลุดบรรทัดแยกจากกันเด็ดขาด */
+                white-space: nowrap !important;
             }
             .print-radio-box i { font-size: 11px !important; }
             
@@ -180,8 +180,9 @@
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
                 <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span>วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                    <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
+                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">copyright 2026 แผนกระบบไฟฟ้า 2</span>
+                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
                 </div>
             </td>
         </tr>
@@ -205,7 +206,7 @@
                         <div class="grid md:grid-cols-3 gap-6">
                             <div>
                                 <label class="text-sm text-gray-500 font-medium">Reference Spec</label>
-                                <input type="text" id="referenceSpec" placeholder="ระบุ Reference Spec" class="w-full mt-1 border rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-orange-500">
+                                <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 bg-gray-200 text-gray-700 font-semibold cursor-not-allowed focus:outline-none">
                             </div>
                             <div>
                                 <label class="text-sm text-mea-orange font-bold">ผู้ตรวจสอบ (Inspector)</label>
@@ -232,8 +233,9 @@
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
                 <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span>วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                    <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
+                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">copyright 2026 แผนกระบบไฟฟ้า 2</span>
+                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
                 </div>
             </td>
         </tr>
@@ -377,8 +379,9 @@ sections.forEach((section, sIndex) => {
             <tr>
                 <td class="pb-2 pt-2 px-4 md:px-0">
                     <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                        <span>วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                        <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                        <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
+                        <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">copyright 2026 แผนกระบบไฟฟ้า 2</span>
+                        <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
                     </div>
                 </td>
             </tr>
@@ -935,7 +938,7 @@ function updateSummary() {
 
 function saveData(){
     const data = {
-        referenceSpec : document.getElementById("referenceSpec")?.value || "",
+        referenceSpec : document.getElementById("referenceSpec")?.value || "BQD-3042",
         projectNo : document.getElementById("projectNo")?.value || "",
         inspector : document.getElementById("inspectorName")?.value || "",
         remarks : [],
@@ -969,11 +972,13 @@ document.addEventListener("change", saveData);
 window.addEventListener("load",()=>{
     updateCurrentTime();
     
+    // บังคับกำหนดค่าให้ Reference Spec เสมอแม้จะโหลดข้อมูลเก่ามา
+    if(document.getElementById("referenceSpec")) document.getElementById("referenceSpec").value = "BQD-3042";
+    
     const saved = localStorage.getItem("mdb_fat_checklist");
     if(!saved) return;
     const data = JSON.parse(saved);
     
-    if(document.getElementById("referenceSpec")) document.getElementById("referenceSpec").value = data.referenceSpec || "";
     if(document.getElementById("projectNo")) {
         const projNo = data.projectNo || "";
         document.getElementById("projectNo").value = projNo;
@@ -1023,8 +1028,5 @@ window.addEventListener("load",()=>{
     updatePrintRadios(); 
 });
 </script>
-
 </body>
 </html>
-
-
