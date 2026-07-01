@@ -166,7 +166,14 @@
             .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
             .print-radio-box.inactive { opacity: 0.4; }
             
-            .print-photo-box img { max-height: 220px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
+            /* ปรับแต่ง CSS สำหรับรองรับรูปภาพหลายรูปตอน Print */
+            .print-images-container img { 
+                max-height: 160px !important; 
+                width: auto !important; 
+                max-width: 100% !important; 
+                margin-top: 6px !important; 
+                object-fit: contain; 
+            }
             .print-header div { font-size: 12px !important; }
             .print-remarks-box span { font-size: 13px !important; }
             .print-photo-box span { font-size: 13px !important; }
@@ -442,16 +449,14 @@ sections.forEach((section, sIndex) => {
                             <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all" 
                                       rows="1" placeholder=""></textarea>
                             
-                            <div class="photo-upload-container mt-2">
-                                <input type="file" accept="image/*" class="hidden photo-input" id="photo_${radioName}">
+                            <!-- เปลี่ยนตรงนี้เพื่อรองรับรูปภาพหลายรูป -->
+                            <div class="photo-upload-container mt-2" data-radioname="${radioName}">
+                                <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
                                 <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 py-1.5 px-3 rounded flex items-center gap-2 border border-gray-300 transition-colors" onclick="document.getElementById('photo_${radioName}').click()">
-                                    <i class="fa-solid fa-image"></i> แนบรูปภาพ / ถ่ายรูป
+                                    <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
                                 </button>
-                                <div class="mt-2 preview-box hidden relative inline-block">
-                                    <img src="" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-                                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn" data-target="photo_${radioName}">
-                                        <i class="fa-solid fa-times"></i>
-                                    </button>
+                                <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden">
+                                    <!-- รูปภาพจะถูกเพิ่มลงที่นี่ผ่าน JS -->
                                 </div>
                             </div>
                         </div>
@@ -461,7 +466,9 @@ sections.forEach((section, sIndex) => {
                         </div>
                         <div class="print-layout mt-1 hidden print-photo-box">
                             <span class="text-[10px] font-bold text-gray-500 block mb-0.5">ภาพประกอบ:</span>
-                            <img src="" class="print-img rounded border border-gray-300">
+                            <div class="print-images-container flex flex-wrap gap-2">
+                                <!-- รูปภาพ Print จะถูกเพิ่มลงที่นี่ -->
+                            </div>
                         </div>
 
                     </div>
@@ -474,46 +481,68 @@ sections.forEach((section, sIndex) => {
 
 checklistContainer.innerHTML = fullHtml;
 
-// ระบบจัดการรูปภาพ (บีบอัดภาพเพื่อประหยัด LocalStorage)
+// ระบบจัดการอัปโหลดรูปภาพหลายรูป
 document.addEventListener("change", async (e) => {
     if (e.target.classList.contains("photo-input")) {
-        const file = e.target.files[0];
-        if (!file) return;
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = () => {
-                const canvas = document.createElement("canvas");
-                const MAX_WIDTH = 600; 
-                let scale = MAX_WIDTH / img.width;
-                if(scale > 1) scale = 1; 
-                
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale;
-                
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6); 
-                
-                const container = e.target.closest('.photo-upload-container');
-                const previewBox = container.querySelector('.preview-box');
-                const previewImg = container.querySelector('.preview-img');
-                const printBox = container.closest('.check-item').querySelector('.print-photo-box');
-                const printImg = printBox.querySelector('.print-img');
-                
-                previewImg.src = compressedBase64;
-                previewBox.classList.remove('hidden');
-                
-                printImg.src = compressedBase64;
-                printBox.classList.remove('hidden');
-                
-                saveData(); 
+        const container = e.target.closest('.photo-upload-container');
+        const previewContainer = container.querySelector('.preview-container');
+        const printBox = container.closest('.check-item').querySelector('.print-photo-box');
+        const printImagesContainer = printBox.querySelector('.print-images-container');
+
+        // ทำการวนลูปอ่านและบีบอัดไฟล์ทีละไฟล์
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+            
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 600; 
+                    let scale = MAX_WIDTH / img.width;
+                    if(scale > 1) scale = 1; 
+                    
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6); 
+                    const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
+                    
+                    // สร้าง Element รูปภาพสำหรับหน้าจอปกติ
+                    const previewWrapper = document.createElement('div');
+                    previewWrapper.className = 'relative inline-block photo-item';
+                    previewWrapper.dataset.imgid = imgId;
+                    previewWrapper.innerHTML = `
+                        <img src="${compressedBase64}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
+                        <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    `;
+                    previewContainer.appendChild(previewWrapper);
+                    
+                    // สร้าง Element รูปภาพสำหรับหน้า Print
+                    const printImg = document.createElement('img');
+                    printImg.src = compressedBase64;
+                    printImg.className = 'print-img rounded border border-gray-300 object-contain';
+                    printImg.dataset.imgid = imgId;
+                    printImagesContainer.appendChild(printImg);
+                    
+                    printBox.classList.remove('hidden');
+                    saveData(); 
+                };
             };
-        };
+            reader.readAsDataURL(file);
+        }
+        
+        // ล้างค่า input เพื่อให้สามารถเลือกไฟล์เดิมซ้ำได้ในครั้งต่อไป
+        e.target.value = "";
     }
 });
 
@@ -521,18 +550,22 @@ document.addEventListener("change", async (e) => {
 document.addEventListener("click", (e) => {
     const btn = e.target.closest('.remove-photo-btn');
     if (btn) {
-        const targetId = btn.getAttribute('data-target');
-        const input = document.getElementById(targetId);
-        input.value = ""; 
+        const photoItem = btn.closest('.photo-item');
+        const imgId = photoItem.dataset.imgid;
+        const checkItem = btn.closest('.check-item');
         
-        const container = btn.closest('.photo-upload-container');
-        const previewBox = container.querySelector('.preview-box');
-        const previewImg = container.querySelector('.preview-img');
-        const printBox = container.closest('.check-item').querySelector('.print-photo-box');
+        // ลบออกจากหน้าจอ
+        photoItem.remove();
         
-        previewImg.src = "";
-        previewBox.classList.add('hidden');
-        printBox.classList.add('hidden');
+        // ลบออกจากหน้า Print
+        const printImg = checkItem.querySelector(`.print-img[data-imgid="${imgId}"]`);
+        if (printImg) printImg.remove();
+        
+        // ถ้าลบหมดแล้ว ให้ซ่อนกล่อง Print Photo
+        const printImagesContainer = checkItem.querySelector('.print-images-container');
+        if (printImagesContainer && printImagesContainer.children.length === 0) {
+            checkItem.querySelector('.print-photo-box').classList.add('hidden');
+        }
         
         saveData();
     }
@@ -708,10 +741,12 @@ async function exportToExcelJS() {
                 let resultText = "-";
                 let resultColor = 'FF000000';
                 
-                const photoInput = document.getElementById(`photo_${radioName}`);
-                const hasPhoto = photoInput && photoInput.closest('.photo-upload-container').querySelector('.preview-img').src.startsWith('data:image');
+                // นับจำนวนรูปในข้อนี้
+                const previewContainer = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"] .preview-container`);
+                const imgsCount = previewContainer ? previewContainer.querySelectorAll('.preview-img').length : 0;
+                
                 let remarkText = remarkInputs[inputIndex].value.trim() || "";
-                if(hasPhoto) remarkText += (remarkText ? " [มีภาพถ่ายแนบในระบบ]" : "[มีภาพถ่ายแนบในระบบ]");
+                if(imgsCount > 0) remarkText += (remarkText ? ` [มีภาพถ่ายแนบ ${imgsCount} รูป]` : `[มีภาพถ่ายแนบ ${imgsCount} รูป]`);
                 
                 if (radioEl) {
                     if (radioEl.value === "Pass") {
@@ -839,36 +874,6 @@ function clearChecklist(){
     }
 }
 
-// ฟังก์ชันอัปเดตสไตล์ของปุ่มในหน้า Print ให้ตรงกับที่เลือก
-function updatePrintRadios() {
-    const checkItems = document.querySelectorAll('.check-item');
-    checkItems.forEach(item => {
-        const radioName = item.getAttribute('data-radioname');
-        if (!radioName) return;
-        const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
-        const passBox = document.querySelector(`#print_status_${radioName} .print-pass-box`);
-        const failBox = document.querySelector(`#print_status_${radioName} .print-fail-box`);
-        
-        if (passBox && failBox) {
-            passBox.classList.remove('print-pass', 'inactive');
-            failBox.classList.remove('print-fail', 'inactive');
-            
-            if (checkedRadio) {
-                if (checkedRadio.value === 'Pass') {
-                    passBox.classList.add('print-pass');
-                    failBox.classList.add('inactive');
-                } else {
-                    failBox.classList.add('print-fail');
-                    passBox.classList.add('inactive');
-                }
-            } else {
-                passBox.classList.add('inactive');
-                failBox.classList.add('inactive');
-            }
-        }
-    });
-}
-
 function escapeHTML(str) {
     return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
 }
@@ -893,9 +898,15 @@ function updateSummary() {
             const itemNumberSafe = escapeHTML(item[0]);
             const itemDescSafe = escapeHTML(item[1].split('\n')[0]); 
 
-            const photoInputId = `photo_${radioName}`;
-            const photoPreview = itemDom.querySelector(`#${photoInputId}`).closest('.photo-upload-container').querySelector('.preview-img').src;
-            const photoHtml = (photoPreview && photoPreview.startsWith('data:image')) ? `<div class="mt-2"><span class="text-[10px] font-bold text-gray-500 mb-1 block">ภาพประกอบ:</span><img src="${photoPreview}" class="h-20 w-auto max-w-full rounded border border-gray-300 object-contain bg-white"></div>` : '';
+            // ดึงรูปภาพทั้งหมดของข้อนี้มาแสดงใน Summary
+            const previewContainer = itemDom.querySelector('.preview-container');
+            const imgs = previewContainer ? previewContainer.querySelectorAll('.preview-img') : [];
+            let photoHtml = '';
+            
+            if (imgs.length > 0) {
+                let imgTags = Array.from(imgs).map(img => `<img src="${img.src}" class="h-16 w-auto max-w-full rounded border border-gray-300 object-contain bg-white">`).join('');
+                photoHtml = `<div class="mt-2"><span class="text-[10px] font-bold text-gray-500 mb-1 block">ภาพประกอบ (${imgs.length} รูป):</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
+            }
 
             if (!checkedRadio) {
                 pendingCount++;
@@ -943,16 +954,18 @@ function saveData(){
         inspector : document.getElementById("inspectorName")?.value || "",
         remarks : [],
         radios : {},
-        photos : {}
+        photos : {} // จะเก็บเป็น Array ของ Base64 ตาม radioName
     };
 
     document.querySelectorAll(".remarks-input").forEach(input=>{ data.remarks.push(input.value); });
     document.querySelectorAll('input[type="radio"]:checked').forEach(radio=>{ data.radios[radio.name] = radio.value; });
     
-    document.querySelectorAll(".photo-input").forEach(input => {
-        const previewImg = input.closest('.photo-upload-container').querySelector('.preview-img');
-        if(previewImg.src && previewImg.src.startsWith('data:image')) {
-            data.photos[input.id] = previewImg.src;
+    // ดึงรูปภาพทั้งหมดมาเซฟ
+    document.querySelectorAll(".photo-upload-container").forEach(container => {
+        const radioName = container.dataset.radioname;
+        const imgs = container.querySelectorAll('.preview-img');
+        if(imgs.length > 0) {
+            data.photos[radioName] = Array.from(imgs).map(img => img.src);
         }
     });
 
@@ -972,7 +985,6 @@ document.addEventListener("change", saveData);
 window.addEventListener("load",()=>{
     updateCurrentTime();
     
-    // บังคับกำหนดค่าให้ Reference Spec เสมอแม้จะโหลดข้อมูลเก่ามา
     if(document.getElementById("referenceSpec")) document.getElementById("referenceSpec").value = "BQD-3042";
     
     const saved = localStorage.getItem("mdb_fat_checklist");
@@ -1006,21 +1018,39 @@ window.addEventListener("load",()=>{
         }
     });
 
-    Object.keys(data.photos || {}).forEach(id => {
-        const input = document.getElementById(id);
-        if(input) {
-            const container = input.closest('.photo-upload-container');
-            const previewBox = container.querySelector('.preview-box');
-            const previewImg = container.querySelector('.preview-img');
-            const printBox = container.closest('.check-item').querySelector('.print-photo-box');
-            const printImg = printBox.querySelector('.print-img');
+    // โหลดรูปภาพที่บันทึกไว้
+    Object.keys(data.photos || {}).forEach(radioName => {
+        const container = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"]`);
+        if(container) {
+            const previewContainer = container.querySelector('.preview-container');
+            const checkItem = container.closest('.check-item');
+            const printBox = checkItem.querySelector('.print-photo-box');
+            const printImagesContainer = printBox.querySelector('.print-images-container');
             
-            const base64Str = data.photos[id];
-            previewImg.src = base64Str;
-            previewBox.classList.remove('hidden');
-            
-            printImg.src = base64Str;
-            printBox.classList.remove('hidden');
+            data.photos[radioName].forEach(base64Str => {
+                const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
+                
+                const previewWrapper = document.createElement('div');
+                previewWrapper.className = 'relative inline-block photo-item';
+                previewWrapper.dataset.imgid = imgId;
+                previewWrapper.innerHTML = `
+                    <img src="${base64Str}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
+                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                `;
+                previewContainer.appendChild(previewWrapper);
+                
+                const printImg = document.createElement('img');
+                printImg.src = base64Str;
+                printImg.className = 'print-img rounded border border-gray-300 object-contain';
+                printImg.dataset.imgid = imgId;
+                printImagesContainer.appendChild(printImg);
+            });
+
+            if(data.photos[radioName].length > 0) {
+                printBox.classList.remove('hidden');
+            }
         }
     });
 
