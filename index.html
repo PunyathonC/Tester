@@ -116,14 +116,11 @@
             input[type="text"] { border-bottom: 1px dotted #ccc !important; border-radius: 0 !important; }
             textarea { border-bottom: 1px dashed #ddd !important; border-radius: 0 !important; height: auto !important; overflow: visible !important; margin-top: 4px !important; padding-top: 0 !important;}
             
-            /* ขยาย Font ตัวหนังสือทั่วไปตอน Print */
             body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
             
-            /* ขยายหัวข้อหลัก */
             h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
             p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
             
-            /* ขยายหัวข้อ Summary */
             h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
             .p-6 { padding: 12px !important; }
             .pb-6 { padding-bottom: 8px !important; }
@@ -131,7 +128,6 @@
 
             .check-item { border: none !important; border-bottom: 1px solid #e5e7eb !important; border-radius: 0 !important; box-shadow: none !important; }
             
-            /* ปรับสมดุลความกว้างคอลัมน์ตอนปริ้นใหม่ เพื่อไม่ให้ปุ่มโดนบีบจนคำขาดออกจากกัน */
             .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
             .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
             .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
@@ -141,12 +137,10 @@
             .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; }
             .remarks-container textarea { color: #4b5563; font-style: italic; }
             
-            /* ขยาย Font หัวแถว Section */
             .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
             .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
             .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
 
-            /* ขยายขนาดปุ่มและฟอนต์ ผ่าน/ไม่ผ่าน ในหน้า Print */
             .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
             .print-radio-box { 
                 border: 1px solid #d1d5db; 
@@ -166,7 +160,6 @@
             .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
             .print-radio-box.inactive { opacity: 0.4; }
             
-            /* ปรับแต่ง CSS สำหรับรองรับรูปภาพหลายรูปตอน Print */
             .print-images-container img { 
                 max-height: 160px !important; 
                 width: auto !important; 
@@ -190,8 +183,8 @@
                         <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน</div>
                         <div class="displayTimestamp text-gray-800 font-bold"></div>
                     </div>
-                    <div class="print-only w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
-                        © 2026
+                    <div class="w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
+                        © 2026 Power System 2
                     </div>
                     <div class="w-[45%] md:w-1/3 text-right leading-tight">
                         <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ</div>
@@ -256,8 +249,8 @@
                         <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน</div>
                         <div class="displayTimestamp text-gray-800 font-bold"></div>
                     </div>
-                    <div class="print-only w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
-                        © 2026
+                    <div class="w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
+                        © 2026 Power System 2
                     </div>
                     <div class="w-[45%] md:w-1/3 text-right leading-tight">
                         <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ</div>
@@ -425,8 +418,8 @@ sections.forEach((section, sIndex) => {
                             <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน</div>
                             <div class="displayTimestamp text-gray-800 font-bold"></div>
                         </div>
-                        <div class="print-only w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
-                            © 2026
+                        <div class="w-[10%] md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">
+                            © 2026 Power System 2
                         </div>
                         <div class="w-[45%] md:w-1/3 text-right leading-tight">
                             <div class="text-gray-500 mb-0.5"><i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ</div>
@@ -464,7 +457,7 @@ sections.forEach((section, sIndex) => {
                         <div class="grid md:grid-cols-12 gap-2 items-start">
                             <div class="md:col-span-1"><span class="font-bold text-base md:text-lg">${item[0]}</span></div>
                             <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug">${item[1].replace(/\n/g, '<br>')}</div></div>
-                            <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug">${item[2].replace(/\n/g, '<br>')}</span></div>
+                            <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug">${item[2].replace(/\n/g, '<br>')}</div></div>
                             
                             <div class="md:col-span-3 screen-layout">
                                 <div class="flex gap-2">
@@ -685,10 +678,9 @@ function updateCurrentTime() {
     const formattedDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
     const formattedTime = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
     
-    // โค้ดส่วนดึงเวลา: ปรับให้เพิ่ม <br> เมื่ออยู่บนจอมือถือ (หน้าจอที่เล็กกว่า lg) เพื่อดัน "เวลา" ลงไปอีกบรรทัด
-    const timeStr = `${formattedDate} <span class="block lg:inline lg:ml-2 text-gray-500 font-normal text-[10px] md:text-xs">เวลา ${formattedTime} น.</span>`;
+    // แสดงผล: วันที่ ขึ้นบรรทัดใหม่ตามขนาดจอ และ เวลา
+    const timeStr = `${formattedDate}<br class="md:hidden"> ${formattedTime} น.`;
     
-    // เปลี่ยนจาก innerText เป็น innerHTML เพื่อให้มันอ่าน Tag <span class="block"> ได้
     document.querySelectorAll(".displayTimestamp").forEach(el => el.innerHTML = timeStr);
 }
 
