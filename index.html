@@ -185,15 +185,15 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
-                <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                <div class="flex justify-between items-center text-[10px] md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
                     <div class="w-1/2 md:w-1/3 text-left">
-                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน: <br class="md:hidden"><span class="displayTimestamp text-gray-800 font-bold"></span>
                     </div>
                     <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
                         © 2026 Power System 2
                     </div>
                     <div class="w-1/2 md:w-1/3 text-right">
-                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ: <br class="md:hidden"><span class="displayInspectorName text-gray-800 font-bold">(ยังไม่ระบุชื่อ)</span>
                     </div>
                 </div>
             </td>
@@ -249,15 +249,15 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
-                <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                <div class="flex justify-between items-center text-[10px] md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
                     <div class="w-1/2 md:w-1/3 text-left">
-                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน: <br class="md:hidden"><span class="displayTimestamp text-gray-800 font-bold"></span>
                     </div>
                     <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
                         © 2026 Power System 2
                     </div>
                     <div class="w-1/2 md:w-1/3 text-right">
-                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ: <br class="md:hidden"><span class="displayInspectorName text-gray-800 font-bold">(ยังไม่ระบุชื่อ)</span>
                     </div>
                 </div>
             </td>
@@ -271,7 +271,7 @@
                         <div>
                             <i class="fa-solid fa-clipboard-check mr-2"></i>
                             สรุปการตรวจสอบ (Summary Report) 
-                            <span class="text-gray-700 text-lg font-medium ml-2 hidden md:inline">โดย <span class="displayInspectorName mea-text"></span></span>
+                            <span class="text-gray-700 text-base md:text-lg font-medium ml-2">โดย <span class="displayInspectorName mea-text">(ยังไม่ระบุชื่อ)</span></span>
                         </div>
                     </h2>
                     
@@ -416,15 +416,15 @@ sections.forEach((section, sIndex) => {
         <thead class="print-header">
             <tr>
                 <td class="pb-2 pt-2 px-4 md:px-0">
-                    <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                    <div class="flex justify-between items-center text-[10px] md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
                         <div class="w-1/2 md:w-1/3 text-left">
-                            <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                            <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> วันที่ประเมิน: <br class="md:hidden"><span class="displayTimestamp text-gray-800 font-bold"></span>
                         </div>
                         <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
                             © 2026 Power System 2
                         </div>
                         <div class="w-1/2 md:w-1/3 text-right">
-                            <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                            <i class="fa-regular fa-user mr-1 text-mea-orange"></i> ผู้ตรวจสอบ: <br class="md:hidden"><span class="displayInspectorName text-gray-800 font-bold">(ยังไม่ระบุชื่อ)</span>
                         </div>
                     </div>
                 </td>
@@ -1020,7 +1020,10 @@ window.addEventListener("load",()=>{
     if(document.getElementById("referenceSpec")) document.getElementById("referenceSpec").value = "BQD-3042";
     
     const saved = localStorage.getItem("mdb_fat_checklist");
-    if(!saved) return;
+    if(!saved) {
+        document.querySelectorAll(".displayInspectorName").forEach(el => el.innerText = "(ยังไม่ระบุชื่อ)");
+        return;
+    }
     const data = JSON.parse(saved);
     
     if(document.getElementById("projectNo")) {
