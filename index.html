@@ -174,7 +174,6 @@
                 margin-top: 6px !important; 
                 object-fit: contain; 
             }
-            .print-header div { font-size: 12px !important; }
             .print-remarks-box span { font-size: 13px !important; }
             .print-photo-box span { font-size: 13px !important; }
         }
@@ -186,10 +185,16 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                    <div class="w-1/2 md:w-1/3 text-left">
+                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                    </div>
+                    <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
+                        © 2026 Power System 2
+                    </div>
+                    <div class="w-1/2 md:w-1/3 text-right">
+                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -244,10 +249,16 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                    <div class="w-1/2 md:w-1/3 text-left">
+                        <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                    </div>
+                    <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
+                        © 2026 Power System 2
+                    </div>
+                    <div class="w-1/2 md:w-1/3 text-right">
+                        <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -405,10 +416,16 @@ sections.forEach((section, sIndex) => {
         <thead class="print-header">
             <tr>
                 <td class="pb-2 pt-2 px-4 md:px-0">
-                    <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                        <span class="w-1/3 text-left">วันที่ประเมิน: <span class="displayTimestamp text-gray-800"></span></span>
-                        <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                        <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                    <div class="flex justify-between items-center text-xs md:text-sm font-medium text-gray-500 border-b-2 border-orange-200 pb-2">
+                        <div class="w-1/2 md:w-1/3 text-left">
+                            <i class="fa-regular fa-calendar-days mr-1 text-mea-orange"></i> <span class="hidden md:inline">วันที่ประเมิน: </span><span class="displayTimestamp text-gray-800 font-bold"></span>
+                        </div>
+                        <div class="print-only md:w-1/3 text-center text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
+                            © 2026 Power System 2
+                        </div>
+                        <div class="w-1/2 md:w-1/3 text-right">
+                            <i class="fa-regular fa-user mr-1 text-mea-orange"></i> <span class="hidden md:inline">ผู้ตรวจสอบ: </span><span class="displayInspectorName text-gray-800 font-bold"></span>
+                        </div>
                     </div>
                 </td>
             </tr>
