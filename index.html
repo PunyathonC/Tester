@@ -36,65 +36,54 @@
         }
         
         @media (min-width: 768px) {
-            .floating-buttons {
-                bottom: 24px;
-                right: 24px;
-                gap: 12px;
-                opacity: 1; 
-            }
+            .floating-buttons { bottom: 24px; right: 24px; gap: 12px; opacity: 1; }
         }
 
-        /* ซ่อน Layout ที่แสดงเฉพาะ Print ในหน้าจอปกติ */
+        /* ซ่อนสิ่งที่ไม่จำเป็นในหน้าจอปกติ */
         @media screen {
-            .print-header, .print-footer, .print-only, .print-layout, .cover-page-container { display: none !important; }
+            .print-header, .print-only, .print-layout, .cover-page-container { display: none !important; }
         }
 
-        /* ตั้งค่า Layout ตอน Print (PDF) */
+        /* ปรับแต่งสำหรับการพิมพ์ / ทำ PDF */
         @media print {
             * { overflow: visible !important; }
             .overflow-hidden { overflow: visible !important; }
-            body, html { height: auto !important; display: block !important; margin: 0; padding: 0;}
+            body, html { height: auto !important; display: block !important; margin: 0; padding: 0; background: white !important; }
 
             .screen-layout { display: none !important; }
-            .print-layout { display: flex !important; flex-direction: column; }
-            
-            @page { size: A4 portrait; margin: 10mm; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { background: white !important; }
+            .print-layout { display: block !important; }
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            /* โครงสร้างหน้าปก (Cover Page) */
+            @page { size: A4 portrait; margin: 12mm 10mm; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            /* หน้าปกให้จัดวางความสูงยืดหยุ่น ป้องกันเนื้อหาล้นหน้า */
             .cover-page-container {
                 display: flex !important;
                 flex-direction: column;
-                height: 277mm; 
+                justify-content: space-between;
+                height: 94vh; 
                 width: 100%;
-                background: white;
-                position: relative;
                 page-break-after: always;
                 break-after: page;
-                margin-bottom: 0;
             }
             .hide-on-cover-print { display: none !important; } 
             
-            /* ปรับแทนคลาสสัญลักษณ์พิเศษเพื่อไม่ให้ Build พัง */
-            .cover-rounded-card { border-radius: 1.5rem !important; }
-            .cover-rounded-card-top { border-radius: 1.5rem 1.5rem 0 0 !important; }
-            .cover-rounded-card-bottom { border-radius: 0 0 1.5rem 1.5rem !important; }
+            .cover-rounded-card { border-radius: 1.25rem !important; border: 1px solid #e5e7eb !important; }
             .cover-circle { border-radius: 9999px !important; }
             
-            .shadow-lg, .shadow-sm, .shadow-md { box-shadow: none !important; border-radius: 0 !important; }
-            .cover-page-container .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+            .shadow-lg, .shadow-sm, .shadow-md { box-shadow: none !important; }
+            .cover-page-container .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important; }
             
-            table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
+            table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; margin-top: 5px; }
             .print-header { display: table-header-group !important; }
             
             .check-item-row { page-break-inside: avoid !important; break-inside: avoid !important; }
             .check-item { 
-                display: inline-block !important; width: 100% !important;
+                display: block !important; width: 100% !important;
                 page-break-inside: avoid !important; break-inside: avoid !important; 
-                -webkit-column-break-inside: avoid !important; padding: 8px 0 !important; 
+                padding: 6px 0 !important; border-bottom: 1px solid #e5e7eb !important;
             }
 
             .section-header-row {
@@ -104,174 +93,118 @@
             
             .safe-page-break {
                 display: block !important;
-                page-break-before: always !important; break-before: page !important; -webkit-break-before: always !important;
-                width: 100% !important; height: 1px !important; border: none !important; margin: 0 !important; padding: 0 !important;
+                page-break-before: always !important; break-before: page !important;
+                width: 100% !important; height: 1px !important;
             }
             
-            td { padding-left: 0 !important; padding-right: 0 !important; }
+            td { padding: 0 !important; }
             .mea-bg, .section-header { background-color: #F37021 !important; color: white !important; }
             .critical-header { background-color: #ef4444 !important; color: white !important; }
-            .bg-gray-50 { background-color: #f9fafb !important; }
-            .bg-green-50 { background-color: #f0fdf4 !important; }
-            .bg-red-50 { background-color: #fef2f2 !important; }
-            .bg-blue-50 { background-color: #eff6ff !important; }
-            .pass-selected { background-color: #dcfce7 !important; }
-            .fail-selected { background-color: #fee2e2 !important; }
-            input, textarea { background: transparent !important; border: none !important; padding: 0 !important; outline: none !important; resize: none !important; box-shadow: none !important; }
-            input[type="text"] { border-bottom: 1px dotted #ccc !important; border-radius: 0 !important; }
-            textarea { border-bottom: 1px dashed #ddd !important; border-radius: 0 !important; height: auto !important; overflow: visible !important; margin-top: 4px !important; padding-top: 0 !important;}
             
-            body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
+            /* ขนาดฟอนต์รายงานที่เป็นระเบียบเรียบร้อย */
+            body, p, span, div, label, input, textarea { font-size: 13px !important; line-height: 1.4 !important; color: #1f2937; }
             
-            table.main-table h1.text-2xl, table.main-table h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
-            table.main-table p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
-            table.main-table h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
-            table.main-table .p-6 { padding: 12px !important; }
-            table.main-table .pb-6 { padding-bottom: 8px !important; }
-            table.main-table .pt-4 { padding-top: 8px !important; }
+            .print-row-layout { display: flex !important; width: 100%; align-items: flex-start; gap: 8px; }
+            .print-col-no { width: 6%; font-weight: bold; text-align: left; }
+            .print-col-desc { width: 54%; font-weight: 500; }
+            .print-col-spec { width: 22%; color: #4b5563; font-size: 11px !important; }
+            .print-col-status { width: 18%; display: flex; justify-content: flex-end; }
+            
+            .remarks-container { margin-top: 4px !important; padding-top: 4px !important; border-top: 1px dashed #f3f4f6 !important; width: 100%; }
+            .print-status-badge { padding: 3px 10px; border-radius: 4px; font-weight: bold; font-size: 11px !important; display: inline-flex; align-items: center; gap: 4px; }
+            .badge-pass { background-color: #dcfce7 !important; color: #16a34a !important; border: 1px solid #bbf7d0 !important; }
+            .badge-fail { background-color: #fee2e2 !important; color: #dc2626 !important; border: 1px solid #fecaca !important; }
+            .badge-none { background-color: #f3f4f6 !important; color: #9ca3af !important; border: 1px solid #e5e7eb !important; }
 
-            .check-item { border: none !important; border-bottom: 1px solid #e5e7eb !important; border-radius: 0 !important; box-shadow: none !important; }
-            
-            .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
-            .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
-            .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
-            .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
-            .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
-            
-            .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; }
-            .remarks-container textarea { color: #4b5563; font-style: italic; }
-            
-            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
-            .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
-            .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
-
-            .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
-            .print-radio-box { border: 1px solid #d1d5db; border-radius: 5px; padding: 4px 12px; font-size: 12px !important; display: flex; align-items: center; gap: 5px; color: #6b7280; background-color: #f9fafb; white-space: nowrap !important; }
-            .print-radio-box i { font-size: 11px !important; }
-            
-            .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
-            .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
-            .print-radio-box.inactive { opacity: 0.4; }
-            
-            .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
-            .print-header div { font-size: 12px !important; }
-            .print-remarks-box span { font-size: 13px !important; }
-            .print-photo-box span { font-size: 13px !important; }
+            .print-images-container img { max-height: 120px !important; width: auto !important; margin-top: 4px !important; object-fit: contain; }
         }
     </style>
 </head>
-<body class="min-h-screen pb-10">
+<body class="min-h-screen pb-10 text-gray-800">
 
 <div class="print-only cover-page-container">
-    <div class="flex justify-between items-start border-b border-gray-300 pb-3 mb-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <i class="fa-regular fa-calendar-days text-mea-orange text-2xl"></i>
-            <div class="text-xs font-bold text-gray-800 leading-tight">
+    
+    <div class="flex justify-between items-center border-b border-gray-200 pb-3 mt-2 shrink-0">
+        <div class="flex items-center gap-2">
+            <i class="fa-regular fa-calendar-days text-mea-orange text-xl"></i>
+            <div class="text-[11px] font-bold text-gray-700 leading-tight">
                 <div>วันที่: <span class="displayDateOnly"></span></div>
-                <div>เวลา <span class="displayTimeOnly"></span></div>
+                <div>เวลา: <span class="displayTimeOnly"></span></div>
             </div>
         </div>
-        <div class="text-center text-[11px] text-gray-700 font-medium pt-1">
-            MDB Factory Acceptance Test (FAT) Checklist<br>
-            <span class="text-gray-400 font-normal">© 2026 POWER SYSTEM 2</span>
+        <div class="text-center text-[10px] text-gray-400 font-normal tracking-wide">
+            MDB Factory Acceptance Test (FAT) Checklist
         </div>
-        <div class="flex items-center gap-3">
-            <i class="fa-regular fa-user text-mea-orange text-2xl"></i>
-            <div class="text-xs font-bold text-gray-800 text-right leading-tight">
-                ผู้ตรวจสอบ:<br><span class="displayInspectorName text-gray-600 font-medium">(ยังไม่ระบุชื่อ)</span>
+        <div class="flex items-center gap-2">
+            <i class="fa-regular fa-user text-mea-orange text-xl"></i>
+            <div class="text-[11px] font-bold text-gray-700 text-right leading-tight">
+                ผู้ตรวจสอบ:<br><span class="displayInspectorName text-gray-500 font-normal">(ยังไม่ระบุชื่อ)</span>
             </div>
         </div>
     </div>
 
-    <div class="flex justify-center items-center gap-6 mb-8 shrink-0">
-        <div class="relative w-[5.5rem] h-[5.5rem] cover-circle border-[3px] border-mea-orange flex items-center justify-center bg-white shadow-sm overflow-hidden">
-            <i class="fa-solid fa-building-circle-bolt text-[2.5rem] text-mea-orange"></i>
+    <div class="flex justify-center items-center gap-5 my-6 shrink-0">
+        <div class="w-20 h-20 cover-circle border-2 border-mea-orange flex items-center justify-center bg-white shadow-sm shrink-0">
+            <i class="fa-solid fa-building-circle-bolt text-3xl text-mea-orange"></i>
         </div>
-        <div class="flex flex-col justify-center">
-            <h1 class="text-3xl font-extrabold text-gray-800 tracking-tight m-0 pb-1">ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า</h1>
-            <div class="h-[1.5px] w-[105%] bg-gray-400 my-1"></div>
-            <p class="text-[1.2rem] text-gray-600 m-0 pt-1">Better Care and Power Quality Department</p>
+        <div class="text-left">
+            <h1 class="text-2xl font-black text-gray-800 m-0 tracking-tight">ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า</h1>
+            <div class="h-[1.5px] w-full bg-mea-orange my-1 opacity-70"></div>
+            <p class="text-sm text-gray-500 font-medium m-0">Better Care and Power Quality Department</p>
         </div>
     </div>
 
-    <div class="flex-1 flex flex-col relative w-full border border-gray-200 cover-rounded-card shadow-sm bg-white overflow-hidden mb-2">
-        <div class="mea-bg p-6 flex items-center gap-5 text-white shrink-0 z-10">
-            <div class="w-16 h-16 cover-circle border-2 border-white flex items-center justify-center shrink-0">
-                <i class="fa-solid fa-clipboard-check text-3xl"></i>
+    <div class="flex-1 flex flex-col justify-between cover-rounded-card shadow-sm bg-white overflow-hidden my-2">
+        
+        <div class="mea-bg p-6 flex items-center gap-4 text-white shrink-0">
+            <div class="w-14 h-14 cover-circle border border-white flex items-center justify-center bg-white/10 shrink-0">
+                <i class="fa-solid fa-clipboard-check text-2xl"></i>
             </div>
             <div>
-                <h2 class="text-2xl font-bold m-0 leading-tight">Check list ตรวจสอบตู้ MDB ที่โรงงาน (FAT test)</h2>
-                <p class="text-sm mt-[2px] opacity-90 m-0">Main Distribution Board (MDB) Factory Test</p>
+                <h2 class="text-xl font-bold m-0 leading-tight">Check list ตรวจสอบตู้ MDB ที่โรงงาน (FAT test)</h2>
+                <p class="text-xs opacity-90 m-0 mt-0.5">Main Distribution Board (MDB) Factory Test</p>
             </div>
         </div>
 
-        <div class="flex-1 relative flex flex-col bg-white">
-            <div class="absolute inset-0 opacity-10 flex border-t border-gray-200 pointer-events-none">
-                 <div class="flex-1 border-r border-gray-400"></div>
-                 <div class="flex-1 border-r border-gray-400"></div>
-                 <div class="flex-1 border-r border-gray-400"></div>
-                 <div class="flex-1 border-r border-gray-400"></div>
-                 <div class="flex-1"></div>
-            </div>
+        <div class="flex-1 flex flex-col items-center justify-center text-center px-8 py-10 relative">
+            <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#F37021 1px, transparent 0); background-size: 16px 16px;"></div>
             
-            <div class="absolute bottom-0 right-0 w-[400px] h-[250px] opacity-[0.15] pointer-events-none" style="background: radial-gradient(circle at 100% 100%, #F37021 0%, transparent 60%);"></div>
-
-            <div class="relative z-20 mx-auto -mt-6 bg-white cover-rounded-card border border-gray-200 shadow-sm flex justify-between items-center p-3 px-6 w-[92%] gap-2">
-                <div class="flex items-center gap-3 flex-1">
-                    <div class="w-9 h-9 cover-circle bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-file-lines"></i></div>
-                    <div>
-                        <div class="text-[10px] text-mea-orange font-bold">Reference Spec</div>
-                        <div class="text-[13px] font-bold text-gray-800">BQD-3042</div>
-                    </div>
-                </div>
-                <div class="w-px h-10 bg-gray-200"></div>
-                <div class="flex items-center gap-3 flex-1 justify-center">
-                    <div class="w-9 h-9 cover-circle bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-regular fa-user"></i></div>
-                    <div class="text-left">
-                        <div class="text-[10px] text-mea-orange font-bold">ผู้ตรวจสอบ (Inspector)</div>
-                        <div class="text-[13px] font-bold text-gray-800 displayInspectorName">(ยังไม่ระบุชื่อ)</div>
-                    </div>
-                </div>
-                <div class="w-px h-10 bg-gray-200"></div>
-                <div class="flex items-center gap-3 flex-1 justify-end">
-                    <div class="w-9 h-9 cover-circle bg-gray-100 flex items-center justify-center text-gray-400"><i class="fa-solid fa-server"></i></div>
-                    <div class="text-left">
-                        <div class="text-[10px] text-mea-orange font-bold">Project / MDB No.</div>
-                        <div class="text-[13px] font-bold text-gray-800 displaySummaryProject">-</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-10 pb-20">
-                <h3 class="text-[22px] font-bold text-gray-800 mb-3">ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042</h3>
-                <h2 class="text-3xl font-bold text-mea-orange mb-5">ตู้แผงสวิตช์รวม (Main Distribution Board)</h2>
-                <div class="w-[70%] h-[1.5px] bg-gray-300 mb-5"></div>
-                <p class="text-[18px] text-gray-700 font-medium">(Type II : Non Design Verification Test)</p>
-            </div>
+            <h3 class="text-lg font-bold text-gray-700 mb-2">ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042</h3>
+            <h2 class="text-2xl font-extrabold text-mea-orange mb-4 tracking-tight">ตู้แผงสวิตช์รวม (Main Distribution Board)</h2>
+            <div class="w-24 h-[2px] bg-gray-200 mb-4"></div>
+            <p class="text-sm text-gray-500 font-medium">(Type II : Non Design Verification Test)</p>
         </div>
 
-        <div class="mea-bg text-white flex justify-between px-10 py-5 shrink-0 z-20">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-shield-halved text-2xl"></i>
-                <div class="text-left leading-tight">
-                    <div class="font-bold text-[11px] uppercase tracking-wider">QUALITY</div>
-                    <div class="text-[10px] opacity-90 mt-[1px]">Quality First</div>
-                </div>
+        <div class="border-t border-gray-100 bg-gray-50/70 p-4 px-6 flex justify-between items-center text-center gap-2 shrink-0">
+            <div class="flex-1">
+                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Reference Spec</div>
+                <div class="text-xs font-bold text-gray-800 mt-0.5">BQD-3042</div>
             </div>
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-gear text-2xl"></i>
-                <div class="text-left leading-tight">
-                    <div class="font-bold text-[11px] uppercase tracking-wider">STANDARD</div>
-                    <div class="text-[10px] opacity-90 mt-[1px]">Standardized Process</div>
-                </div>
+            <div class="w-px h-6 bg-gray-200"></div>
+            <div class="flex-1">
+                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Inspector</div>
+                <div class="text-xs font-bold text-gray-800 mt-0.5 displayInspectorName">(ยังไม่ระบุ)</div>
             </div>
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-users text-2xl"></i>
-                <div class="text-left leading-tight">
-                    <div class="font-bold text-[11px] uppercase tracking-wider">RELIABILITY</div>
-                    <div class="text-[10px] opacity-90 mt-[1px]">Reliable Power for Life</div>
-                </div>
+            <div class="w-px h-6 bg-gray-200"></div>
+            <div class="flex-1">
+                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Project / MDB No.</div>
+                <div class="text-xs font-bold text-gray-800 mt-0.5 displaySummaryProject">-</div>
             </div>
+        </div>
+    </div>
+
+    <div class="border border-gray-200 cover-rounded-card bg-gray-50 p-3 px-6 flex justify-between items-center mt-4 shrink-0">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-mea-orange text-sm"></i>
+            <span class="text-[11px] font-bold text-gray-600 tracking-wide">QUALITY FIRST</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-gear text-mea-orange text-sm"></i>
+            <span class="text-[11px] font-bold text-gray-600 tracking-wide">STANDARDIZED</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-users text-mea-orange text-sm"></i>
+            <span class="text-[11px] font-bold text-gray-600 tracking-wide">RELIABLE POWER</span>
         </div>
     </div>
 </div>
@@ -279,48 +212,46 @@
 <table class="main-table w-full max-w-5xl mx-auto hide-on-cover-print">
     <thead class="print-header">
         <tr>
-            <td class="pb-2 pt-4 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+            <td>
+                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 border-b border-gray-200 pb-1 mb-2">
+                    <span>วันที่ตรวจ: <span class="displayTimestamp text-gray-700"></span></span>
+                    <span class="print-only">© 2026 Power System 2</span>
+                    <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-700"></span></span>
                 </div>
             </td>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="pb-2 pt-4 px-4 md:px-0">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                    <div class="mea-bg text-white p-6">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                            <div>
-                                <h1 class="text-2xl md:text-3xl font-bold">Check list ตรวจสอบตู้ MDB ที่โรงงาน (FAT test)</h1>
-                                <p class="text-orange-100 mt-2">Main Distribution Board (MDB) Factory Test</p>
-                            </div>
-                            <div class="bg-white rounded-xl w-20 h-20 flex items-center justify-center shadow no-print">
-                                <i class="fa-solid fa-bolt text-4xl mea-text"></i>
-                            </div>
+            <td class="pb-4 px-4 md:px-0">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden mt-4">
+                    <div class="mea-bg text-white p-5 flex justify-between items-center">
+                        <div>
+                            <h1 class="text-xl md:text-2xl font-bold">Check list ตรวจสอบตู้ MDB ที่โรงงาน (FAT test)</h1>
+                            <p class="text-orange-100 text-xs mt-1">Main Distribution Board (MDB) Factory Test</p>
+                        </div>
+                        <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center no-print">
+                            <i class="fa-solid fa-bolt text-2xl text-white"></i>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-5 bg-gray-50/50">
+                        <div class="grid md:grid-cols-3 gap-4">
                             <div>
-                                <label class="text-sm text-gray-500 font-medium">Reference Spec</label>
+                                <label class="text-xs text-gray-500 font-medium">Reference Spec</label>
                                 <div class="flex gap-2 mt-1">
-                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-200 text-gray-700 font-semibold cursor-not-allowed focus:outline-none">
-                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="mea-bg hover:opacity-90 text-white px-4 py-2 rounded-lg shadow transition-all whitespace-nowrap flex items-center gap-2 no-print" style="text-decoration: none;">
+                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border border-gray-200 rounded-lg px-3 py-1.5 bg-gray-200 text-gray-700 font-semibold focus:outline-none text-sm">
+                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="mea-bg hover:opacity-90 text-white px-3 py-1.5 rounded-lg shadow-sm text-xs font-medium flex items-center gap-1.5 no-print" style="text-decoration: none;">
                                         <i class="fa-solid fa-download"></i> โหลดไฟล์ BQD
                                     </a>
                                 </div>
                             </div>
                             <div>
-                                <label class="text-sm text-mea-orange font-bold">ผู้ตรวจสอบ (Inspector)</label>
-                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ" class="w-full mt-1 border border-orange-300 rounded-lg px-3 py-2 bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <label class="text-xs text-mea-orange font-bold">ผู้ตรวจสอบ (Inspector)</label>
+                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ" class="w-full mt-1 border border-orange-200 rounded-lg px-3 py-1.5 bg-orange-50/50 focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm">
                             </div>
                             <div>
-                                <label class="text-sm text-gray-500 font-medium">Project / MDB No.</label>
-                                <input type="text" id="projectNo" placeholder="Enter MDB Information" class="w-full mt-1 border rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-orange-500">
+                                <label class="text-xs text-gray-500 font-medium">Project / MDB No.</label>
+                                <input type="text" id="projectNo" placeholder="Enter MDB Information" class="w-full mt-1 border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-1 focus:ring-orange-500 text-sm">
                             </div>
                         </div>
                     </div>
@@ -334,43 +265,40 @@
 
 <div class="safe-page-break print-only"></div>
 
-<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-0">
+<table class="main-table w-full max-w-5xl mx-auto mt-6">
     <thead class="print-header">
         <tr>
-            <td class="pb-2 pt-2 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                    <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
-                    <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                    <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+            <td>
+                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 border-b border-gray-200 pb-1 mb-2">
+                    <span>วันที่ตรวจ: <span class="displayTimestamp text-gray-700"></span></span>
+                    <span class="print-only">© 2026 Power System 2</span>
+                    <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-700"></span></span>
                 </div>
             </td>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="pt-4 pb-4 px-4 md:px-0">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-                    <h2 class="text-xl font-bold mb-4 mea-text border-b pb-3 flex justify-between items-center">
-                        <div>
-                            <i class="fa-solid fa-clipboard-check mr-2"></i>
-                            สรุปการตรวจสอบ (Summary Report) 
-                            <span class="text-gray-700 text-lg font-medium ml-2 hidden md:inline">โดย <span class="displayInspectorName mea-text"></span></span>
-                        </div>
+            <td class="pb-6 px-4 md:px-0">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-5">
+                    <h2 class="text-base font-bold mb-3 text-gray-800 border-b pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-mea-orange"></i>
+                        สรุปผลการตรวจสอบ (Summary Report)
                     </h2>
                     
-                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 bg-orange-50 p-3 rounded-lg border border-orange-200">
-                        <div class="text-xs">
-                            <span class="font-semibold text-gray-600">Project / MDB No:</span> 
-                            <span class="displaySummaryProject text-mea-orange font-bold text-base ml-1">-</span>
+                    <div class="grid grid-cols-2 gap-4 mb-4 bg-gray-50 p-3 rounded-lg border border-gray-100 text-xs">
+                        <div>
+                            <span class="font-semibold text-gray-500">Project / MDB No:</span> 
+                            <span class="displaySummaryProject text-gray-800 font-bold ml-1">-</span>
                         </div>
-                        <div class="text-xs">
-                            <span class="font-semibold text-gray-600">วันที่ประเมิน:</span> 
-                            <span class="displayTimestamp text-mea-orange font-bold ml-1">-</span>
+                        <div class="text-right">
+                            <span class="font-semibold text-gray-500">วันที่ประเมิน:</span> 
+                            <span class="displayTimestamp text-gray-800 font-bold ml-1">-</span>
                         </div>
                     </div>
                     
-                    <div id="summaryContent" class="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>
+                    <div id="summaryContent" class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="text-gray-400 text-center text-xs">กรุณาประเมินรายการตรวจสอบเพื่อดูสรุปรายงาน</p>
                     </div>
                 </div>
             </td>
@@ -379,14 +307,14 @@
 </table>
 
 <div class="floating-buttons">
-    <button onclick="exportToExcelJS()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all" id="exportBtn">
-        <i class="fa-solid fa-file-excel text-sm md:text-xl"></i> ดาวน์โหลด Excel
+    <button onclick="exportToExcelJS()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-sm transition-all" id="exportBtn">
+        <i class="fa-solid fa-file-excel"></i> ดาวน์โหลด Excel
     </button>
-    <button onclick="printChecklist()" class="mea-bg hover:opacity-90 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
-        <i class="fa-solid fa-print text-sm md:text-xl"></i> พิมพ์ / PDF
+    <button onclick="printChecklist()" class="mea-bg hover:opacity-90 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-sm transition-all">
+        <i class="fa-solid fa-print"></i> พิมพ์รายงาน / PDF
     </button>
-    <button onclick="clearChecklist()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
-        <i class="fa-solid fa-trash text-sm md:text-xl"></i> ล้างข้อมูล
+    <button onclick="clearChecklist()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-sm transition-all">
+        <i class="fa-solid fa-trash"></i> ล้างข้อมูลใหม่
     </button>
 </div>
 
@@ -411,7 +339,7 @@ const sections = [
         icon:"fa-network-wired",
         critical:false,
         items:[
-            ["2.1","ขนาด Line และ Neutral Busbar\n• L1/L2/L3 ตามแบบ\n• N = L1/L2/L3","Spec ข้อ 10.3 IEC61439-1 \n(คำนวณตามบัสบาร์เปลือย)"],
+            ["2.1","ขนาด Line และ Neutral Busbar\n• L1/L2/L3 ตามแบบ\n• N = L1/L2/L3","Spec ข้อ 10.3 IEC61439-1"],
             ["2.2","ขนาด Ground Busbar\n• ≥ 95 ตร.มม. ถ้า Main CB ≤ 800 A\n• ≥ 120 ตร.มม. ถ้า Main CB > 800 A","Spec ข้อ 10"],
             ["2.3","สาย Bonding ระหว่าง Neutral Busbar และ Ground Busbar (ถ้ามี)","ตามแบบ"],
             ["2.4","สี Busbar\n• L1/L2/L3 : น้ำตาล / ดำ / เทา\n• N : ฟ้า\n• G : เขียว","Spec ข้อ 10.7"]
@@ -438,16 +366,6 @@ const sections = [
         ]
     },
     {
-        title:"Section 5 : อุปกรณ์เครื่องวัด (Current transformer, Lamp, Digital meter)",
-        icon:"fa-gauge-high",
-        critical:false,
-        items:[
-            ["5.1","Current Transformer\n• Ratio xxx/1 หรือ xxx/5\n• Class และ Burden","ตามแบบ"],
-            ["5.2","Pilot lamp\n• L1/L2/L3 : สีขาว","Spec ข้อ 12.2"],
-            ["5.3","Fuse (ถ้ามี)\n• จัดหา Fuse (spare) 10% ของทั้งหมด","Spec ข้อ 12.3"]
-        ]
-    },
-    {
         title:"Section 6 : ทดสอบการทำงาน (Function test)",
         icon:"fa-gears",
         critical:false,
@@ -463,10 +381,10 @@ const sections = [
         icon:"fa-triangle-exclamation",
         critical:true,
         items:[
-            ["7.1","Dielectric test ของ Main circuit และ Control circuit\n• จ่ายแรงดัน 2000VAC เป็นเวลา 1 นาที\n• L1 เทียบกับ L2+L3+N+G\n• L2 เทียบกับ L1+L3+N+G\n• L3 เทียบกับ L1+L2+N+G\n• ค่าที่ยอมรับได้: ไม่ Breakdown","อ้างอิง : IEC 61439-1"],
-            ["7.2","Insulation Resistance Test\n• ก่อนและหลัง Dielectric test\n• จ่ายแรงดัน 1000VDC เป็นเวลา 1 นาที\n• L1 เทียบกับ L2+L3+N+G\n• L2 เทียบกับ L1+L3+N+G\n• L3 เทียบกับ L1+L2+N+G\n• ค่าที่ยอมรับได้ ≥ 1 MegaOhm","อ้างอิง : IEC 61439-1"],
-            ["7.3","Ground Continuity Test\n• ระหว่าง ground bar และ terminal\n• ระหว่างโครงและฝาตู้\n• ค่าที่ยอมรับได้ ≤ 0.1 Ohm","อ้างอิง : IEC 60335-1"],
-            ["7.4","ทดสอบ Contact resistance\n• Main CB\n• CB ทุกตัว ≥ 800 A\n• Main busbar (กรณีติดตู้)\n• ค่าที่ยอมรับได้: ตาม datasheet ของ CB",""]
+            ["7.1","Dielectric test ของ Main circuit และ Control circuit\n• ค่าที่ยอมรับได้: ไม่ Breakdown","อ้างอิง : IEC 61439-1"],
+            ["7.2","Insulation Resistance Resistance Test\n• ค่าที่ยอมรับได้ ≥ 1 MegaOhm","อ้างอิง : IEC 61439-1"],
+            ["7.3","Ground Continuity Test\n• ค่าที่ยอมรับได้ ≤ 0.1 Ohm","อ้างอิง : IEC 60335-1"],
+            ["7.4","ทดสอบ Contact resistance\n• ค่าที่ยอมรับได้: ตาม datasheet ของ CB",""]
         ]
     }
 ];
@@ -478,32 +396,27 @@ sections.forEach((section, sIndex) => {
     fullHtml += `<div class="safe-page-break print-only"></div>`;
 
     fullHtml += `
-    <table class="main-table w-full max-w-5xl mx-auto ${sIndex > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}">
+    <table class="main-table w-full max-w-5xl mx-auto hide-on-cover-print">
         <thead class="print-header">
             <tr>
-                <td class="pb-2 pt-2 px-4 md:px-0">
-                    <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
-                        <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
-                        <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
-                        <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
+                <td>
+                    <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 border-b border-gray-200 pb-1 mb-2">
+                        <span>วันที่ตรวจ: <span class="displayTimestamp text-gray-700"></span></span>
+                        <span class="print-only">© 2026 Power System 2</span>
+                        <span>ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-700"></span></span>
                     </div>
                 </td>
             </tr>
         </thead>
         <tbody>
             <tr class="section-header-row">
-                <td class="pb-2 pt-2 px-4 md:px-0">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="${section.critical ? 'critical-header' : 'section-header'} text-white p-3">
-                            <div class="flex items-center justify-between">
-                                <h2 class="font-bold text-lg flex items-center gap-3 m-0">
-                                    <div class="bg-white text-gray-700 w-6 h-6 md:w-8 md:h-8 rounded flex items-center justify-center shadow-sm">
-                                        <i class="fa-solid ${section.icon} text-xs md:text-sm"></i>
-                                    </div>
-                                    ${section.title}
-                                </h2>
-                                ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">CRITICAL TEST</span>' : ''}
-                            </div>
+                <td class="pb-2 px-4 md:px-0">
+                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm mt-3">
+                        <div class="${section.critical ? 'critical-header' : 'section-header'} text-white p-3 flex justify-between items-center">
+                            <h2 class="font-bold text-sm md:text-base flex items-center gap-2 m-0">
+                                <i class="fa-solid ${section.icon}"></i> ${section.title}
+                            </h2>
+                            ${section.critical ? '<span class="bg-white text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">CRITICAL</span>' : ''}
                         </div>
                     </div>
                 </td>
@@ -515,54 +428,42 @@ sections.forEach((section, sIndex) => {
             <tr class="check-item-row">
                 <td class="pb-2 px-4 md:px-0">
                     <div class="check-item bg-white border border-gray-200 rounded-xl p-3 shadow-sm" data-radioname="${radioName}">
-                        <div class="grid md:grid-cols-12 gap-2 items-start">
-                            <div class="md:col-span-1"><span class="font-bold text-base md:text-lg">${item[0]}</span></div>
-                            <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug">${item[1].replace(/\n/g, '<br>')}</div></div>
-                            <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug">${item[2].replace(/\n/g, '<br>')}</span></div>
+                        
+                        <div class="print-row-layout grid md:grid-cols-12 gap-2 items-start">
+                            <div class="print-col-no md:col-span-1"><span class="font-bold text-sm md:text-base">${item[0]}</span></div>
+                            <div class="print-col-desc md:col-span-6"><div class="font-medium text-gray-800 text-xs md:text-sm leading-relaxed">${item[1].replace(/\n/g, '<br>')}</div></div>
+                            <div class="print-col-spec md:col-span-2"><span class="text-xs text-gray-400">${item[2].replace(/\n/g, '<br>')}</span></div>
                             
-                            <div class="md:col-span-3 screen-layout">
-                                <div class="flex gap-2">
-                                    <label class="radio-card pass-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm">
-                                        <input type="radio" name="${radioName}" value="Pass" class="sr-only">
-                                        <i class="fa-solid fa-circle-check"></i> ผ่าน
-                                    </label>
-                                    <label class="radio-card fail-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm">
-                                        <input type="radio" name="${radioName}" value="Fail" class="sr-only">
-                                        <i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน
-                                    </label>
-                                </div>
+                            <div class="md:col-span-3 screen-layout flex gap-2">
+                                <label class="radio-card border border-gray-300 rounded-lg py-1 px-3 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-xs">
+                                    <input type="radio" name="${radioName}" value="Pass" class="sr-only"> ผ่าน
+                                </label>
+                                <label class="radio-card border border-gray-300 rounded-lg py-1 px-3 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-xs">
+                                    <input type="radio" name="${radioName}" value="Fail" class="sr-only"> ไม่ผ่าน
+                                </label>
                             </div>
                             
-                            <div class="md:col-span-3 print-layout">
-                                <div class="print-radio-container" id="print_status_${radioName}">
-                                    <div class="print-radio-box print-pass-box"><i class="fa-solid fa-circle-check"></i> ผ่าน</div>
-                                    <div class="print-radio-box print-fail-box"><i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน</div>
-                                </div>
+                            <div class="print-col-status md:col-span-3 print-layout" id="print_status_${radioName}">
+                                <span class="print-status-badge badge-none">รอตรวจ</span>
                             </div>
                         </div>
                         
-                        <div class="remarks-container screen-layout">
-                            <label class="block text-[10px] md:text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">หมายเหตุ (Remarks)</label>
-                            <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all" 
-                                      rows="1" placeholder=""></textarea>
-                            
+                        <div class="remarks-container screen-layout mt-2 pt-2 border-t border-gray-100">
+                            <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 text-xs bg-gray-50/50 focus:bg-white focus:outline-none transition-all" rows="1" placeholder="พิมพ์หมายเหตุระบุเพิ่มเติมบริษัท..."></textarea>
                             <div class="photo-upload-container mt-2" data-radioname="${radioName}">
                                 <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
-                                <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 py-1.5 px-3 rounded flex items-center gap-2 border border-gray-300 transition-colors" onclick="document.getElementById('photo_${radioName}').click()">
-                                    <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
+                                <button type="button" class="text-[11px] bg-white hover:bg-gray-50 text-gray-600 py-1 px-2 rounded border border-gray-300 inline-flex items-center gap-1.5 transition-colors shadow-sm" onclick="document.getElementById('photo_${radioName}').click()">
+                                    <i class="fa-solid fa-camera"></i> แนบภาพถ่ายสวิตช์บอร์ด
                                 </button>
-                                <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden">
-                                </div>
+                                <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden"></div>
                             </div>
                         </div>
 
-                        <div class="print-layout remarks-container print-remarks-box hidden">
-                            <span class="text-[10px] font-bold text-gray-500 block mb-0.5">หมายเหตุ: <span class="print-remark-text font-normal text-gray-700"></span></span>
+                        <div class="print-layout remarks-container print-remarks-box hidden mt-1">
+                            <span class="text-[11px] font-bold text-gray-400">หมายเหตุ: <span class="print-remark-text font-normal text-gray-700"></span></span>
                         </div>
                         <div class="print-layout mt-1 hidden print-photo-box">
-                            <span class="text-[10px] font-bold text-gray-500 block mb-0.5">ภาพประกอบ:</span>
-                            <div class="print-images-container flex flex-wrap gap-2">
-                            </div>
+                            <div class="print-images-container flex flex-wrap gap-1"></div>
                         </div>
 
                     </div>
@@ -575,6 +476,42 @@ sections.forEach((section, sIndex) => {
 
 checklistContainer.innerHTML = fullHtml;
 
+// ฟังก์ชันควบคุมตราประทับผลการประเมินชุดพิมพ์เอกสารให้สะอาด สวยงาม
+function updatePrintViews() {
+    const checkItems = document.querySelectorAll('.check-item[data-radioname]');
+    checkItems.forEach(item => {
+        const radioName = item.getAttribute('data-radioname');
+        if(!radioName) return;
+
+        const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
+        const statusBox = document.getElementById(`print_status_${radioName}`);
+        
+        if(statusBox) {
+            if (checkedRadio) {
+                if (checkedRadio.value === 'Pass') {
+                    statusBox.innerHTML = '<span class="print-status-badge badge-pass"><i class="fa-solid fa-circle-check"></i> ผ่านเกณฑ์</span>';
+                } else {
+                    statusBox.innerHTML = '<span class="print-status-badge badge-fail"><i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน</span>';
+                }
+            } else {
+                statusBox.innerHTML = '<span class="print-status-badge badge-none">รอตรวจ</span>';
+            }
+        }
+        
+        const remarkInput = item.querySelector('.remarks-input').value.trim();
+        const printRemarkBox = item.querySelector('.print-remarks-box');
+        const printRemarkText = item.querySelector('.print-remark-text');
+        
+        if (remarkInput) {
+            printRemarkText.innerText = remarkInput;
+            printRemarkBox.classList.remove('hidden');
+        } else {
+            printRemarkBox.classList.add('hidden');
+        }
+    });
+}
+
+// การจัดการอัปโหลดภาพประกอบรายงาน
 document.addEventListener("change", async (e) => {
     if (e.target.classList.contains("photo-input")) {
         const files = e.target.files;
@@ -594,7 +531,7 @@ document.addEventListener("change", async (e) => {
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement("canvas");
-                    const MAX_WIDTH = 600; 
+                    const MAX_WIDTH = 500; 
                     let scale = MAX_WIDTH / img.width;
                     if(scale > 1) scale = 1; 
                     
@@ -611,8 +548,8 @@ document.addEventListener("change", async (e) => {
                     previewWrapper.className = 'relative inline-block photo-item';
                     previewWrapper.dataset.imgid = imgId;
                     previewWrapper.innerHTML = `
-                        <img src="${compressedBase64}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-                        <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
+                        <img src="${compressedBase64}" class="h-14 w-auto rounded border object-cover">
+                        <button type="button" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] remove-photo-btn">
                             <i class="fa-solid fa-times"></i>
                         </button>
                     `;
@@ -620,7 +557,7 @@ document.addEventListener("change", async (e) => {
                     
                     const printImg = document.createElement('img');
                     printImg.src = compressedBase64;
-                    printImg.className = 'print-img rounded border border-gray-300 object-contain';
+                    printImg.className = 'print-img rounded border object-contain';
                     printImg.dataset.imgid = imgId;
                     printImagesContainer.appendChild(printImg);
                     
@@ -630,7 +567,6 @@ document.addEventListener("change", async (e) => {
             };
             reader.readAsDataURL(file);
         }
-        
         e.target.value = "";
     }
 });
@@ -643,7 +579,6 @@ document.addEventListener("click", (e) => {
         const checkItem = btn.closest('.check-item');
         
         photoItem.remove();
-        
         const printImg = checkItem.querySelector(`.print-img[data-imgid="${imgId}"]`);
         if (printImg) printImg.remove();
         
@@ -651,58 +586,15 @@ document.addEventListener("click", (e) => {
         if (printImagesContainer && printImagesContainer.children.length === 0) {
             checkItem.querySelector('.print-photo-box').classList.add('hidden');
         }
-        
         saveData();
     }
 });
-
-function updatePrintViews() {
-    const checkItems = document.querySelectorAll('.check-item[data-radioname]');
-    checkItems.forEach(item => {
-        const radioName = item.getAttribute('data-radioname');
-        if(!radioName) return;
-
-        const checkedRadio = document.querySelector(`input[name="${radioName}"]:checked`);
-        const passBox = document.querySelector(`#print_status_${radioName} .print-pass-box`);
-        const failBox = document.querySelector(`#print_status_${radioName} .print-fail-box`);
-        
-        if(passBox && failBox) {
-            passBox.classList.remove('print-pass', 'inactive');
-            failBox.classList.remove('print-fail', 'inactive');
-            
-            if (checkedRadio) {
-                if (checkedRadio.value === 'Pass') {
-                    passBox.classList.add('print-pass');
-                    failBox.classList.add('inactive');
-                } else {
-                    failBox.classList.add('print-fail');
-                    passBox.classList.add('inactive');
-                }
-            } else {
-                passBox.classList.add('inactive');
-                failBox.classList.add('inactive');
-            }
-        }
-        
-        const remarkInput = item.querySelector('.remarks-input').value.trim();
-        const printRemarkBox = item.querySelector('.print-remarks-box');
-        const printRemarkText = item.querySelector('.print-remark-text');
-        
-        if (remarkInput) {
-            printRemarkText.innerText = remarkInput;
-            printRemarkBox.classList.remove('hidden');
-        } else {
-            printRemarkBox.classList.add('hidden');
-        }
-    });
-}
 
 document.addEventListener("change",(e)=>{
     if(e.target.type === "radio"){
         const group = document.querySelectorAll(`input[name="${e.target.name}"]`);
         group.forEach(radio=>{
-            const label = radio.closest("label");
-            label.classList.remove("pass-selected", "fail-selected");
+            radio.closest("label").classList.remove("pass-selected", "fail-selected");
         });
         const selectedLabel = e.target.closest("label");
         if(e.target.value === "Pass"){
@@ -745,10 +637,9 @@ function updateCurrentTime() {
 
 async function exportToExcelJS() {
     if (typeof ExcelJS === 'undefined') {
-        alert("กำลังโหลดระบบ Excel กรุณารอสักครู่แล้วลองกดใหม่อีกครั้ง");
+        alert("กำลังโหลดระบบ Excel กรุณารอสักครู่");
         return;
     }
-
     const btn = document.getElementById("exportBtn");
     const originalText = btn.innerHTML;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังสร้าง...';
@@ -779,7 +670,6 @@ async function exportToExcelJS() {
         sheet.getCell('A3').value = 'Reference Spec:';
         sheet.getCell('A3').font = { bold: true };
         sheet.getCell('B3').value = refSpec;
-        
         sheet.getCell('D3').value = 'วันที่ตรวจ:';
         sheet.getCell('D3').font = { bold: true };
         sheet.getCell('D3').alignment = { horizontal: 'right' };
@@ -788,14 +678,10 @@ async function exportToExcelJS() {
         sheet.getCell('A4').value = 'Project No:';
         sheet.getCell('A4').font = { bold: true };
         sheet.getCell('B4').value = projNo;
-
         sheet.getCell('D4').value = 'ผู้ตรวจสอบ:';
         sheet.getCell('D4').font = { bold: true };
         sheet.getCell('D4').alignment = { horizontal: 'right' };
         sheet.getCell('E4').value = inspector;
-
-        sheet.getRow(3).height = 20;
-        sheet.getRow(4).height = 20;
 
         const headerRow = sheet.addRow(['ข้อ', 'รายการตรวจสอบ', 'มาตรฐานอ้างอิง', 'ผลการตรวจสอบ', 'หมายเหตุ']);
         headerRow.height = 25;
@@ -809,7 +695,6 @@ async function exportToExcelJS() {
         let passCount = 0;
         let failList = [];
         let pendingCount = 0;
-
         let remarkInputs = document.querySelectorAll(".remarks-input");
         let inputIndex = 0;
 
@@ -821,7 +706,6 @@ async function exportToExcelJS() {
             secCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: section.critical ? 'FFEF4444' : 'FFF37021' } };
             secCell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
             secCell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
-            secRow.height = 25;
 
             section.items.forEach((item, i) => {
                 const radioName = `section${sIndex}_item${i}`;
@@ -830,36 +714,23 @@ async function exportToExcelJS() {
                 let resultColor = 'FF000000';
                 
                 const previewContainer = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"] .preview-container`);
-                const imgsCount = previewContainer ? previewContainer.querySelectorAll('.preview-img').length : 0;
-                
+                const imgsCount = previewContainer ? previewContainer.querySelectorAll('img').length : 0;
                 let remarkText = remarkInputs[inputIndex].value.trim() || "";
-                if(imgsCount > 0) remarkText += (remarkText ? ` [มีภาพถ่ายแนบ ${imgsCount} รูป]` : `[มีภาพถ่ายแนบ ${imgsCount} รูป]`);
+                if(imgsCount > 0) remarkText += ` [มีภาพแนบ ${imgsCount} รูป]`;
                 
                 if (radioEl) {
-                    if (radioEl.value === "Pass") {
-                        resultText = "ผ่าน";
-                        resultColor = 'FF16A34A'; 
-                        passCount++;
-                    } else {
-                        resultText = "ไม่ผ่าน";
-                        resultColor = 'FFDC2626'; 
-                        failList.push({ title: `ข้อ ${item[0]} ${item[1].replace(/\n/g, ' ')}`, remark: remarkText || "ไม่ได้ระบุหมายเหตุ" });
-                    }
-                } else {
-                    pendingCount++;
-                }
+                    if (radioEl.value === "Pass") { resultText = "ผ่าน"; resultColor = 'FF16A34A'; passCount++; }
+                    else { resultText = "ไม่ผ่าน"; resultColor = 'FFDC2626'; failList.push({ title: `ข้อ ${item[0]}`, remark: remarkText || "ไม่ได้ระบุหมายเหตุ" }); }
+                } else { pendingCount++; }
                 
                 let plainDescription = item[1].replace(/\n• /g, '\n- ').replace(/• /g, '- ');
-                
                 const row = sheet.addRow([ item[0], plainDescription, item[2], resultText, remarkText ]);
                 row.eachCell((cell, colNum) => {
                     cell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
                     cell.alignment = { vertical: 'top', wrapText: true };
-                    if (colNum === 1 || colNum === 3 || colNum === 4) cell.alignment = { ...cell.alignment, horizontal: 'center' };
-                    if (colNum === 1) cell.font = { bold: true };
+                    if (colNum === 1 || colNum === 4) cell.alignment = { ...cell.alignment, horizontal: 'center' };
                     if (colNum === 4 && resultText !== "-") cell.font = { color: { argb: resultColor }, bold: true };
                 });
-
                 inputIndex++;
             });
         });
@@ -867,102 +738,47 @@ async function exportToExcelJS() {
         sheet.addRow([]);
         const sumHeaderRow = sheet.addRow(['สรุปการตรวจสอบ (Summary Report)']);
         sheet.mergeCells(`A${sumHeaderRow.number}:E${sumHeaderRow.number}`);
-        sumHeaderRow.getCell(1).font = { size: 14, bold: true, color: { argb: 'FFFFFFFF' } };
+        sumHeaderRow.getCell(1).font = { size: 12, bold: true, color: { argb: 'FFFFFFFF' } };
         sumHeaderRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF37021' } };
-        sumHeaderRow.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' };
-        sumHeaderRow.height = 30;
-
-        const totalItems = sections.reduce((acc, sec) => acc + sec.items.length, 0);
-
-        if (pendingCount === totalItems) {
-            sheet.addRow(['กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล']);
-        } else if (failList.length === 0 && pendingCount === 0) {
-            const r = sheet.addRow(['✓ ผ่านเกณฑ์ทั้งหมด (All Passed) - การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง']);
-            sheet.mergeCells(`A${r.number}:E${r.number}`);
-            r.getCell(1).font = { bold: true, color: { argb: 'FF15803D' } }; 
+        
+        if (failList.length === 0 && pendingCount === 0) {
+            sheet.addRow(['✓ ผ่านเกณฑ์ทั้งหมด (All Passed)']).getCell(1).font = { bold: true, color: { argb: 'FF16A34A' } };
         } else {
             if (failList.length > 0) {
-                const r = sheet.addRow([`✗ พบรายการ ไม่ผ่าน จำนวน ${failList.length} ข้อ`]);
-                sheet.mergeCells(`A${r.number}:E${r.number}`);
-                r.getCell(1).font = { bold: true, color: { argb: 'FFDC2626' } }; 
-                
-                failList.forEach(fail => {
-                    const failRow = sheet.addRow([fail.title, '', '', '', `หมายเหตุ: ${fail.remark}`]);
-                    sheet.mergeCells(`A${failRow.number}:D${failRow.number}`);
-                    failRow.getCell(1).font = { color: { argb: 'FFDC2626' } };
-                    failRow.getCell(5).alignment = { wrapText: true, vertical: 'top' };
-                });
-            } else {
-                const r = sheet.addRow([`ℹ ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)`]);
-                sheet.mergeCells(`A${r.number}:E${r.number}`);
-                r.getCell(1).font = { bold: true, color: { argb: 'FF1D4ED8' } }; 
+                sheet.addRow([`✗ พบรายการไม่ผ่านจำนวน ${failList.length} ข้อ`]).getCell(1).font = { bold: true, color: { argb: 'FFDC2626' } };
             }
             if (pendingCount > 0) {
-                const r = sheet.addRow([`* ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ`]);
-                sheet.mergeCells(`A${r.number}:E${r.number}`);
-                r.getCell(1).font = { bold: true, color: { argb: 'FFEA580C' } }; 
+                sheet.addRow([`* รอตรวจค้างอยู่ ${pendingCount} ข้อ`]).getCell(1).font = { bold: true, color: { argb: 'FFEA580C' } };
             }
         }
 
-        const sigRow = sheet.addRow(['', '', '', `สรุปโดย Inspector: ${inspector}`]);
-        sheet.mergeCells(`D${sigRow.number}:E${sigRow.number}`);
-        sigRow.getCell(4).alignment = { horizontal: 'right' };
-        sigRow.getCell(4).font = { italic: true };
-
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        
-        let fileProjName = projNo && projNo !== "-" ? projNo : 'Report';
-        fileProjName = fileProjName.replace(/[/\\?%*:|"<>]/g, '-'); 
-        const fileName = `FAT_MDB_Checklist_${fileProjName}.xlsx`;
+        const fileName = `FAT_MDB_Report_${projNo || 'Unit'}.xlsx`;
 
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        
-        setTimeout(() => {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 100);
-
+        a.href = url; a.download = fileName; document.body.appendChild(a); a.click();
+        setTimeout(() => { document.body.removeChild(a); window.URL.revokeObjectURL(url); }, 100);
     } catch (err) {
-        console.error("Export Error:", err);
-        alert(`เกิดข้อผิดพลาดในการสร้างไฟล์ Excel: ${err.message || "Unknown error"}`);
+        alert("เกิดข้อผิดพลาดในการส่งออก Excel");
     } finally {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        btn.innerHTML = originalText; btn.disabled = false;
     }
 }
 
 function printChecklist(){
     document.querySelectorAll(".remarks-input").forEach(textarea=>{
-        textarea.style.height = "auto";
-        textarea.style.height = textarea.scrollHeight + "px";
-
-        if(textarea.value.trim()===""){
-            textarea.value=" ";
-        }
+        textarea.style.height = "auto"; textarea.style.height = textarea.scrollHeight + "px";
+        if(textarea.value.trim()==="") textarea.value=" ";
     });
-
     updatePrintViews();
     updateCurrentTime();
-
-    setTimeout(()=>{
-        try {
-            window.print();
-        } catch (e) {
-            console.error("Print failed:", e);
-            alert("ไม่สามารถสั่งพิมพ์ได้ กรุณาตรวจสอบเบราว์เซอร์ของคุณ");
-        }
-    },500);
+    setTimeout(()=>{ window.print(); },300);
 }
 
 function clearChecklist(){
-    if(confirm("ต้องการล้างข้อมูลทั้งหมดหรือไม่? (รูปภาพที่แนบไว้จะถูกลบด้วย)")){
+    if(confirm("ล้างข้อมูลการตรวจสอบทั้งหมดใช่หรือไม่?")){
         localStorage.removeItem("mdb_fat_checklist");
         location.reload();
     }
@@ -974,100 +790,60 @@ function escapeHTML(str) {
 
 function updateSummary() {
     const items = document.querySelectorAll('.check-item[data-radioname]');
-    let passCount = 0;
-    let failList = [];
-    let pendingCount = 0;
+    let passCount = 0; let failList = []; let pendingCount = 0;
 
     sections.forEach((section, sIndex) => {
         section.items.forEach((item, i) => {
             const radioName = `section${sIndex}_item${i}`;
             const itemDom = document.querySelector(`.check-item[data-radioname="${radioName}"]`);
-            
             if (!itemDom) return;
 
             const checkedRadio = itemDom.querySelector('input[type="radio"]:checked');
             const remarkRaw = itemDom.querySelector('.remarks-input').value.trim();
-            
-            const remarkSafe = remarkRaw ? escapeHTML(remarkRaw) : '<span class="text-gray-400 italic">ไม่ได้ระบุหมายเหตุ</span>';
-            const itemNumberSafe = escapeHTML(item[0]);
-            const itemDescSafe = escapeHTML(item[1].split('\n')[0]); 
+            const remarkSafe = remarkRaw ? escapeHTML(remarkRaw) : '<span class="text-gray-400 italic">ไม่มีบันทึกหมายเหตุ</span>';
 
-            const previewContainer = itemDom.querySelector('.preview-container');
-            const imgs = previewContainer ? previewContainer.querySelectorAll('.preview-img') : [];
-            let photoHtml = '';
-            
-            if (imgs.length > 0) {
-                let imgTags = Array.from(imgs).map(img => `<img src="${img.src}" class="h-16 w-auto max-w-full rounded border border-gray-300 object-contain bg-white">`).join('');
-                photoHtml = `<div class="mt-2"><span class="text-[10px] font-bold text-gray-500 mb-1 block">ภาพประกอบ (${imgs.length} รูป):</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
-            }
-
-            if (!checkedRadio) {
-                pendingCount++;
-            } else if (checkedRadio.value === 'Pass') {
-                passCount++;
-            } else if (checkedRadio.value === 'Fail') {
-                failList.push({ 
-                    title: `${itemNumberSafe} ${itemDescSafe}`, 
-                    remark: remarkSafe, 
-                    photoHtml: photoHtml 
-                });
-            }
+            if (!checkedRadio) pendingCount++;
+            else if (checkedRadio.value === 'Pass') passCount++;
+            else failList.push({ title: `${item[0]} ${item[1].split('\n')[0]}`, remark: remarkSafe });
         });
     });
 
     const summaryContainer = document.getElementById('summaryContent');
-    if (items.length === 0) return;
     if (pendingCount === items.length) {
-        summaryContainer.innerHTML = `<p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>`;
+        summaryContainer.innerHTML = `<p class="text-gray-400 text-center text-xs">กรุณาประเมินรายการตรวจสอบเพื่อดูสรุปรายงาน</p>`;
         return;
     }
 
     let html = '';
     if (failList.length === 0 && pendingCount === 0) {
-        html = `<div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded-lg flex items-center shadow-sm"><i class="fa-solid fa-circle-check text-2xl mr-3"></i><div><p class="font-bold text-sm">ผ่านเกณฑ์ทั้งหมด (All Passed)</p><p class="text-xs mt-0.5">การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง</p></div></div>`;
+        html = `<div class="bg-green-50 border border-green-200 text-green-700 p-3 rounded-lg flex items-center gap-2"><i class="fa-solid fa-circle-check text-xl"></i><div><p class="font-bold">ผ่านเกณฑ์ทั้งหมด (All Passed)</p></div></div>`;
     } else {
         if (failList.length > 0) {
-            html += `<div class="bg-red-50 border border-red-300 text-red-700 px-3 py-2 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-circle-xmark text-lg mr-2"></i><p class="font-bold text-sm">พบรายการ ไม่ผ่าน จำนวน ${failList.length} ข้อ</p></div><div class="space-y-2">`;
+            html += `<div class="bg-red-50 border border-red-200 text-red-700 p-2.5 rounded-lg mb-2 font-bold flex items-center gap-2"><i class="fa-solid fa-circle-xmark"></i> พบข้อไม่ผ่านเกณฑ์ ${failList.length} รายการ</div>`;
             failList.forEach(fail => {
-                html += `<div class="bg-white border border-red-200 p-2 rounded-lg shadow-sm" style="page-break-inside: avoid; break-inside: avoid;"><p class="font-bold text-red-600 text-xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ข้อ ${fail.title}</p><div class="text-xs text-gray-700 mt-1 bg-gray-50 p-2 rounded border border-gray-100"><span class="font-semibold text-[10px]">หมายเหตุ:</span> ${fail.remark} ${fail.photoHtml}</div></div>`;
+                html += `<div class="bg-gray-50 p-2 rounded border border-gray-100 mb-1 text-xs"><span class="font-bold text-red-600">ข้อ ${fail.title}:</span> <span class="text-gray-600">${fail.remark}</span></div>`;
             });
-            html += `</div>`;
-        } else {
-             html += `<div class="bg-blue-50 border border-blue-300 text-blue-700 px-4 py-3 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-info-circle text-xl mr-3"></i><p class="font-bold text-sm">ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)</p></div>`;
         }
-        if (pendingCount > 0) html += `<p class="text-xs text-orange-600 mt-3 font-medium"><i class="fa-solid fa-clock mr-1"></i> * ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ</p>`;
+        if (pendingCount > 0) html += `<p class="text-xs text-orange-600 mt-2 font-medium"><i class="fa-solid fa-clock"></i> * ยังเหลือรายการที่รอตรวจค้างอยู่อีก ${pendingCount} ข้อ</p>`;
     }
     summaryContainer.innerHTML = html;
 }
 
 function saveData(){
     const data = {
-        referenceSpec : document.getElementById("referenceSpec")?.value || "BQD-3042",
+        referenceSpec : "BQD-3042",
         projectNo : document.getElementById("projectNo")?.value || "",
         inspector : document.getElementById("inspectorName")?.value || "",
-        remarks : [],
-        radios : {},
-        photos : {} 
+        remarks : [], radios : {}, photos : {} 
     };
-
     document.querySelectorAll(".remarks-input").forEach(input=>{ data.remarks.push(input.value); });
     document.querySelectorAll('input[type="radio"]:checked').forEach(radio=>{ data.radios[radio.name] = radio.value; });
-    
     document.querySelectorAll(".photo-upload-container").forEach(container => {
         const radioName = container.dataset.radioname;
-        const imgs = container.querySelectorAll('.preview-img');
-        if(imgs.length > 0) {
-            data.photos[radioName] = Array.from(imgs).map(img => img.src);
-        }
+        const imgs = container.querySelectorAll('.preview-container img');
+        if(imgs.length > 0) data.photos[radioName] = Array.from(imgs).map(img => img.src);
     });
-
-    try {
-        localStorage.setItem("mdb_fat_checklist", JSON.stringify(data));
-    } catch (e) {
-        if (e.name === 'QuotaExceededError') {
-            alert("พื้นที่จัดเก็บในเบราว์เซอร์เต็ม ไม่สามารถบันทึกรูปภาพเพิ่มได้ กรุณากดปุ่มล้างข้อมูลหากต้องการเริ่มใหม่");
-        }
-    }
+    try { localStorage.setItem("mdb_fat_checklist", JSON.stringify(data)); } catch (e) {}
     updateSummary(); 
 }
 
@@ -1076,75 +852,42 @@ document.addEventListener("change", saveData);
 
 window.addEventListener("load",()=>{
     updateCurrentTime();
-    
-    if(document.getElementById("referenceSpec")) document.getElementById("referenceSpec").value = "BQD-3042";
-    
     const saved = localStorage.getItem("mdb_fat_checklist");
     if(!saved) return;
     const data = JSON.parse(saved);
     
-    if(document.getElementById("projectNo")) {
-        const projNo = data.projectNo || "";
-        document.getElementById("projectNo").value = projNo;
-        document.querySelectorAll(".displaySummaryProject").forEach(el => el.innerText = projNo || "-");
+    if(data.projectNo) {
+        document.getElementById("projectNo").value = data.projectNo;
+        document.querySelectorAll(".displaySummaryProject").forEach(el => el.innerText = data.projectNo);
     }
-    if(document.getElementById("inspectorName")) {
-        const inspector = data.inspector || "";
-        document.getElementById("inspectorName").value = inspector;
-        document.querySelectorAll(".displayInspectorName").forEach(el => el.innerText = inspector || "(ยังไม่ระบุชื่อ)");
+    if(data.inspector) {
+        document.getElementById("inspectorName").value = data.inspector;
+        document.querySelectorAll(".displayInspectorName").forEach(el => el.innerText = data.inspector);
     }
-
     document.querySelectorAll(".remarks-input").forEach((input, index)=>{
         if(data.remarks && data.remarks[index] !== undefined) input.value = data.remarks[index];
-        input.style.height = "auto";
-        input.style.height = input.scrollHeight + "px";
     });
-
     Object.keys(data.radios || {}).forEach(name=>{
         const radio = document.querySelector(`input[name="${name}"][value="${data.radios[name]}"]`);
         if(radio){
             radio.checked = true;
-            const label = radio.closest("label");
-            if(radio.value === "Pass") label.classList.add("pass-selected");
-            else label.classList.add("fail-selected");
+            radio.closest("label").classList.add(radio.value === "Pass" ? "pass-selected" : "fail-selected");
         }
     });
-
     Object.keys(data.photos || {}).forEach(radioName => {
         const container = document.querySelector(`.photo-upload-container[data-radioname="${radioName}"]`);
         if(container) {
             const previewContainer = container.querySelector('.preview-container');
-            const checkItem = container.closest('.check-item');
-            const printBox = checkItem.querySelector('.print-photo-box');
+            const printBox = container.closest('.check-item').querySelector('.print-photo-box');
             const printImagesContainer = printBox.querySelector('.print-images-container');
-            
-            data.photos[radioName].forEach(base64Str => {
+            data.photos[radioName].forEach(src => {
                 const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
-                
-                const previewWrapper = document.createElement('div');
-                previewWrapper.className = 'relative inline-block photo-item';
-                previewWrapper.dataset.imgid = imgId;
-                previewWrapper.innerHTML = `
-                    <img src="${base64Str}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
-                        <i class="fa-solid fa-times"></i>
-                    </button>
-                `;
-                previewContainer.appendChild(previewWrapper);
-                
-                const printImg = document.createElement('img');
-                printImg.src = base64Str;
-                printImg.className = 'print-img rounded border border-gray-300 object-contain';
-                printImg.dataset.imgid = imgId;
-                printImagesContainer.appendChild(printImg);
+                previewContainer.innerHTML += `<div class="relative inline-block photo-item" data-imgid="${imgId}"><img src="${src}" class="h-14 w-auto rounded border object-cover"></div>`;
+                printImagesContainer.innerHTML += `<img src="${src}" class="print-img rounded border object-contain" data-imgid="${imgId}">`;
             });
-
-            if(data.photos[radioName].length > 0) {
-                printBox.classList.remove('hidden');
-            }
+            printBox.classList.remove('hidden');
         }
     });
-
     updateSummary();
     updatePrintViews(); 
 });
