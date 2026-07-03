@@ -58,16 +58,24 @@
             
             @page { size: A4 portrait; margin: 10mm; }
 
-            /* ป้องกันการโดนตัดหน้าและกำหนดให้แสดงผลตารางได้ต่อเนื่อง */
-            body, html, table, tbody, tr, td { height: auto !important; display: block !important; overflow: visible !important; }
+            /* ป้องกันการโดนตัดหน้า แก้ไขโครงสร้างตารางไม่ให้หด */
+            body, html { height: auto !important; display: block !important; overflow: visible !important; background: white !important; }
+            table { display: table !important; width: 100% !important; border-collapse: collapse !important; border: none !important; }
+            thead { display: table-header-group !important; width: 100% !important; }
+            tbody { display: table-row-group !important; width: 100% !important; }
+            tr { display: table-row !important; width: 100% !important; }
+            td { display: table-cell !important; overflow: visible !important; }
+
             .screen-layout { display: none !important; }
             .print-layout { display: flex !important; flex-direction: column; }
-            body { background: white !important; }
             
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; margin-bottom: 0 !important; }
+            .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
+            .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
+            
+            table.main-table { width: 100% !important; margin-bottom: 0 !important; }
             .print-header { display: table-header-group !important; }
             .print-footer { display: table-footer-group !important; }
             
@@ -156,7 +164,7 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
+                <div class="w-full flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
                     <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
                     <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
                     <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
@@ -261,7 +269,7 @@
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
+                <div class="w-full flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
                     <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
                     <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
                     <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
@@ -405,7 +413,7 @@ sections.forEach((section, sIndex) => {
         <thead class="print-header">
             <tr>
                 <td class="pb-2 pt-2 px-4 md:px-0">
-                    <div class="flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
+                    <div class="w-full flex justify-between items-center text-[10px] font-bold text-gray-500 border-b border-gray-300 pb-1">
                         <span class="w-1/3 text-left">วันที่: <span class="displayTimestamp text-gray-800"></span></span>
                         <span class="print-only w-1/3 text-center text-[10px] font-normal text-gray-400 opacity-70 uppercase tracking-wide">© 2026 Power System 2</span>
                         <span class="w-1/3 text-right">ผู้ตรวจสอบ: <span class="displayInspectorName text-gray-800"></span></span>
