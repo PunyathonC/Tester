@@ -178,9 +178,9 @@
             .print-remarks-box span { font-size: 13px !important; }
             .print-photo-box span { font-size: 13px !important; }
 
-            /* จัดการขนาดโลโก้ส่วนหัวเอกสารในหน้า Print */
+            /* จัดการขนาดโลโก้ส่วนหัวเอกสารในหน้า Print ให้ใหญ่ขึ้น */
             img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] {
-                height: 50px !important; 
+                height: 80px !important; 
             }
         }
     </style>
@@ -200,10 +200,10 @@
         </tr>
     </thead>
     <tbody>
-        <!-- รูปโลโก้แทรกอยู่ใต้ Timestamp แต่อยู่เหนือกล่อง Checklist -->
+        <!-- รูปโลโก้ปรับขนาดให้ใหญ่ขึ้น (h-24 md:h-32) -->
         <tr>
-            <td class="pt-4 pb-4 px-4 md:px-0 text-center">
-                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-16 md:h-20 object-contain">
+            <td class="pt-6 pb-6 px-4 md:px-0 text-center">
+                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain">
             </td>
         </tr>
         <tr>
@@ -221,20 +221,7 @@
                         </div>
                     </div>
                     
-                    <!-- ข้อความถูกย้ายมาอยู่ใต้แถบสีส้มด้านบน แต่ยังอยู่ในกล่องเนื้อหา -->
-                    <div class="w-full text-center pt-6 px-4">
-                        <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
-                            ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
-                        </h2>
-                        <h3 class="text-base md:text-lg font-bold text-gray-800 leading-relaxed mb-1">
-                            ตู้แผงสวิตช์รวม (Main Distribution Board)
-                        </h3>
-                        <p class="text-sm md:text-base text-gray-600 font-medium">
-                            (Type II : Non Design Verification Test)
-                        </p>
-                    </div>
-
-                    <div class="p-6 pt-4">
+                    <div class="p-6 pt-6">
                         <div class="grid md:grid-cols-3 gap-6">
                             <div>
                                 <label class="text-sm text-gray-500 font-medium">Reference Spec</label>
@@ -255,6 +242,22 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </td>
+        </tr>
+        <!-- ข้อความถูกย้ายลงมาอยู่ใต้กรอบที่มี Reference Spec -->
+        <tr>
+            <td class="pt-6 pb-2 px-4 md:px-0 text-center">
+                <div class="w-full">
+                    <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
+                        ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
+                    </h2>
+                    <h3 class="text-base md:text-lg font-bold text-gray-800 leading-relaxed mb-1">
+                        ตู้แผงสวิตช์รวม (Main Distribution Board)
+                    </h3>
+                    <p class="text-sm md:text-base text-gray-600 font-medium">
+                        (Type II : Non Design Verification Test)
+                    </p>
                 </div>
             </td>
         </tr>
