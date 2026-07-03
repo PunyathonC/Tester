@@ -64,7 +64,7 @@
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            .shadow-lg, .shadow-sm, .shadow-md { box-shadow: none !important; border-radius: 0 !important; }
+            .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
             .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
             
             table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
@@ -126,6 +126,7 @@
             /* ขยายหัวข้อ Summary */
             h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
             .p-6 { padding: 12px !important; }
+            .p-8 { padding: 12px !important; }
             .pb-6 { padding-bottom: 8px !important; }
             .pt-4 { padding-top: 8px !important; }
 
@@ -181,7 +182,23 @@
             /* จัดการขนาดโลโก้ส่วนหัวเอกสารในหน้า Print ให้ใหญ่ขึ้น */
             img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] {
                 height: 80px !important; 
+                filter: drop-shadow(none) !important;
             }
+
+            /* ปรับกล่องข้อกำหนดให้เป็น Text ธรรมดาอยู่ตรงกลางตอนปริ้น */
+            .print-plain-text {
+                background: transparent !important;
+                border: none !important;
+                padding: 12px 0 0 0 !important;
+                text-align: center !important;
+                display: block !important;
+            }
+            .print-plain-text .no-print-icon { display: none !important; }
+            .print-plain-text h2, .print-plain-text h3, .print-plain-text p { text-align: center !important; margin: 0 auto !important; }
+            .print-plain-text p { background: transparent !important; padding: 0 !important; }
+            
+            /* ยกเลิก Background Gradient สำหรับ Print */
+            .bg-gradient-to-br, .bg-gradient-to-r { background: #F37021 !important; }
         }
     </style>
 </head>
@@ -200,64 +217,88 @@
         </tr>
     </thead>
     <tbody>
-        <!-- รูปโลโก้ปรับขนาดให้ใหญ่ขึ้น (h-24 md:h-32) -->
         <tr>
             <td class="pt-6 pb-6 px-4 md:px-0 text-center">
-                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain">
+                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
             </td>
         </tr>
         <tr>
             <td class="pb-2 pt-0 px-4 md:px-0">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                    <div class="mea-bg text-white p-6">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10 no-print"></div>
+                    
+                    <div class="bg-gradient-to-br from-orange-500 to-[#D95D13] text-white p-8 relative overflow-hidden">
+                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12 no-print"></i>
+                        
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
                             <div>
-                                <h1 class="text-2xl md:text-3xl font-bold">Check list ตรวจสอบตู้ MDB ที่โรงงาน (FAT test)</h1>
-                                <p class="text-orange-100 mt-2">Main Distribution Board (MDB) Factory Test</p>
+                                <div class="inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm no-print">
+                                    <i class="fa-solid fa-microchip mr-1"></i> FACTORY ACCEPTANCE TEST
+                                </div>
+                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
+                                <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2">
+                                    <i class="fa-solid fa-shield-halved opacity-80 no-print"></i> Main Distribution Board (MDB) Factory Test
+                                </p>
                             </div>
-                            <div class="bg-white rounded-xl w-20 h-20 flex items-center justify-center shadow no-print">
-                                <i class="fa-solid fa-bolt text-4xl mea-text"></i>
+                            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner no-print">
+                                <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-white drop-shadow-md"></i>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="p-6 pt-6">
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="text-sm text-gray-500 font-medium">Reference Spec</label>
-                                <div class="flex gap-2 mt-1">
-                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-200 text-gray-700 font-semibold cursor-not-allowed focus:outline-none">
-                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="mea-bg hover:opacity-90 text-white px-4 py-2 rounded-lg shadow transition-all whitespace-nowrap flex items-center gap-2 no-print" style="text-decoration: none;">
-                                        <i class="fa-solid fa-download"></i> โหลดไฟล์ BQD
+                    <div class="p-6 md:p-8 bg-gray-50/50">
+                        <div class="grid md:grid-cols-3 gap-5 md:gap-6">
+                            
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm no-print"></i> Reference Spec
+                                </label>
+                                <div class="flex gap-2 mt-2">
+                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md">
+                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="bg-orange-50 hover:bg-orange-500 hover:text-white text-orange-600 px-3 md:px-4 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center gap-2 no-print font-medium border border-orange-200 hover:border-orange-500 shadow-sm" style="text-decoration: none;">
+                                        <i class="fa-solid fa-download"></i> <span class="hidden md:inline">โหลดไฟล์</span>
                                     </a>
                                 </div>
                             </div>
-                            <div>
-                                <label class="text-sm text-mea-orange font-bold">ผู้ตรวจสอบ (Inspector)</label>
-                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ" class="w-full mt-1 border border-orange-300 rounded-lg px-3 py-2 bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500">
+
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow ring-1 ring-orange-500/10 relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400 no-print"></div>
+                                <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
+                                    <i class="fa-solid fa-user-check text-sm no-print"></i> ผู้ตรวจสอบ (Inspector)
+                                </label>
+                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
                             </div>
-                            <div>
-                                <label class="text-sm text-gray-500 font-medium">Project / MDB No.</label>
-                                <input type="text" id="projectNo" placeholder="Enter MDB Information" class="w-full mt-1 border rounded-lg px-3 py-2 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-orange-500">
+
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm no-print"></i> Project / MDB No.
+                                </label>
+                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
                             </div>
+                            
                         </div>
                     </div>
                 </div>
             </td>
         </tr>
-        <!-- ข้อความถูกย้ายลงมาอยู่ใต้กรอบที่มี Reference Spec -->
+        
         <tr>
-            <td class="pt-6 pb-2 px-4 md:px-0 text-center">
-                <div class="w-full">
-                    <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
-                        ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
-                    </h2>
-                    <h3 class="text-base md:text-lg font-bold text-gray-800 leading-relaxed mb-1">
-                        ตู้แผงสวิตช์รวม (Main Distribution Board)
-                    </h3>
-                    <p class="text-sm md:text-base text-gray-600 font-medium">
-                        (Type II : Non Design Verification Test)
-                    </p>
+            <td class="pt-6 pb-2 px-4 md:px-0">
+                <div class="w-full bg-white md:bg-gray-50 md:border-l-4 md:border-orange-500 rounded-r-xl md:shadow-sm md:p-5 text-center md:text-left flex flex-col md:flex-row items-center md:items-start gap-4 print-plain-text">
+                    <div class="bg-orange-100 p-3 rounded-full text-orange-600 hidden md:block no-print-icon">
+                        <i class="fa-solid fa-book-open-reader text-xl"></i>
+                    </div>
+                    <div class="w-full">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
+                            ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
+                        </h2>
+                        <h3 class="text-base md:text-lg font-bold text-gray-700 leading-relaxed mb-1">
+                            ตู้แผงสวิตช์รวม (Main Distribution Board)
+                        </h3>
+                        <p class="text-sm md:text-base text-gray-500 font-medium md:bg-white md:border md:border-gray-200 md:shadow-sm inline-block px-3 py-1 rounded-md mt-1">
+                            (Type II : Non Design Verification Test)
+                        </p>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -292,7 +333,7 @@
                         </div>
                     </h2>
                     
-                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 bg-orange-50 p-3 rounded-lg border border-orange-200">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 bg-orange-50 p-3 rounded-lg border border-orange-200 shadow-inner">
                         <div class="text-xs">
                             <span class="font-semibold text-gray-600">Project / MDB No:</span> 
                             <span class="displaySummaryProject text-mea-orange font-bold text-base ml-1">-</span>
@@ -436,7 +477,7 @@ sections.forEach((section, sIndex) => {
                                     </div>
                                     ${section.title}
                                 </h2>
-                                ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold">CRITICAL TEST</span>' : ''}
+                                ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-sm">CRITICAL TEST</span>' : ''}
                             </div>
                         </div>
                     </div>
@@ -448,19 +489,19 @@ sections.forEach((section, sIndex) => {
         fullHtml += `
             <tr class="check-item-row">
                 <td class="pb-2 px-4 md:px-0">
-                    <div class="check-item bg-white border border-gray-200 rounded-xl p-3 shadow-sm" data-radioname="${radioName}">
+                    <div class="check-item bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow" data-radioname="${radioName}">
                         <div class="grid md:grid-cols-12 gap-2 items-start">
-                            <div class="md:col-span-1"><span class="font-bold text-base md:text-lg">${item[0]}</span></div>
+                            <div class="md:col-span-1"><span class="font-bold text-base md:text-lg text-gray-800">${item[0]}</span></div>
                             <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug">${item[1].replace(/\n/g, '<br>')}</div></div>
-                            <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug">${item[2].replace(/\n/g, '<br>')}</span></div>
+                            <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug bg-gray-50 p-1.5 rounded inline-block w-full border border-gray-100">${item[2].replace(/\n/g, '<br>')}</span></div>
                             
                             <div class="md:col-span-3 screen-layout">
                                 <div class="flex gap-2">
-                                    <label class="radio-card pass-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm">
+                                    <label class="radio-card pass-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
                                         <input type="radio" name="${radioName}" value="Pass" class="sr-only">
                                         <i class="fa-solid fa-circle-check"></i> ผ่าน
                                     </label>
-                                    <label class="radio-card fail-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm">
+                                    <label class="radio-card fail-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
                                         <input type="radio" name="${radioName}" value="Fail" class="sr-only">
                                         <i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน
                                     </label>
@@ -475,14 +516,14 @@ sections.forEach((section, sIndex) => {
                             </div>
                         </div>
                         
-                        <div class="remarks-container screen-layout">
+                        <div class="remarks-container screen-layout mt-3">
                             <label class="block text-[10px] md:text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">หมายเหตุ (Remarks)</label>
-                            <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all" 
+                            <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 hover:bg-gray-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all shadow-inner" 
                                       rows="1" placeholder=""></textarea>
                             
                             <div class="photo-upload-container mt-2" data-radioname="${radioName}">
                                 <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
-                                <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 py-1.5 px-3 rounded flex items-center gap-2 border border-gray-300 transition-colors" onclick="document.getElementById('photo_${radioName}').click()">
+                                <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 text-gray-600 py-1.5 px-3 rounded-lg flex items-center gap-2 border border-gray-300 transition-colors shadow-sm" onclick="document.getElementById('photo_${radioName}').click()">
                                     <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
                                 </button>
                                 <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden">
@@ -542,11 +583,11 @@ document.addEventListener("change", async (e) => {
                     const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
                     
                     const previewWrapper = document.createElement('div');
-                    previewWrapper.className = 'relative inline-block photo-item';
+                    previewWrapper.className = 'relative inline-block photo-item shadow-sm';
                     previewWrapper.dataset.imgid = imgId;
                     previewWrapper.innerHTML = `
                         <img src="${compressedBase64}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-                        <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
+                        <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md">
                             <i class="fa-solid fa-times"></i>
                         </button>
                     `;
@@ -1053,11 +1094,11 @@ window.addEventListener("load",()=>{
                 const imgId = 'img_' + Math.random().toString(36).substr(2, 9);
                 
                 const previewWrapper = document.createElement('div');
-                previewWrapper.className = 'relative inline-block photo-item';
+                previewWrapper.className = 'relative inline-block photo-item shadow-sm';
                 previewWrapper.dataset.imgid = imgId;
                 previewWrapper.innerHTML = `
                     <img src="${base64Str}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn">
+                    <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md">
                         <i class="fa-solid fa-times"></i>
                     </button>
                 `;
