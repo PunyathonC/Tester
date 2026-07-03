@@ -297,7 +297,6 @@
 </div>
 
 <script>
-// --- อัปเดตข้อมูลรายละเอียด Check List ฉบับสมบูรณ์ ---
 const sections = [
     {
         title:"Section 1 : การตรวจสอบโครงสร้างและตู้ (Enclosure & Structure)",
@@ -382,9 +381,9 @@ const checklistContainer = document.getElementById("checklistContainer");
 let fullHtml = ""; 
 
 sections.forEach((section, sIndex) => {
-    if (sIndex > 0) {
-        fullHtml += `<div class="safe-page-break print-only"></div>`;
-    }
+    // แก้ไขจุดนี้: เดิมเช็ก sIndex > 0 แต่ตอนนี้เปลี่ยนเป็นใส่ป้ายบังคับขึ้นหน้าใหม่ให้กับ 'ทุกๆ Section' ตอนพิมพ์
+    // ทำให้ Section 1 จะถูกดันขึ้นหน้าใหม่ทันทีหลังจากจบตารางข้อมูลหัวข้อด้านบน
+    fullHtml += `<div class="safe-page-break print-only"></div>`;
 
     fullHtml += `
     <table class="main-table w-full max-w-5xl mx-auto ${sIndex > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}">
@@ -757,7 +756,6 @@ async function exportToExcelJS() {
                     pendingCount++;
                 }
                 
-                // คลีน Bullet ออกให้ Excel อ่านง่ายขึ้น
                 let plainDescription = item[1].replace(/\n• /g, '\n- ').replace(/• /g, '- ');
                 
                 const row = sheet.addRow([ item[0], plainDescription, item[2], resultText, remarkText ]);
