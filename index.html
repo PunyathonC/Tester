@@ -72,9 +72,6 @@
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
-            .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
-            
             table.main-table { width: 100% !important; margin-bottom: 0 !important; }
             .print-header { display: table-header-group !important; }
             .print-footer { display: table-footer-group !important; }
@@ -173,6 +170,7 @@
         </tr>
     </thead>
     <tbody>
+        <!-- รูปโลโก้ -->
         <tr>
             <td class="pt-6 pb-6 px-4 md:px-0 text-center">
                 <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
@@ -181,33 +179,38 @@
         <tr>
             <td class="pb-2 pt-0 px-4 md:px-0">
                 <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10 no-print"></div>
+                    <!-- แถบสีตกแต่งด้านบนสุด -->
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10"></div>
                     
+                    <!-- ส่วน Header สีส้ม (Hero Banner) -->
                     <div class="bg-gradient-to-br from-orange-500 to-[#D95D13] text-white p-8 relative overflow-hidden">
-                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12 no-print"></i>
+                        <!-- ลายน้ำ Background Icon -->
+                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12"></i>
                         
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
                             <div>
-                                <div class="inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm no-print">
+                                <div class="inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm">
                                     <i class="fa-solid fa-microchip mr-1"></i> FACTORY ACCEPTANCE TEST
                                 </div>
                                 <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
                                 <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2">
-                                    <i class="fa-solid fa-shield-halved opacity-80 no-print"></i> Main Distribution Board (MDB) Factory Test
+                                    <i class="fa-solid fa-shield-halved opacity-80"></i> Main Distribution Board (MDB) Factory Test
                                 </p>
                             </div>
-                            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner no-print">
+                            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner">
                                 <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-white drop-shadow-md"></i>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- ส่วนกรอกข้อมูล Input Fields (ปรับเป็น Card 3 คอลัมน์ตอน Print) -->
                     <div class="p-6 md:p-8 bg-gray-50/50">
                         <div class="grid md:grid-cols-3 gap-5 md:gap-6 print-cover-grid">
                             
+                            <!-- Box 1: Ref Spec -->
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm no-print"></i> Reference Spec
+                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm"></i> Reference Spec
                                 </label>
                                 <div class="flex gap-2 mt-2">
                                     <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md cover-input">
@@ -217,17 +220,19 @@
                                 </div>
                             </div>
 
+                            <!-- Box 2: Inspector -->
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow ring-1 ring-orange-500/10 relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400 no-print"></div>
+                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400"></div>
                                 <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-user-check text-sm no-print"></i> ผู้ตรวจสอบ (Inspector)
+                                    <i class="fa-solid fa-user-check text-sm"></i> ผู้ตรวจสอบ (Inspector)
                                 </label>
                                 <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
                             </div>
 
+                            <!-- Box 3: Project No -->
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm no-print"></i> Project / MDB No.
+                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm"></i> Project / MDB No.
                                 </label>
                                 <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
                             </div>
@@ -238,6 +243,7 @@
             </td>
         </tr>
         
+        <!-- ข้อความข้อกำหนด (ยังคงสไตล์กล่องสวยๆ ไว้ตอน Print) -->
         <tr>
             <td class="pt-6 pb-2 px-4 md:px-0">
                 <div class="w-full bg-white md:bg-gray-50 border-l-4 border-orange-500 rounded-r-xl shadow-sm p-5 text-left flex flex-col md:flex-row items-center md:items-start gap-4">
