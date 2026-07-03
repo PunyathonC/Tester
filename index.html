@@ -50,7 +50,7 @@
         }
 
         /* -------------------------------------------------------------
-           ปรับแต่งการ Print ให้สวยงามเหมือนหน้าจอ 
+           ปรับแต่งการ Print ให้สวยงามและแก้บั๊ก iOS
            ------------------------------------------------------------- */
         @media print {
             /* บังคับให้พิมพ์สีพื้นหลังทั้งหมด */
@@ -58,12 +58,13 @@
             
             @page { size: A4 portrait; margin: 10mm; }
 
-            /* ป้องกันการโดนตัดหน้า แก้ไขโครงสร้างตารางไม่ให้หด */
-            body, html { height: auto !important; display: block !important; overflow: visible !important; background: white !important; }
+            /* ป้องกันการโดนตัดหน้า และแก้บั๊ก iOS ไม่พิมพ์หน้าสุดท้าย */
+            body, html { height: auto !important; min-height: 100% !important; display: block !important; overflow: visible !important; background: white !important; margin: 0 !important; padding: 0 0 30mm 0 !important; }
+            
             table { display: table !important; width: 100% !important; border-collapse: collapse !important; border: none !important; }
             thead { display: table-header-group !important; width: 100% !important; }
             tbody { display: table-row-group !important; width: 100% !important; }
-            tr { display: table-row !important; width: 100% !important; }
+            tr { display: table-row !important; width: 100% !important; page-break-inside: avoid !important; }
             td { display: table-cell !important; overflow: visible !important; }
 
             .screen-layout { display: none !important; }
@@ -91,20 +92,10 @@
                 border: none !important; 
                 border-bottom: 1px solid #e5e7eb !important; 
                 border-radius: 0 !important; 
-                box-shadow: none !important; /* ลบเงาเฉพาะ Checklist ให้อ่านง่าย */
+                box-shadow: none !important; 
             }
 
             .section-header-row { page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; break-after: avoid !important; }
-            
-            .safe-page-break {
-                display: block !important;
-                page-break-before: always !important;
-                width: 100% !important;
-                height: 1px !important;
-                border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
             
             td { padding-left: 0 !important; padding-right: 0 !important; }
             
@@ -120,9 +111,23 @@
             .print-cover-grid { display: flex !important; flex-direction: row !important; gap: 16px !important; width: 100% !important; }
             .print-cover-grid > div { flex: 1 !important; width: 33.33% !important; page-break-inside: avoid !important; }
             
-            /* ให้ Input หน้าปกไม่มีกรอบน่าเกลียดตอนพิมพ์ */
             input.cover-input { background-color: transparent !important; color: #111827 !important; border: none !important; border-bottom: 1px solid #9ca3af !important; border-radius: 0 !important; font-weight: 600 !important; box-shadow: none !important; padding-left: 0 !important; }
             
+            /* --- บังคับ Hero Banner --- */
+            .hero-banner-content { 
+                display: flex !important; 
+                flex-direction: row !important; 
+                justify-content: space-between !important; 
+                align-items: center !important; 
+                text-align: left !important;
+            }
+            .hero-banner-text { text-align: left !important; width: 100% !important; }
+            .hero-banner-text h1 { font-size: 26px !important; line-height: 1.3 !important; margin-bottom: 6px !important; }
+            .hero-banner-text p { font-size: 16px !important; justify-content: flex-start !important; margin-top: 4px !important;}
+            .hero-banner-tag { font-size: 12px !important; padding: 4px 12px !important; margin-bottom: 8px !important; display: inline-block !important; }
+            .hero-banner-icon { width: 90px !important; height: 90px !important; flex-shrink: 0 !important; margin-left: 16px !important; }
+            .hero-banner-icon i { font-size: 45px !important; }
+
             /* --- บังคับ Layout Checklist Grid --- */
             .check-item .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
             .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
@@ -133,7 +138,6 @@
             .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; overflow: visible !important;}
             .remarks-container textarea { color: #4b5563; font-style: italic; border: none !important; background: transparent !important; resize: none !important;}
             
-            /* ขยาย Font หัวแถว Section */
             .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
             .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
             .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
@@ -149,11 +153,9 @@
             .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
             .print-radio-box.inactive { opacity: 0.4; border-color: #e5e7eb !important; background-color: transparent !important;}
             
-            /* รูปภาพประกอบ */
-            .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
+            .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; page-break-inside: avoid !important; }
             .print-header div { font-size: 12px !important; }
             
-            /* ขนาดโลโก้ใน Print */
             img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] { height: 80px !important; }
         }
     </style>
@@ -173,6 +175,7 @@
         </tr>
     </thead>
     <tbody>
+        <!-- รูปโลโก้ -->
         <tr>
             <td class="pt-6 pb-6 px-4 md:px-0 text-center">
                 <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
@@ -181,33 +184,38 @@
         <tr>
             <td class="pb-2 pt-0 px-4 md:px-0">
                 <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10 no-print"></div>
+                    <!-- แถบสีตกแต่งด้านบนสุด -->
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10"></div>
                     
+                    <!-- ส่วน Header สีส้ม (Hero Banner) -->
                     <div class="bg-gradient-to-br from-orange-500 to-[#D95D13] text-white p-8 relative overflow-hidden">
-                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12 no-print"></i>
+                        <!-- ลายน้ำ Background Icon -->
+                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12"></i>
                         
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
-                            <div>
-                                <div class="inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm no-print">
+                        <!-- โครงสร้าง Hero Banner ที่ถูกล็อคให้แสดงผลเหมือนหน้าจอ 100% -->
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 hero-banner-content">
+                            <div class="hero-banner-text text-center md:text-left">
+                                <div class="hero-banner-tag inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm">
                                     <i class="fa-solid fa-microchip mr-1"></i> FACTORY ACCEPTANCE TEST
                                 </div>
-                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
-                                <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2">
-                                    <i class="fa-solid fa-shield-halved opacity-80 no-print"></i> Main Distribution Board (MDB) Factory Test
+                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm m-0">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
+                                <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2 m-0">
+                                    <i class="fa-solid fa-shield-halved opacity-80"></i> Main Distribution Board (MDB) Factory Test
                                 </p>
                             </div>
-                            <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner no-print">
+                            <div class="hero-banner-icon bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner">
                                 <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-white drop-shadow-md"></i>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- ส่วนกรอกข้อมูล Input Fields -->
                     <div class="p-6 md:p-8 bg-gray-50/50">
                         <div class="grid md:grid-cols-3 gap-5 md:gap-6 print-cover-grid">
                             
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm no-print"></i> Reference Spec
+                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm"></i> Reference Spec
                                 </label>
                                 <div class="flex gap-2 mt-2">
                                     <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md cover-input">
@@ -218,16 +226,16 @@
                             </div>
 
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow ring-1 ring-orange-500/10 relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400 no-print"></div>
+                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400"></div>
                                 <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-user-check text-sm no-print"></i> ผู้ตรวจสอบ (Inspector)
+                                    <i class="fa-solid fa-user-check text-sm"></i> ผู้ตรวจสอบ (Inspector)
                                 </label>
                                 <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
                             </div>
 
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm no-print"></i> Project / MDB No.
+                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm"></i> Project / MDB No.
                                 </label>
                                 <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
                             </div>
@@ -263,9 +271,8 @@
 
 <div id="checklistContainer"></div>
 
-<div class="safe-page-break print-only"></div>
-
-<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-0">
+<!-- นำหน้าสรุปผลมาฝังคำสั่งตัดหน้าบนตัวตารางโดยตรงเพื่อแก้ปัญหา iOS -->
+<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-0" style="page-break-before: always; break-before: page; -webkit-break-before: always;">
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
@@ -308,6 +315,9 @@
         </tr>
     </tbody>
 </table>
+
+<!-- บล็อคเปล่ากันขอบล่างขาดใน iOS -->
+<div class="print-only" style="height: 30px; display: block; clear: both; width: 100%;"></div>
 
 <div class="floating-buttons">
     <button onclick="exportToExcelJS()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all" id="exportBtn">
@@ -406,10 +416,9 @@ const checklistContainer = document.getElementById("checklistContainer");
 let fullHtml = ""; 
 
 sections.forEach((section, sIndex) => {
-    fullHtml += `<div class="safe-page-break print-only"></div>`;
-
+    // ฝังคำสั่งตัดหน้าไว้ที่ Table ของแต่ละ Section โดยตรงแทนการใช้ Div เปล่า แก้บั๊ก iOS
     fullHtml += `
-    <table class="main-table w-full max-w-5xl mx-auto ${sIndex > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}">
+    <table class="main-table w-full max-w-5xl mx-auto ${sIndex > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}" style="${sIndex > 0 ? 'page-break-before: always; break-before: always; -webkit-break-before: always;' : ''}">
         <thead class="print-header">
             <tr>
                 <td class="pb-2 pt-2 px-4 md:px-0">
@@ -879,6 +888,7 @@ function printChecklist(){
     updatePrintViews();
     updateCurrentTime();
 
+    // ขยายเวลาดีเลย์ให้ iOS ประมวลผล CSS ทันก่อนดึงเข้าหน้าพิมพ์
     setTimeout(()=>{
         try {
             window.print();
@@ -886,7 +896,7 @@ function printChecklist(){
             console.error("Print failed:", e);
             alert("ไม่สามารถสั่งพิมพ์ได้ กรุณาตรวจสอบเบราว์เซอร์ของคุณ");
         }
-    },500);
+    }, 800);
 }
 
 function clearChecklist(){
