@@ -49,32 +49,30 @@
             .print-header, .print-footer, .print-only, .print-layout { display: none !important; }
         }
 
-        /* ซ่อน Screen Layout ในหน้าจอ Print และปรับขนาด Font ให้ใหญ่ขึ้น */
+        /* -------------------------------------------------------------
+           ปรับแต่งการ Print ให้สวยงามเหมือนหน้าจอ 
+           ------------------------------------------------------------- */
         @media print {
-            * { overflow: visible !important; }
-            .overflow-hidden { overflow: visible !important; }
-            body, html { height: auto !important; display: block !important; }
-
-            .screen-layout { display: none !important; }
-            .print-layout { display: flex !important; flex-direction: column; }
+            /* บังคับให้พิมพ์สีพื้นหลังทั้งหมด */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             
             @page { size: A4 portrait; margin: 10mm; }
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+            /* ป้องกันการโดนตัดหน้าและกำหนดให้แสดงผลตารางได้ต่อเนื่อง */
+            body, html, table, tbody, tr, td { height: auto !important; display: block !important; overflow: visible !important; }
+            .screen-layout { display: none !important; }
+            .print-layout { display: flex !important; flex-direction: column; }
             body { background: white !important; }
+            
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
-            .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
-            
-            table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
+            table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; margin-bottom: 0 !important; }
             .print-header { display: table-header-group !important; }
             .print-footer { display: table-footer-group !important; }
             
-            .check-item-row {
-                page-break-inside: avoid !important; 
-                break-inside: avoid !important; 
-            }
+            /* --- ส่วนของ Checklist --- */
+            .check-item-row { page-break-inside: avoid !important; break-inside: avoid !important; }
             .check-item { 
                 display: inline-block !important; 
                 width: 100% !important;
@@ -82,20 +80,17 @@
                 break-inside: avoid !important; 
                 -webkit-column-break-inside: avoid !important;
                 padding: 8px 0 !important; 
+                border: none !important; 
+                border-bottom: 1px solid #e5e7eb !important; 
+                border-radius: 0 !important; 
+                box-shadow: none !important; /* ลบเงาเฉพาะ Checklist ให้อ่านง่าย */
             }
 
-            .section-header-row {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                page-break-after: avoid !important;
-                break-after: avoid !important;
-            }
+            .section-header-row { page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; break-after: avoid !important; }
             
             .safe-page-break {
                 display: block !important;
                 page-break-before: always !important;
-                break-before: page !important;
-                -webkit-break-before: always !important;
                 width: 100% !important;
                 height: 1px !important;
                 border: none !important;
@@ -104,101 +99,54 @@
             }
             
             td { padding-left: 0 !important; padding-right: 0 !important; }
-            .mea-bg, .section-header { background-color: #F37021 !important; color: white !important; }
-            .critical-header { background-color: #ef4444 !important; color: white !important; }
-            .bg-gray-50 { background-color: #f9fafb !important; }
-            .bg-green-50 { background-color: #f0fdf4 !important; }
-            .bg-red-50 { background-color: #fef2f2 !important; }
-            .bg-blue-50 { background-color: #eff6ff !important; }
-            .pass-selected { background-color: #dcfce7 !important; }
-            .fail-selected { background-color: #fee2e2 !important; }
-            input, textarea { background: transparent !important; border: none !important; padding: 0 !important; outline: none !important; resize: none !important; box-shadow: none !important; }
-            input[type="text"] { border-bottom: 1px dotted #ccc !important; border-radius: 0 !important; }
-            textarea { border-bottom: 1px dashed #ddd !important; border-radius: 0 !important; height: auto !important; overflow: visible !important; margin-top: 4px !important; padding-top: 0 !important;}
             
-            /* ขยาย Font ตัวหนังสือทั่วไปตอน Print */
+            /* ขยาย Font พื้นฐานตอน Print */
             body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
             
             /* ขยายหัวข้อหลัก */
             h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
             p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
-            
-            /* ขยายหัวข้อ Summary */
             h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
-            .p-6 { padding: 12px !important; }
-            .p-8 { padding: 12px !important; }
-            .pb-6 { padding-bottom: 8px !important; }
-            .pt-4 { padding-top: 8px !important; }
-
-            .check-item { border: none !important; border-bottom: 1px solid #e5e7eb !important; border-radius: 0 !important; box-shadow: none !important; }
             
-            /* ปรับสมดุลความกว้างคอลัมน์ตอนปริ้นใหม่ เพื่อไม่ให้ปุ่มโดนบีบจนคำขาดออกจากกัน */
-            .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
+            /* --- บังคับ Layout หน้าปกให้สวยงาม --- */
+            .print-cover-grid { display: flex !important; flex-direction: row !important; gap: 16px !important; width: 100% !important; }
+            .print-cover-grid > div { flex: 1 !important; width: 33.33% !important; page-break-inside: avoid !important; }
+            
+            /* ให้ Input หน้าปกไม่มีกรอบน่าเกลียดตอนพิมพ์ */
+            input.cover-input { background-color: transparent !important; color: #111827 !important; border: none !important; border-bottom: 1px solid #9ca3af !important; border-radius: 0 !important; font-weight: 600 !important; box-shadow: none !important; padding-left: 0 !important; }
+            
+            /* --- บังคับ Layout Checklist Grid --- */
+            .check-item .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
             .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
             .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
             .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
             .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
             
-            .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; }
-            .remarks-container textarea { color: #4b5563; font-style: italic; }
+            .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; overflow: visible !important;}
+            .remarks-container textarea { color: #4b5563; font-style: italic; border: none !important; background: transparent !important; resize: none !important;}
             
             /* ขยาย Font หัวแถว Section */
             .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
             .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
             .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
 
-            /* ขยายขนาดปุ่มและฟอนต์ ผ่าน/ไม่ผ่าน ในหน้า Print */
+            /* ปุ่ม Pass / Fail ใน Print */
             .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
             .print-radio-box { 
-                border: 1px solid #d1d5db; 
-                border-radius: 5px; 
-                padding: 4px 12px; 
-                font-size: 12px !important; 
-                display: flex; 
-                align-items: center; 
-                gap: 5px; 
-                color: #6b7280; 
-                background-color: #f9fafb; 
-                white-space: nowrap !important;
+                border: 1px solid #d1d5db; border-radius: 5px; padding: 4px 12px; font-size: 12px !important; 
+                display: flex; align-items: center; gap: 5px; color: #6b7280; background-color: #f9fafb; white-space: nowrap !important;
             }
             .print-radio-box i { font-size: 11px !important; }
-            
             .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
             .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
-            .print-radio-box.inactive { opacity: 0.4; }
+            .print-radio-box.inactive { opacity: 0.4; border-color: #e5e7eb !important; background-color: transparent !important;}
             
-            /* ปรับแต่ง CSS สำหรับรองรับรูปภาพหลายรูปตอน Print */
-            .print-images-container img { 
-                max-height: 160px !important; 
-                width: auto !important; 
-                max-width: 100% !important; 
-                margin-top: 6px !important; 
-                object-fit: contain; 
-            }
+            /* รูปภาพประกอบ */
+            .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
             .print-header div { font-size: 12px !important; }
-            .print-remarks-box span { font-size: 13px !important; }
-            .print-photo-box span { font-size: 13px !important; }
-
-            /* จัดการขนาดโลโก้ส่วนหัวเอกสารในหน้า Print ให้ใหญ่ขึ้น */
-            img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] {
-                height: 80px !important; 
-                filter: drop-shadow(none) !important;
-            }
-
-            /* ปรับกล่องข้อกำหนดให้เป็น Text ธรรมดาอยู่ตรงกลางตอนปริ้น */
-            .print-plain-text {
-                background: transparent !important;
-                border: none !important;
-                padding: 12px 0 0 0 !important;
-                text-align: center !important;
-                display: block !important;
-            }
-            .print-plain-text .no-print-icon { display: none !important; }
-            .print-plain-text h2, .print-plain-text h3, .print-plain-text p { text-align: center !important; margin: 0 auto !important; }
-            .print-plain-text p { background: transparent !important; padding: 0 !important; }
             
-            /* ยกเลิก Background Gradient สำหรับ Print */
-            .bg-gradient-to-br, .bg-gradient-to-r { background: #F37021 !important; }
+            /* ขนาดโลโก้ใน Print */
+            img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] { height: 80px !important; }
         }
     </style>
 </head>
@@ -247,14 +195,14 @@
                     </div>
                     
                     <div class="p-6 md:p-8 bg-gray-50/50">
-                        <div class="grid md:grid-cols-3 gap-5 md:gap-6">
+                        <div class="grid md:grid-cols-3 gap-5 md:gap-6 print-cover-grid">
                             
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
                                     <i class="fa-solid fa-file-signature text-orange-400 text-sm no-print"></i> Reference Spec
                                 </label>
                                 <div class="flex gap-2 mt-2">
-                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md">
+                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md cover-input">
                                     <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="bg-orange-50 hover:bg-orange-500 hover:text-white text-orange-600 px-3 md:px-4 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center gap-2 no-print font-medium border border-orange-200 hover:border-orange-500 shadow-sm" style="text-decoration: none;">
                                         <i class="fa-solid fa-download"></i> <span class="hidden md:inline">โหลดไฟล์</span>
                                     </a>
@@ -266,14 +214,14 @@
                                 <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
                                     <i class="fa-solid fa-user-check text-sm no-print"></i> ผู้ตรวจสอบ (Inspector)
                                 </label>
-                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
+                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
                             </div>
 
                             <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
                                     <i class="fa-solid fa-building-flag text-orange-400 text-sm no-print"></i> Project / MDB No.
                                 </label>
-                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
+                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
                             </div>
                             
                         </div>
@@ -284,8 +232,8 @@
         
         <tr>
             <td class="pt-6 pb-2 px-4 md:px-0">
-                <div class="w-full bg-white md:bg-gray-50 md:border-l-4 md:border-orange-500 rounded-r-xl md:shadow-sm md:p-5 text-center md:text-left flex flex-col md:flex-row items-center md:items-start gap-4 print-plain-text">
-                    <div class="bg-orange-100 p-3 rounded-full text-orange-600 hidden md:block no-print-icon">
+                <div class="w-full bg-white md:bg-gray-50 border-l-4 border-orange-500 rounded-r-xl shadow-sm p-5 text-left flex flex-col md:flex-row items-center md:items-start gap-4">
+                    <div class="bg-orange-100 p-3 rounded-full text-orange-600 hidden md:block">
                         <i class="fa-solid fa-book-open-reader text-xl"></i>
                     </div>
                     <div class="w-full">
@@ -295,7 +243,7 @@
                         <h3 class="text-base md:text-lg font-bold text-gray-700 leading-relaxed mb-1">
                             ตู้แผงสวิตช์รวม (Main Distribution Board)
                         </h3>
-                        <p class="text-sm md:text-base text-gray-500 font-medium md:bg-white md:border md:border-gray-200 md:shadow-sm inline-block px-3 py-1 rounded-md mt-1">
+                        <p class="text-sm md:text-base text-gray-500 font-medium bg-white border border-gray-200 shadow-sm inline-block px-3 py-1 rounded-md mt-1">
                             (Type II : Non Design Verification Test)
                         </p>
                     </div>
