@@ -215,9 +215,9 @@
                                 <label class="text-sm text-gray-500 font-medium">Reference Spec</label>
                                 <div class="flex gap-2 mt-1">
                                     <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border border-gray-200 rounded-lg px-3 py-2 bg-gray-200 text-gray-700 font-semibold cursor-not-allowed focus:outline-none">
-                                    <button onclick="document.getElementById('pdfModal').showModal()" class="mea-bg hover:opacity-90 text-white px-4 py-2 rounded-lg shadow transition-all whitespace-nowrap flex items-center gap-2 no-print">
-                                        <i class="fa-solid fa-file-pdf"></i> View
-                                    </button>
+                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="mea-bg hover:opacity-90 text-white px-4 py-2 rounded-lg shadow transition-all whitespace-nowrap flex items-center gap-2 no-print" style="text-decoration: none;">
+                                        <i class="fa-solid fa-download"></i> โหลดไฟล์ BQD
+                                    </a>
                                 </div>
                             </div>
                             <div>
@@ -283,24 +283,6 @@
         </tr>
     </tbody>
 </table>
-
-<dialog id="pdfModal" class="w-11/12 md:w-3/4 lg:w-2/3 h-[85vh] p-0 rounded-xl shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm no-print">
-    <div class="flex flex-col h-full bg-white">
-        <div class="flex justify-between items-center p-4 border-b border-gray-200 section-header">
-            <h3 class="font-bold text-white text-lg m-0"><i class="fa-solid fa-file-pdf mr-2"></i> Reference Specification (BQD-3042)</h3>
-            <button type="button" onclick="document.getElementById('pdfModal').close()" class="text-white hover:text-gray-200 transition-colors">
-                <i class="fa-solid fa-xmark text-2xl"></i>
-            </button>
-        </div>
-        <div class="flex-1 w-full p-0">
-            <iframe 
-                src="BQD-3042.pdf"
-                class="w-full h-full border-0"
-                type="application/pdf">
-            </iframe>
-        </div>
-    </div>
-</dialog>
 
 <div class="floating-buttons">
     <button onclick="exportToExcelJS()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all" id="exportBtn">
