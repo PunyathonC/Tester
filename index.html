@@ -50,141 +50,158 @@
         }
 
         /* ซ่อน Screen Layout ในหน้าจอ Print และปรับขนาด Font ให้ใหญ่ขึ้น */
-        /* ซ่อน Screen Layout ในหน้าจอ Print และปรับขนาด Font ให้ใหญ่ขึ้น */
-    @media print {
-        /* --- 1. แก้บั๊ก iOS/Safari เรื่อง Overflow และการตัดหน้า --- */
-        * { overflow: visible !important; }
-        .overflow-hidden, .overflow-auto, .overflow-scroll { overflow: visible !important; }
-        body, html { height: auto !important; display: block !important; position: static !important; }
+        @media print {
+            /* --- 1. แก้บั๊ก iOS/Safari เรื่อง Overflow และการตัดหน้า --- */
+            *, *::before, *::after { overflow: visible !important; }
+            .overflow-hidden, .overflow-auto, .overflow-scroll { overflow: visible !important; }
+            body, html { 
+                height: auto !important; 
+                min-height: auto !important; 
+                display: block !important; 
+                position: static !important; 
+            }
 
-        .screen-layout { display: none !important; }
-        
-        /* --- 2. เปลี่ยน Flex ให้เป็น Block ป้องกัน Safari งอแง --- */
-        .print-layout { display: block !important; }
-        
-        @page { size: A4 portrait; margin: 10mm; }
-        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-        body { background: white !important; }
-        .no-print, .floating-buttons { display: none !important; }
-        .print-only { display: block !important; }
-        
-        .shadow-lg, .shadow-sm, .shadow-md { box-shadow: none !important; border-radius: 0 !important; }
-        .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
-        
-        table.main-table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
-        .print-header { display: table-header-group !important; }
-        .print-footer { display: table-footer-group !important; }
-        
-        .check-item-row {
-            page-break-inside: avoid !important; 
-            break-inside: avoid !important; 
-        }
-        
-        .check-item { 
-            display: block !important; 
-            width: 100% !important;
-            page-break-inside: avoid !important; 
-            break-inside: avoid !important; 
-            -webkit-column-break-inside: avoid !important;
-            padding: 8px 0 !important; 
-            border: none !important; 
-            border-bottom: 1px solid #e5e7eb !important; 
-            border-radius: 0 !important; 
-            box-shadow: none !important; 
-        }
+            .screen-layout { display: none !important; }
+            
+            /* --- 2. เปลี่ยน Flex/Table ให้เป็น Block ป้องกัน Safari งอแง --- */
+            .print-layout { display: block !important; }
+            
+            table.main-table, table.main-table thead, table.main-table tbody, table.main-table tr, table.main-table td { 
+                display: block !important; 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                border: none !important; 
+            }
+            
+            .print-header { display: block !important; margin-bottom: 12px !important;}
+            .print-footer { display: block !important; }
+            
+            .w-full.max-w-5xl, .bg-white.rounded-2xl, #summaryContent {
+                display: block !important;
+            }
+            
+            @page { size: A4 portrait; margin: 10mm; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { background: white !important; }
+            .no-print, .floating-buttons { display: none !important; }
+            .print-only { display: block !important; }
+            
+            .shadow-lg, .shadow-sm, .shadow-md { box-shadow: none !important; border-radius: 0 !important; }
+            .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
+            
+            .check-item-row {
+                display: block !important;
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+            }
+            
+            .check-item { 
+                display: block !important; 
+                width: 100% !important;
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                -webkit-column-break-inside: avoid !important;
+                padding: 8px 0 !important; 
+                border: none !important; 
+                border-bottom: 1px solid #e5e7eb !important; 
+                border-radius: 0 !important; 
+                box-shadow: none !important; 
+            }
 
-        .section-header-row {
-            page-break-inside: avoid !important;
-            break-inside: avoid !important;
-            page-break-after: avoid !important;
-            break-after: avoid !important;
-        }
-        
-        /* --- 3. คำสั่งตัดหน้าแบบบังคับสำหรับ iOS --- */
-        .safe-page-break {
-            display: block !important;
-            page-break-before: always !important;
-            break-before: page !important;
-            -webkit-break-before: always !important;
-            width: 100% !important;
-            height: 1px !important;
-            border: none !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            clear: both !important;
-        }
-        
-        td { padding-left: 0 !important; padding-right: 0 !important; }
-        .mea-bg, .section-header { background-color: #F37021 !important; color: white !important; }
-        .critical-header { background-color: #ef4444 !important; color: white !important; }
-        .bg-gray-50 { background-color: #f9fafb !important; }
-        .bg-green-50 { background-color: #f0fdf4 !important; }
-        .bg-red-50 { background-color: #fef2f2 !important; }
-        .bg-blue-50 { background-color: #eff6ff !important; }
-        .pass-selected { background-color: #dcfce7 !important; }
-        .fail-selected { background-color: #fee2f2 !important; }
-        input, textarea { background: transparent !important; border: none !important; padding: 0 !important; outline: none !important; resize: none !important; box-shadow: none !important; }
-        input[type="text"] { border-bottom: 1px dotted #ccc !important; border-radius: 0 !important; }
-        textarea { border-bottom: 1px dashed #ddd !important; border-radius: 0 !important; height: auto !important; overflow: visible !important; margin-top: 4px !important; padding-top: 0 !important;}
-        
-        /* Font และขนาด */
-        body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
-        h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
-        p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
-        h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
-        .p-6 { padding: 12px !important; }
-        .pb-6 { padding-bottom: 8px !important; }
-        .pt-4 { padding-top: 8px !important; }
+            .section-header-row {
+                display: block !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: avoid !important;
+                break-after: avoid !important;
+            }
+            
+            /* --- 3. คำสั่งตัดหน้าแบบบังคับสำหรับ iOS --- */
+            .safe-page-break {
+                display: block !important;
+                page-break-before: always !important;
+                break-before: page !important;
+                -webkit-break-before: always !important;
+                width: 100% !important;
+                height: 0px !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                clear: both !important;
+                visibility: hidden;
+            }
+            
+            td { padding-left: 0 !important; padding-right: 0 !important; }
+            .mea-bg, .section-header { background-color: #F37021 !important; color: white !important; }
+            .critical-header { background-color: #ef4444 !important; color: white !important; }
+            .bg-gray-50 { background-color: #f9fafb !important; }
+            .bg-green-50 { background-color: #f0fdf4 !important; }
+            .bg-red-50 { background-color: #fef2f2 !important; }
+            .bg-blue-50 { background-color: #eff6ff !important; }
+            .pass-selected { background-color: #dcfce7 !important; }
+            .fail-selected { background-color: #fee2f2 !important; }
+            input, textarea { background: transparent !important; border: none !important; padding: 0 !important; outline: none !important; resize: none !important; box-shadow: none !important; }
+            input[type="text"] { border-bottom: 1px dotted #ccc !important; border-radius: 0 !important; }
+            textarea { border-bottom: 1px dashed #ddd !important; border-radius: 0 !important; height: auto !important; overflow: visible !important; margin-top: 4px !important; padding-top: 0 !important;}
+            
+            /* Font และขนาด */
+            body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
+            h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
+            p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
+            h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
+            .p-6 { padding: 12px !important; }
+            .pb-6 { padding-bottom: 8px !important; }
+            .pt-4 { padding-top: 8px !important; }
 
-        /* จัด Layout สำหรับ Print */
-        .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
-        .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
-        .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
-        .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
-        .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
-        
-        .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; display: block !important; }
-        .remarks-container textarea { color: #4b5563; font-style: italic; }
-        
-        .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
-        .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
-        .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
+            /* จัด Layout สำหรับ Print */
+            .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
+            .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
+            .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
+            .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
+            .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
+            
+            .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; display: block !important; }
+            .remarks-container textarea { color: #4b5563; font-style: italic; }
+            
+            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
+            .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
+            .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
 
-        .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
-        .print-radio-box { 
-            border: 1px solid #d1d5db; 
-            border-radius: 5px; 
-            padding: 4px 12px; 
-            font-size: 12px !important; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            color: #6b7280; 
-            background-color: #f9fafb; 
-            white-space: nowrap !important;
-        }
-        .print-radio-box i { font-size: 11px !important; }
-        
-        .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
-        .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
-        .print-radio-box.inactive { opacity: 0.4; }
-        
-        .print-images-container img { 
-            max-height: 160px !important; 
-            width: auto !important; 
-            max-width: 100% !important; 
-            margin-top: 6px !important; 
-            object-fit: contain; 
-        }
-        .print-header div { font-size: 12px !important; }
-        .print-remarks-box span { font-size: 13px !important; }
-        .print-photo-box span { font-size: 13px !important; }
+            .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
+            .print-radio-box { 
+                border: 1px solid #d1d5db; 
+                border-radius: 5px; 
+                padding: 4px 12px; 
+                font-size: 12px !important; 
+                display: flex; 
+                align-items: center; 
+                gap: 5px; 
+                color: #6b7280; 
+                background-color: #f9fafb; 
+                white-space: nowrap !important;
+            }
+            .print-radio-box i { font-size: 11px !important; }
+            
+            .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
+            .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
+            .print-radio-box.inactive { opacity: 0.4; }
+            
+            .print-images-container img { 
+                max-height: 160px !important; 
+                width: auto !important; 
+                max-width: 100% !important; 
+                margin-top: 6px !important; 
+                object-fit: contain; 
+            }
+            .print-header div { font-size: 12px !important; }
+            .print-remarks-box span { font-size: 13px !important; }
+            .print-photo-box span { font-size: 13px !important; }
 
-        img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] {
-            height: 50px !important; 
-            margin-bottom: 12px !important;
+            img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] {
+                height: 50px !important; 
+                margin-bottom: 12px !important;
+            }
         }
-    }
     </style>
 </head>
 <body class="min-h-screen pb-10">
