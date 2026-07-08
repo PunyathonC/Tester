@@ -45,18 +45,25 @@
         .remarks-container { overflow: hidden; transition: max-height 0.4s ease-in-out, opacity 0.4s; }
         .remarks-required .remarks-input { border-color: var(--danger); background-color: #FFF5F5; }
         
-        /* Floating Summary (Desktop) */
+        /* Floating Summary (Desktop Only) */
         .floating-summary-card {
             position: fixed;
             top: 25%;
             right: 1.5rem;
             width: 220px;
             z-index: 50;
-            display: none;
             opacity: 0.95;
             transition: all 0.3s ease;
+            /* Strictly hide on mobile */
+            display: none !important; 
+            pointer-events: none !important;
         }
-        @media (min-width: 1024px) { .floating-summary-card { display: block; } }
+        @media (min-width: 1024px) { 
+            .floating-summary-card { 
+                display: block !important; 
+                pointer-events: auto !important;
+            } 
+        }
         
         /* Custom Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 999999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, backdrop-filter 0.3s; backdrop-filter: blur(4px); }
@@ -95,7 +102,13 @@
             .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
             .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
             .print-header { display: block !important; margin-bottom: 12px !important; }
-            .w-full.max-w-5xl, .bg-white.rounded-2xl, .bg-white.rounded-xl, #summaryContent { display: block !important; break-inside: auto !important; }
+            .w-full.max-w-5xl, .bg-white.rounded-2xl, .bg-white.rounded-xl { display: block !important; break-inside: auto !important; }
+            
+            /* iOS Safari Print Fixes */
+            .modal-overlay, #modalValidation, #modalFinish { display: none !important; opacity: 0 !important; visibility: hidden !important; }
+            #summaryContent, .bg-gradient-to-r { display: block !important; overflow: visible !important; break-inside: avoid !important; page-break-inside: avoid !important; }
+            table.main-table:last-of-type { page-break-before: auto !important; break-before: auto !important; overflow: visible !important; height: auto !important; }
+            
             .check-item-row { page-break-inside: avoid !important; break-inside: avoid !important; display: block !important; }
             .check-item { display: block !important; width: 100% !important; page-break-inside: avoid !important; break-inside: avoid !important; -webkit-column-break-inside: avoid !important; padding: 8px 0 !important; border: none !important; border-bottom: 1px solid #e5e7eb !important; border-radius: 0 !important; }
             .section-header-row { display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; break-after: avoid !important; }
@@ -559,7 +572,6 @@ const App = {
                 </tr>`;
     },
 
-    // 4. Smart Checklist Cards & 5. Fail Validation (HTML Struct)
     buildChecklistItem(item, sIndex, iIndex) {
         const radioName = `section${sIndex}_item${iIndex}`;
         const descHtml = item[1].replace(/\n/g, '<br>');
@@ -727,7 +739,6 @@ const App = {
         this.updateDisplayTexts(this.DOM.displays.timestamps, timeStr, "-");
     },
     
-    // 9. Auto Save Indicator
     showAutoSaveIndicator() {
         const ind = document.getElementById('autoSaveIndicator');
         if(ind) {
@@ -818,7 +829,6 @@ const App = {
         }
     },
 
-    // 4. Smart Checklist Cards & 5. Fail Validation
     updateRadioVisuals(radioInput) {
         const group = document.querySelectorAll(`input[name="${radioInput.name}"]`);
         group.forEach(r => r.closest("label").classList.remove("pass-selected", "fail-selected"));
@@ -994,7 +1004,6 @@ const App = {
 
         this.updateProgressUI(passCount, failCount, pendingCount, totalItems);
 
-        // Build Summary Content
         if (pendingCount === totalItems) {
             this.DOM.summaryContent.innerHTML = `<div class="flex flex-col items-center justify-center text-gray-400 py-8"><i class="fa-solid fa-tasks text-4xl mb-3 opacity-50"></i><p class="text-sm font-medium">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p></div>`;
             return;
@@ -1020,12 +1029,10 @@ const App = {
         this.DOM.summaryContent.innerHTML = html;
     },
 
-    // 2. & 3. Update Progress Elements
     updateProgressUI(pass, fail, pending, total) {
         const completed = total - pending;
         const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
         
-        // Dashboard Stats
         document.getElementById('topProgCompleted').innerText = completed;
         document.getElementById('topProgTotal').innerText = total;
         document.getElementById('topProgPass').innerText = pass;
@@ -1033,21 +1040,17 @@ const App = {
         document.getElementById('topProgPercent').innerText = pct + '%';
         document.getElementById('topProgBar').style.width = pct + '%';
         
-        // Floating Summary
         document.getElementById('floatPass').innerText = pass;
         document.getElementById('floatFail').innerText = fail;
         document.getElementById('floatRemain').innerText = pending;
         document.getElementById('floatPercent').innerText = pct + '%';
         document.getElementById('floatBar').style.width = pct + '%';
         
-        // Bottom Summary Total
         const sumTotal = document.getElementById('sumTotal');
         if (sumTotal) sumTotal.innerText = total;
     },
 
     // --- Action Handlers & Modals ---
-    
-    // 6. Export Validation
     validateInspection() {
         const state = this.extractState();
         let errors = [];
@@ -1089,7 +1092,6 @@ const App = {
     },
 
     async handleExportAction(type) {
-        // Validation check
         const validation = this.validateInspection();
         if(!validation.valid) {
             const ul = document.getElementById('validationErrorList');
@@ -1114,7 +1116,6 @@ const App = {
         document.querySelectorAll('.check-item').forEach(item => this.syncPrintView(item));
         this.updateTime();
 
-        // Hack for Safari reflow
         document.body.style.display = 'none';
         document.body.offsetHeight; 
         document.body.style.display = '';
@@ -1122,7 +1123,12 @@ const App = {
         setTimeout(() => {
             try {
                 window.print();
-                this.showModal('modalFinish');
+                
+                // WAIT longer for iOS Safari print spooler to finish before showing modal
+                setTimeout(() => {
+                    this.showModal('modalFinish');
+                }, 1500); 
+                
             } catch (e) {
                 console.error("Print failed:", e);
                 alert("ไม่สามารถสั่งพิมพ์ได้ กรุณาตรวจสอบเบราว์เซอร์ของคุณ");
@@ -1153,7 +1159,6 @@ const App = {
                 { width: 8 }, { width: 55 }, { width: 25 }, { width: 15 }, { width: 45 }
             ];
 
-            // Header Section
             sheet.mergeCells('A1:E1');
             const titleCell = sheet.getCell('A1');
             titleCell.value = 'MDB Factory Acceptance Test (FAT) Checklist';
@@ -1245,7 +1250,6 @@ const App = {
                 });
             });
 
-            // Summary Section
             sheet.addRow([]);
             const sumHeaderRow = sheet.addRow(['สรุปการตรวจสอบ (Summary Report)']);
             sheet.mergeCells(`A${sumHeaderRow.number}:E${sumHeaderRow.number}`);
@@ -1324,7 +1328,6 @@ const App = {
     }
 };
 
-// --- Boot Application ---
 window.addEventListener("DOMContentLoaded", () => {
     App.init();
 });
