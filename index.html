@@ -18,34 +18,49 @@
         :root { 
             --mea-orange: #F37021; 
             --mea-orange-dark: #D95D13; 
+            --success: #16A34A;
+            --danger: #DC2626;
+            --warning: #F59E0B;
+            --bg-color: #F8FAFC;
         }
-        body { background: #f3f4f6; }
+        body { background: var(--bg-color); color: #1e293b; }
         
         /* Utility Classes */
         .mea-bg { background: var(--mea-orange); }
         .mea-text { color: var(--mea-orange); }
-        .section-header { background: linear-gradient(135deg, var(--mea-orange), var(--mea-orange-dark)); }
-        .critical-header { background: linear-gradient(135deg, #ef4444, #f37021); }
+        .section-header { background: #1e293b; border-left: 6px solid var(--mea-orange); }
+        .critical-header { background: #1e293b; border-left: 6px solid var(--danger); }
         .radio-card { transition: all .2s ease; }
         
-        /* State Classes */
-        .pass-selected { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: 600; }
-        .fail-selected { background: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: 600; }
+        /* State Classes - Modernized */
+        .pass-selected { 
+            background: #f0fdf4 !important; 
+            border-color: var(--success) !important; 
+            color: #14532d !important; 
+            font-weight: 600; 
+            box-shadow: 0 0 0 1px var(--success);
+        }
+        .fail-selected { 
+            background: #fef2f2 !important; 
+            border-color: var(--danger) !important; 
+            color: #7f1d1d !important; 
+            font-weight: 600;
+            box-shadow: 0 0 0 1px var(--danger);
+        }
         
         /* Floating UI */
         .floating-buttons {
             position: fixed;
-            bottom: 12px;
-            right: 12px;
+            bottom: 16px;
+            right: 16px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 6px; 
+            gap: 12px; 
             z-index: 99999;
-            opacity: 0.95; 
         }
         @media (min-width: 768px) {
-            .floating-buttons { bottom: 24px; right: 24px; gap: 12px; opacity: 1; }
+            .floating-buttons { bottom: 32px; right: 32px; gap: 16px; }
         }
 
         /* Hide Print Elements on Screen */
@@ -57,7 +72,6 @@
            2. Print Optimization & Safari Bug Fixes
            ========================================= */
         @media print {
-            /* Global Print Resets - specifically targeting WebKit/Safari clipping bugs */
             * { 
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important; 
@@ -68,7 +82,6 @@
             
             @page { size: A4 portrait; margin: 10mm; }
 
-            /* Clear tailwind screen restrictions */
             body, html { 
                 height: auto !important; 
                 min-height: auto !important; 
@@ -77,7 +90,6 @@
                 background: white !important; 
             }
             
-            /* Flatten Tables to Blocks - Fixes Safari Pagination/Clipping Bug */
             table, table.main-table, thead, tbody, tr, td { 
                 display: block !important; 
                 width: 100% !important; 
@@ -85,26 +97,22 @@
                 border: none !important; 
             }
 
-            /* Display toggles */
             .screen-layout { display: none !important; }
             .print-layout { display: block !important; }
             .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
-            /* Visual simplification */
             .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
             .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
             
             .print-header { display: block !important; margin-bottom: 12px !important; }
             .print-footer { display: block !important; }
             
-            /* Container block enforcement */
             .w-full.max-w-5xl, .bg-white.rounded-2xl, .bg-white.rounded-xl, #summaryContent {
                 display: block !important;
                 break-inside: auto !important;
             }
             
-            /* Checklist Item Layout */
             .check-item-row { 
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
@@ -131,7 +139,6 @@
                 break-after: avoid !important; 
             }
             
-            /* Robust Page Break */
             .safe-page-break {
                 display: block !important;
                 page-break-before: always !important;
@@ -148,13 +155,11 @@
             
             td { padding-left: 0 !important; padding-right: 0 !important; }
             
-            /* Typography Scaling */
             body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
             h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
             p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
             h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
             
-            /* Cover Layout Fixes */
             .print-cover-grid { display: flex !important; flex-direction: row !important; gap: 16px !important; width: 100% !important; }
             .print-cover-grid > div { flex: 1 !important; width: 33.33% !important; page-break-inside: avoid !important; }
             input.cover-input { 
@@ -163,7 +168,6 @@
                 box-shadow: none !important; padding-left: 0 !important; 
             }
             
-            /* Hero Banner Restructuring */
             .hero-banner-content { 
                 display: flex !important; flex-direction: row !important; justify-content: space-between !important; 
                 align-items: center !important; text-align: left !important;
@@ -175,20 +179,18 @@
             .hero-banner-icon { width: 90px !important; height: 90px !important; flex-shrink: 0 !important; margin-left: 16px !important; }
             .hero-banner-icon i { font-size: 45px !important; }
 
-            /* Checklist Item Grid Enforcement */
             .check-item .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
             .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
             .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
             .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
             .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
             
-            /* Remarks & Radio Print Styles */
             .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; overflow: visible !important;}
             .remarks-container textarea { color: #4b5563; font-style: italic; border: none !important; background: transparent !important; resize: none !important;}
             
-            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
+            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; border-left: none !important; background: #e2e8f0 !important; color: #0f172a !important; }
             .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
-            .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
+            .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; background: transparent !important;}
 
             .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
             .print-radio-box { 
@@ -196,8 +198,8 @@
                 display: flex; align-items: center; gap: 5px; color: #6b7280; background-color: #f9fafb; white-space: nowrap !important;
             }
             .print-radio-box i { font-size: 11px !important; }
-            .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
-            .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
+            .print-radio-box.print-pass { background-color: #f0fdf4 !important; border-color: #16a34a !important; color: #15803d !important; font-weight: bold; }
+            .print-radio-box.print-fail { background-color: #fef2f2 !important; border-color: #dc2626 !important; color: #b91c1c !important; font-weight: bold; }
             .print-radio-box.inactive { opacity: 0.4; border-color: #e5e7eb !important; background-color: transparent !important;}
             
             .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
@@ -206,9 +208,9 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-10">
+<body class="min-h-screen pb-12 selection:bg-orange-200">
 
-<table class="main-table w-full max-w-5xl mx-auto mt-4">
+<table class="main-table w-full max-w-5xl mx-auto mt-6">
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
@@ -223,59 +225,59 @@
     <tbody>
         <tr>
             <td class="pt-6 pb-6 px-4 md:px-0 text-center">
-                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
+                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-28 object-contain transition-transform duration-300">
             </td>
         </tr>
         <tr>
-            <td class="pb-2 pt-0 px-4 md:px-0">
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10"></div>
+            <td class="pb-4 pt-0 px-4 md:px-0">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-1.5 mea-bg z-10"></div>
                     
-                    <div class="bg-gradient-to-br from-orange-500 to-[#D95D13] text-white p-8 relative overflow-hidden">
-                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12"></i>
+                    <div class="bg-slate-900 text-white p-8 md:p-10 relative overflow-hidden">
+                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-5 transform rotate-12"></i>
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 hero-banner-content">
                             <div class="hero-banner-text text-center md:text-left">
-                                <div class="hero-banner-tag inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm">
-                                    <i class="fa-solid fa-microchip mr-1"></i> FACTORY ACCEPTANCE TEST
+                                <div class="hero-banner-tag inline-block bg-white/10 backdrop-blur-sm px-3 py-1 rounded-md text-orange-400 text-[10px] md:text-xs font-bold tracking-widest mb-4 border border-white/10 uppercase">
+                                    <i class="fa-solid fa-microchip mr-1"></i> Factory Acceptance Test
                                 </div>
-                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm m-0">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
-                                <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2 m-0">
+                                <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-white m-0 leading-tight">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
+                                <p class="text-slate-400 mt-3 font-medium flex items-center justify-center md:justify-start gap-2 m-0 text-sm md:text-base">
                                     <i class="fa-solid fa-shield-halved opacity-80"></i> Main Distribution Board (MDB) Factory Test
                                 </p>
                             </div>
-                            <div class="hero-banner-icon bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner">
-                                <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-white drop-shadow-md"></i>
+                            <div class="hero-banner-icon bg-white/5 border border-white/10 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
+                                <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-orange-500"></i>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="p-6 md:p-8 bg-gray-50/50">
+                    <div class="p-6 md:p-8 bg-white border-t border-slate-100">
                         <div class="grid md:grid-cols-3 gap-5 md:gap-6 print-cover-grid">
-                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm"></i> Reference Spec
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-colors hover:border-slate-300">
+                                <label class="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-signature text-slate-400"></i> Reference Spec
                                 </label>
                                 <div class="flex gap-2 mt-2">
-                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md cover-input">
-                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="bg-orange-50 hover:bg-orange-500 hover:text-white text-orange-600 px-3 md:px-4 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center gap-2 no-print font-medium border border-orange-200 hover:border-orange-500 shadow-sm" style="text-decoration: none;">
+                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-slate-300 px-1 py-2 bg-transparent text-slate-700 font-semibold cursor-not-allowed focus:outline-none cover-input">
+                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="bg-white hover:bg-slate-100 text-slate-700 px-3 md:px-4 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center gap-2 no-print font-medium border border-slate-300 shadow-sm text-sm" style="text-decoration: none;">
                                         <i class="fa-solid fa-download"></i> <span class="hidden md:inline">โหลดไฟล์</span>
                                     </a>
                                 </div>
                             </div>
 
-                            <div class="bg-white p-4 md:p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow ring-1 ring-orange-500/10 relative overflow-hidden">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400"></div>
-                                <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-user-check text-sm"></i> ผู้ตรวจสอบ (Inspector)
+                            <div class="bg-orange-50/50 p-4 rounded-xl border border-orange-100 transition-colors hover:border-orange-200 relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full mea-bg"></div>
+                                <label class="text-[10px] md:text-xs font-bold text-orange-700 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
+                                    <i class="fa-solid fa-user-check text-orange-500"></i> ผู้ตรวจสอบ (Inspector)
                                 </label>
-                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
+                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-orange-200 hover:border-orange-300 px-2 py-2 bg-transparent focus:bg-white focus:outline-none focus:border-orange-500 transition-colors font-medium text-slate-800 ml-1 rounded-t">
                             </div>
 
-                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm"></i> Project / MDB No.
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 transition-colors hover:border-slate-300">
+                                <label class="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-building-flag text-slate-400"></i> Project / MDB No.
                                 </label>
-                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
+                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border-b-2 border-slate-300 hover:border-slate-400 px-1 py-2 bg-transparent focus:bg-white focus:outline-none focus:border-slate-500 transition-colors font-medium text-slate-800 rounded-t">
                             </div>
                         </div>
                     </div>
@@ -283,19 +285,19 @@
             </td>
         </tr>
         <tr>
-            <td class="pt-6 pb-2 px-4 md:px-0">
-                <div class="w-full bg-white md:bg-gray-50 border-l-4 border-orange-500 rounded-r-xl shadow-sm p-5 text-left flex flex-col md:flex-row items-center md:items-start gap-4">
-                    <div class="bg-orange-100 p-3 rounded-full text-orange-600 hidden md:block">
+            <td class="pb-2 px-4 md:px-0">
+                <div class="w-full bg-white border border-slate-200 rounded-xl shadow-sm p-4 text-left flex flex-col md:flex-row items-center md:items-start gap-4">
+                    <div class="bg-slate-100 p-3 rounded-full text-slate-600 hidden md:flex items-center justify-center w-12 h-12">
                         <i class="fa-solid fa-book-open-reader text-xl"></i>
                     </div>
                     <div class="w-full">
-                        <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
+                        <h2 class="text-base md:text-lg font-bold text-slate-800 leading-relaxed m-0">
                             ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
                         </h2>
-                        <h3 class="text-base md:text-lg font-bold text-gray-700 leading-relaxed mb-1">
+                        <h3 class="text-sm md:text-base font-semibold text-slate-600 leading-relaxed mt-1">
                             ตู้แผงสวิตช์รวม (Main Distribution Board)
                         </h3>
-                        <p class="text-sm md:text-base text-gray-500 font-medium bg-white border border-gray-200 shadow-sm inline-block px-3 py-1 rounded-md mt-1">
+                        <p class="text-xs text-slate-500 font-medium bg-slate-100 border border-slate-200 inline-block px-2.5 py-1 rounded-md mt-2">
                             (Type II : Non Design Verification Test)
                         </p>
                     </div>
@@ -305,11 +307,28 @@
     </tbody>
 </table>
 
+<div id="progressContainer" class="w-full max-w-5xl mx-auto mt-6 px-4 md:px-0 no-print">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6 transition-all duration-300">
+        <div class="flex justify-between items-end mb-3">
+            <div>
+                <h3 class="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-widest"><i class="fa-solid fa-tasks mr-1"></i> Inspection Progress</h3>
+                <p class="text-sm md:text-base text-slate-600 mt-1"><span id="progCompleted" class="font-bold text-slate-900">0</span> of <span id="progTotal" class="font-bold text-slate-900">0</span> Items Completed</p>
+            </div>
+            <div class="text-right">
+                <span id="progPercentage" class="text-2xl md:text-3xl font-bold text-slate-800">0%</span>
+            </div>
+        </div>
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden shadow-inner">
+            <div id="progBar" class="mea-bg h-3 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
+        </div>
+    </div>
+</div>
+
 <div id="checklistContainer"></div>
 
 <div class="safe-page-break print-only"></div>
 
-<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-0">
+<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-8">
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
@@ -324,28 +343,30 @@
     <tbody>
         <tr>
             <td class="pt-4 pb-4 px-4 md:px-0">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-                    <h2 class="text-xl font-bold mb-4 mea-text border-b pb-3 flex justify-between items-center">
-                        <div>
-                            <i class="fa-solid fa-clipboard-check mr-2"></i>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+                    <h2 class="text-xl font-bold mb-5 text-slate-800 border-b border-slate-100 pb-4 flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-slate-100 p-2 rounded-lg text-slate-600">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                            </div>
                             สรุปการตรวจสอบ (Summary Report) 
-                            <span class="text-gray-700 text-lg font-medium ml-2 hidden md:inline">โดย <span class="displayInspectorName mea-text"></span></span>
                         </div>
+                        <span class="text-slate-500 text-sm font-medium hidden md:inline bg-slate-50 px-3 py-1.5 rounded-md border border-slate-200">โดย <span class="displayInspectorName text-slate-800 font-bold"></span></span>
                     </h2>
                     
-                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 bg-orange-50 p-3 rounded-lg border border-orange-200 shadow-inner">
-                        <div class="text-xs">
-                            <span class="font-semibold text-gray-600">Project / MDB No:</span> 
-                            <span class="displaySummaryProject text-mea-orange font-bold text-base ml-1">-</span>
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="text-sm">
+                            <span class="font-semibold text-slate-500 uppercase tracking-wider text-xs">Project / MDB No</span><br>
+                            <span class="displaySummaryProject text-slate-800 font-bold text-base mt-1 block">-</span>
                         </div>
-                        <div class="text-xs">
-                            <span class="font-semibold text-gray-600">วันที่ประเมิน:</span> 
-                            <span class="displayTimestamp text-mea-orange font-bold ml-1">-</span>
+                        <div class="text-sm md:text-right">
+                            <span class="font-semibold text-slate-500 uppercase tracking-wider text-xs">วันที่ประเมิน</span><br>
+                            <span class="displayTimestamp text-slate-800 font-bold mt-1 block">-</span>
                         </div>
                     </div>
                     
-                    <div id="summaryContent" class="p-4 bg-gray-50 rounded-xl border border-gray-200">
-                        <p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>
+                    <div id="summaryContent" class="p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-slate-400 text-center text-sm font-medium"><i class="fa-solid fa-inbox text-2xl block mb-2 opacity-50"></i> กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>
                     </div>
                 </div>
             </td>
@@ -354,14 +375,14 @@
 </table>
 
 <div class="floating-buttons no-print">
-    <button id="btnExport" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
-        <i class="fa-solid fa-file-excel text-sm md:text-xl"></i> ดาวน์โหลด Excel
+    <button id="btnExport" class="bg-slate-800 hover:bg-slate-900 text-white px-5 py-3 md:px-6 md:py-3.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-sm transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-xl border border-slate-700">
+        <i class="fa-solid fa-file-excel text-base md:text-lg text-emerald-400"></i> <span class="hidden md:inline">ดาวน์โหลด Excel</span><span class="inline md:hidden">Excel</span>
     </button>
-    <button id="btnPrint" class="mea-bg hover:opacity-90 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
-        <i class="fa-solid fa-print text-sm md:text-xl"></i> พิมพ์ / PDF
+    <button id="btnPrint" class="bg-white hover:bg-slate-50 text-slate-800 px-5 py-3 md:px-6 md:py-3.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-sm transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-xl border border-slate-200">
+        <i class="fa-solid fa-print text-base md:text-lg text-slate-600"></i> <span class="hidden md:inline">พิมพ์ / PDF</span><span class="inline md:hidden">PDF</span>
     </button>
-    <button id="btnClear" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
-        <i class="fa-solid fa-trash text-sm md:text-xl"></i> ล้างข้อมูล
+    <button id="btnClear" class="bg-red-50 hover:bg-red-100 text-red-600 px-5 py-3 md:px-6 md:py-3.5 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-sm transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-xl border border-red-200">
+        <i class="fa-solid fa-trash-can text-base md:text-lg"></i> <span class="hidden md:inline">ล้างข้อมูล</span><span class="inline md:hidden">ล้าง</span>
     </button>
 </div>
 
@@ -502,7 +523,7 @@ const App = {
 
     buildSectionHeader(section, index) {
         return `
-        <table class="main-table w-full max-w-5xl mx-auto ${index > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}">
+        <table class="main-table w-full max-w-5xl mx-auto ${index > 0 ? 'mt-6' : 'mt-4'}">
             <thead class="print-header">
                 <tr>
                     <td class="pb-2 pt-2 px-4 md:px-0">
@@ -516,17 +537,17 @@ const App = {
             </thead>
             <tbody>
                 <tr class="section-header-row">
-                    <td class="pb-2 pt-2 px-4 md:px-0">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                            <div class=" ${section.critical ? 'critical-header' : 'section-header'} text-white p-3">
+                    <td class="pb-4 pt-2 px-4 md:px-0">
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div class=" ${section.critical ? 'critical-header' : 'section-header'} text-white p-4">
                                 <div class="flex items-center justify-between">
-                                    <h2 class="font-bold text-lg flex items-center gap-3 m-0">
-                                        <div class="bg-white text-gray-700 w-6 h-6 md:w-8 md:h-8 rounded flex items-center justify-center shadow-sm">
-                                            <i class="fa-solid ${section.icon} text-xs md:text-sm"></i>
+                                    <h2 class="font-bold text-base md:text-lg flex items-center gap-3 m-0 tracking-wide text-slate-50">
+                                        <div class="bg-white/10 text-white w-8 h-8 rounded-lg flex items-center justify-center shadow-sm border border-white/10">
+                                            <i class="fa-solid ${section.icon} text-sm"></i>
                                         </div>
                                         ${section.title}
                                     </h2>
-                                    ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-sm">CRITICAL TEST</span>' : ''}
+                                    ${section.critical ? '<span class="bg-red-500/20 text-red-300 border border-red-500/50 px-3 py-1 rounded-md text-[10px] md:text-xs font-bold tracking-widest shadow-sm uppercase">Critical</span>' : ''}
                                 </div>
                             </div>
                         </div>
@@ -540,23 +561,27 @@ const App = {
         const specHtml = item[2].replace(/\n/g, '<br>');
         
         return `
-        <tr class="check-item-row">
-            <td class="pb-2 px-4 md:px-0">
-                <div class="check-item bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow" data-radioname="${radioName}">
-                    <div class="grid md:grid-cols-12 gap-2 items-start">
-                        <div class="md:col-span-1"><span class="font-bold text-base md:text-lg text-gray-800">${item[0]}</span></div>
-                        <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug">${descHtml}</div></div>
-                        <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug bg-gray-50 p-1.5 rounded inline-block w-full border border-gray-100">${specHtml}</span></div>
+        <tr class="check-item-row group">
+            <td class="pb-4 px-4 md:px-0">
+                <div class="check-item bg-white border border-slate-200 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-200" data-radioname="${radioName}">
+                    <div class="grid md:grid-cols-12 gap-4 items-start">
+                        <div class="md:col-span-1"><span class="font-bold text-lg md:text-xl text-slate-300 select-none group-hover:text-slate-400 transition-colors">${item[0]}</span></div>
+                        <div class="md:col-span-6"><div class="font-medium text-slate-700 leading-relaxed text-sm md:text-base">${descHtml}</div></div>
+                        <div class="md:col-span-2">
+                            ${specHtml ? `<span class="text-xs text-slate-500 leading-snug bg-slate-50 p-2 rounded-lg inline-block w-full border border-slate-100 font-medium">${specHtml}</span>` : ''}
+                        </div>
                         
                         <div class="md:col-span-3 screen-layout">
-                            <div class="flex gap-2">
-                                <label class="radio-card pass-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
+                            <div class="flex gap-2 h-full">
+                                <label class="radio-card pass-option border border-slate-200 rounded-xl px-2 py-2 md:px-3 cursor-pointer flex-1 text-center bg-white hover:bg-slate-50 text-sm font-medium text-slate-600 shadow-sm flex flex-col items-center justify-center gap-1">
                                     <input type="radio" name="${radioName}" value="Pass" class="sr-only">
-                                    <i class="fa-solid fa-circle-check"></i> ผ่าน
+                                    <i class="fa-solid fa-circle-check text-lg opacity-80"></i> 
+                                    <span>ผ่าน</span>
                                 </label>
-                                <label class="radio-card fail-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
+                                <label class="radio-card fail-option border border-slate-200 rounded-xl px-2 py-2 md:px-3 cursor-pointer flex-1 text-center bg-white hover:bg-slate-50 text-sm font-medium text-slate-600 shadow-sm flex flex-col items-center justify-center gap-1">
                                     <input type="radio" name="${radioName}" value="Fail" class="sr-only">
-                                    <i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน
+                                    <i class="fa-solid fa-circle-xmark text-lg opacity-80"></i> 
+                                    <span>ไม่ผ่าน</span>
                                 </label>
                             </div>
                         </div>
@@ -569,24 +594,26 @@ const App = {
                         </div>
                     </div>
                     
-                    <div class="remarks-container screen-layout mt-3">
-                        <label class="block text-[10px] md:text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">หมายเหตุ (Remarks)</label>
-                        <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 hover:bg-gray-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all shadow-inner" 
-                                  rows="1" placeholder=""></textarea>
+                    <div class="remarks-container screen-layout mt-4 bg-slate-50/50 rounded-xl p-3 border border-slate-100">
+                        <label class="block text-[10px] md:text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-regular fa-comment-dots"></i> หมายเหตุ (Remarks)
+                        </label>
+                        <textarea class="remarks-input w-full border border-slate-200 rounded-lg px-3 py-2.5 text-sm bg-white hover:border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-sm resize-none" 
+                                  rows="1" placeholder="พิมพ์ข้อความเพิ่มเติมที่นี่..."></textarea>
                         
-                        <div class="photo-upload-container mt-2" data-radioname="${radioName}">
+                        <div class="photo-upload-container mt-3" data-radioname="${radioName}">
                             <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
-                            <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 text-gray-600 py-1.5 px-3 rounded-lg flex items-center gap-2 border border-gray-300 transition-colors shadow-sm" onclick="document.getElementById('photo_${radioName}').click()">
-                                <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
+                            <button type="button" class="text-xs bg-white hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 text-slate-600 py-2 px-4 rounded-lg flex items-center gap-2 border border-slate-200 transition-all duration-200 shadow-sm font-medium" onclick="document.getElementById('photo_${radioName}').click()">
+                                <i class="fa-solid fa-camera"></i> แนบรูปภาพ / ถ่ายรูป
                             </button>
-                            <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden"></div>
+                            <div class="mt-3 preview-container flex flex-wrap gap-3 empty:hidden"></div>
                         </div>
                     </div>
 
-                    <div class="print-layout remarks-container print-remarks-box hidden">
+                    <div class="print-layout remarks-container print-remarks-box hidden mt-2">
                         <span class="text-[10px] font-bold text-gray-500 block mb-0.5">หมายเหตุ: <span class="print-remark-text font-normal text-gray-700"></span></span>
                     </div>
-                    <div class="print-layout mt-1 hidden print-photo-box">
+                    <div class="print-layout mt-2 hidden print-photo-box">
                         <span class="text-[10px] font-bold text-gray-500 block mb-0.5">ภาพประกอบ:</span>
                         <div class="print-images-container flex flex-wrap gap-2"></div>
                     </div>
@@ -754,7 +781,7 @@ const App = {
         if (e.target.classList.contains("remarks-input")) {
             this.resizeTextarea(e.target);
             this.syncPrintView(e.target.closest('.check-item'));
-            this.saveState(); // Debounce could be added here for huge checklists
+            this.saveState(); 
         }
     },
 
@@ -873,11 +900,11 @@ const App = {
         
         // Screen UI
         const previewWrapper = document.createElement('div');
-        previewWrapper.className = 'relative inline-block photo-item shadow-sm';
+        previewWrapper.className = 'relative inline-block photo-item shadow-sm rounded-lg overflow-hidden border border-slate-200 group/img transition-all hover:shadow-md';
         previewWrapper.dataset.imgid = imgId;
         previewWrapper.innerHTML = `
-            <img src="${base64Str}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
-            <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md">
+            <img src="${base64Str}" class="h-20 md:h-24 w-auto object-cover preview-img">
+            <button type="button" class="absolute top-1 right-1 bg-red-500/90 backdrop-blur-sm text-white rounded-full w-6 h-6 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md opacity-0 group-hover/img:opacity-100 transition-opacity">
                 <i class="fa-solid fa-times"></i>
             </button>
         `;
@@ -892,7 +919,7 @@ const App = {
         printBox.classList.remove('hidden');
     },
 
-    // --- Dynamic Summary ---
+    // --- Dynamic Summary & Progress UI Update ---
     renderSummary() {
         const state = this.extractState();
         let passCount = 0;
@@ -919,13 +946,13 @@ const App = {
                     // Find remarks from DOM state sync
                     const node = document.querySelector(`.check-item[data-radioname="${radioName}"]`);
                     const remarkRaw = node ? node.querySelector('.remarks-input').value.trim() : "";
-                    const remarkSafe = remarkRaw ? this.escapeHTML(remarkRaw) : '<span class="text-gray-400 italic">ไม่ได้ระบุหมายเหตุ</span>';
+                    const remarkSafe = remarkRaw ? this.escapeHTML(remarkRaw) : '<span class="text-slate-400 italic">ไม่ได้ระบุหมายเหตุ</span>';
                     
                     let photoHtml = '';
                     const photos = state.photos[radioName];
                     if (photos && photos.length > 0) {
-                        let imgTags = photos.map(src => `<img src="${src}" class="h-16 w-auto max-w-full rounded border border-gray-300 object-contain bg-white">`).join('');
-                        photoHtml = `<div class="mt-2"><span class="text-[10px] font-bold text-gray-500 mb-1 block">ภาพประกอบ (${photos.length} รูป):</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
+                        let imgTags = photos.map(src => `<img src="${src}" class="h-16 w-auto max-w-full rounded border border-slate-300 object-contain bg-white">`).join('');
+                        photoHtml = `<div class="mt-3"><span class="text-[10px] font-bold text-slate-500 mb-1.5 block">ภาพประกอบ (${photos.length} รูป):</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
                     }
 
                     failList.push({ title: `${itemNumberSafe} ${itemDescSafe}`, remark: remarkSafe, photoHtml: photoHtml });
@@ -933,26 +960,44 @@ const App = {
             });
         });
 
+        // ----------------------------------------------------
+        // Update Progress UI Widget (New Addition, Logic safe)
+        // ----------------------------------------------------
+        const totalItemsCount = itemsDomMap.length;
+        const completedCount = totalItemsCount - pendingCount;
+        const progressPercent = totalItemsCount > 0 ? Math.round((completedCount / totalItemsCount) * 100) : 0;
+
+        const progCompletedEl = document.getElementById('progCompleted');
+        const progTotalEl = document.getElementById('progTotal');
+        const progPercentageEl = document.getElementById('progPercentage');
+        const progBarEl = document.getElementById('progBar');
+
+        if (progCompletedEl) progCompletedEl.innerText = completedCount;
+        if (progTotalEl) progTotalEl.innerText = totalItemsCount;
+        if (progPercentageEl) progPercentageEl.innerText = progressPercent + '%';
+        if (progBarEl) progBarEl.style.width = progressPercent + '%';
+        // ----------------------------------------------------
+
         if (pendingCount === itemsDomMap.length) {
-            this.DOM.summaryContent.innerHTML = `<p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>`;
+            this.DOM.summaryContent.innerHTML = `<p class="text-slate-400 text-center text-sm font-medium"><i class="fa-solid fa-inbox text-2xl block mb-2 opacity-50"></i> กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>`;
             return;
         }
 
         let html = '';
         if (failList.length === 0 && pendingCount === 0) {
-            html = `<div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded-lg flex items-center shadow-sm"><i class="fa-solid fa-circle-check text-2xl mr-3"></i><div><p class="font-bold text-sm">ผ่านเกณฑ์ทั้งหมด (All Passed)</p><p class="text-xs mt-0.5">การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง</p></div></div>`;
+            html = `<div class="bg-green-50/50 border border-green-200 text-green-700 p-5 rounded-xl flex items-center shadow-sm"><div class="bg-green-100 p-3 rounded-full mr-4"><i class="fa-solid fa-check text-2xl"></i></div><div><p class="font-bold text-base md:text-lg">ผ่านเกณฑ์ทั้งหมด (All Passed)</p><p class="text-sm mt-1 opacity-80">การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง</p></div></div>`;
         } else {
             if (failList.length > 0) {
-                html += `<div class="bg-red-50 border border-red-300 text-red-700 px-3 py-2 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-circle-xmark text-lg mr-2"></i><p class="font-bold text-sm">พบรายการ ไม่ผ่าน จำนวน ${failList.length} ข้อ</p></div><div class="space-y-2">`;
+                html += `<div class="bg-red-50/50 border border-red-200 text-red-700 p-4 rounded-xl mb-4 flex items-center shadow-sm"><div class="bg-red-100 p-2 rounded-full mr-3"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div><p class="font-bold text-sm md:text-base">พบรายการ ไม่ผ่าน จำนวน ${failList.length} ข้อ</p></div><div class="space-y-3">`;
                 failList.forEach(fail => {
-                    html += `<div class="bg-white border border-red-200 p-2 rounded-lg shadow-sm" style="page-break-inside: avoid; break-inside: avoid;"><p class="font-bold text-red-600 text-xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ข้อ ${fail.title}</p><div class="text-xs text-gray-700 mt-1 bg-gray-50 p-2 rounded border border-gray-100"><span class="font-semibold text-[10px]">หมายเหตุ:</span> ${fail.remark} ${fail.photoHtml}</div></div>`;
+                    html += `<div class="bg-white border border-red-100 p-4 rounded-xl shadow-sm" style="page-break-inside: avoid; break-inside: avoid;"><p class="font-bold text-red-600 text-sm"><i class="fa-solid fa-xmark mr-1.5 opacity-70"></i> ข้อ ${fail.title}</p><div class="text-sm text-slate-700 mt-3 bg-slate-50 p-3 rounded-lg border border-slate-100 leading-relaxed"><span class="font-semibold text-xs text-slate-500 uppercase tracking-wider block mb-1">หมายเหตุ:</span> ${fail.remark} ${fail.photoHtml}</div></div>`;
                 });
                 html += `</div>`;
             } else {
-                 html += `<div class="bg-blue-50 border border-blue-300 text-blue-700 px-4 py-3 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-info-circle text-xl mr-3"></i><p class="font-bold text-sm">ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)</p></div>`;
+                 html += `<div class="bg-blue-50/50 border border-blue-200 text-blue-700 p-4 rounded-xl mb-4 flex items-center shadow-sm"><div class="bg-blue-100 p-2 rounded-full mr-3"><i class="fa-solid fa-info text-lg px-1"></i></div><p class="font-bold text-sm md:text-base">ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)</p></div>`;
             }
             if (pendingCount > 0) {
-                html += `<p class="text-xs text-orange-600 mt-3 font-medium"><i class="fa-solid fa-clock mr-1"></i> * ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ</p>`;
+                html += `<div class="mt-4 p-3 bg-orange-50/50 border border-orange-100 rounded-lg inline-flex items-center gap-2"><i class="fa-regular fa-clock text-orange-500"></i><p class="text-sm text-orange-700 font-medium">ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ</p></div>`;
             }
         }
         this.DOM.summaryContent.innerHTML = html;
@@ -1000,7 +1045,7 @@ const App = {
 
         const btn = this.DOM.buttons.export;
         const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังสร้าง...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span class="hidden md:inline">กำลังสร้าง...</span>';
         btn.disabled = true;
 
         try {
