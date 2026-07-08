@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional FAT Inspection System</title>
+    <title>MDB Factory Acceptance Test (FAT) Checklist</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
@@ -18,72 +18,34 @@
         :root { 
             --mea-orange: #F37021; 
             --mea-orange-dark: #D95D13; 
-            --success: #16A34A;
-            --danger: #DC2626;
-            --warning: #F59E0B;
-            --bg-color: #F8FAFC;
         }
-        body { background: var(--bg-color); }
+        body { background: #f3f4f6; }
         
-        /* Safari/WebKit Compatibility Fixes - Hardware Acceleration to prevent disappearing DOM */
-        .webkit-render-fix {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            will-change: transform;
-        }
-
         /* Utility Classes */
         .mea-bg { background: var(--mea-orange); }
         .mea-text { color: var(--mea-orange); }
         .section-header { background: linear-gradient(135deg, var(--mea-orange), var(--mea-orange-dark)); }
-        .critical-header { background: linear-gradient(135deg, var(--danger), var(--mea-orange)); }
+        .critical-header { background: linear-gradient(135deg, #ef4444, #f37021); }
+        .radio-card { transition: all .2s ease; }
         
-        /* Card States & Transitions */
-        .check-item { transition: all 0.3s ease; border-left-width: 4px; }
-        .card-pending { border-left-color: #94A3B8; background-color: #ffffff; }
-        .card-pass { border-left-color: var(--success); background-color: #F0FDF4; border-color: #BBF7D0; }
-        .card-fail { border-left-color: var(--danger); background-color: #FEF2F2; border-color: #FECACA; }
+        /* State Classes */
+        .pass-selected { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: 600; }
+        .fail-selected { background: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: 600; }
         
-        .radio-card { transition: all 0.2s ease; }
-        .pass-selected { background: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.2); }
-        .fail-selected { background: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2); }
-        
-        /* Expandable Remark */
-        .remarks-container { overflow: hidden; transition: max-height 0.4s ease-in-out, opacity 0.4s; }
-        .remarks-required .remarks-input { border-color: var(--danger); background-color: #FFF5F5; }
-        
-        /* Floating Summary (Desktop Only) */
-        .floating-summary-card {
-            position: fixed;
-            top: 25%;
-            right: 1.5rem;
-            width: 220px;
-            z-index: 50;
-            opacity: 0.95;
-            transition: all 0.3s ease;
-            display: none !important; 
-            pointer-events: none !important;
-        }
-        @media (min-width: 1024px) { 
-            .floating-summary-card { 
-                display: block !important; 
-                pointer-events: auto !important;
-            } 
-        }
-        
-        /* Custom Modal */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); z-index: 999999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, backdrop-filter 0.3s; backdrop-filter: blur(4px); }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: white; border-radius: 1.25rem; transform: scale(0.95) translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); max-width: 480px; width: 92%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-
-        /* Floating UI Actions */
+        /* Floating UI */
         .floating-buttons {
-            position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 0.75rem; z-index: 100;
-            background: white; padding: 0.5rem 1rem; border-radius: 9999px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); border: 1px solid #E2E8F0;
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px; 
+            z-index: 99999;
+            opacity: 0.95; 
         }
         @media (min-width: 768px) {
-            .floating-buttons { left: auto; right: 2rem; transform: none; bottom: 2rem; flex-direction: column; align-items: flex-end; background: transparent; padding: 0; border-radius: 0; box-shadow: none; border: none; }
+            .floating-buttons { bottom: 24px; right: 24px; gap: 12px; opacity: 1; }
         }
 
         /* Hide Print Elements on Screen */
@@ -95,88 +57,158 @@
            2. Print Optimization & Safari Bug Fixes
            ========================================= */
         @media print {
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; overflow: visible !important; }
+            /* Global Print Resets - specifically targeting WebKit/Safari clipping bugs */
+            * { 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+                overflow: visible !important; 
+            }
             *::before, *::after { overflow: visible !important; }
             .overflow-hidden, .overflow-auto, .overflow-scroll { overflow: visible !important; }
+            
             @page { size: A4 portrait; margin: 10mm; }
-            body, html { height: auto !important; min-height: auto !important; display: block !important; position: static !important; background: white !important; }
+
+            /* Clear tailwind screen restrictions */
+            body, html { 
+                height: auto !important; 
+                min-height: auto !important; 
+                display: block !important; 
+                position: static !important; 
+                background: white !important; 
+            }
             
-            table, table.main-table, thead, tbody, tr, td { display: block !important; width: 100% !important; border-collapse: collapse !important; border: none !important; }
-            
+            /* Flatten Tables to Blocks - Fixes Safari Pagination/Clipping Bug */
+            table, table.main-table, thead, tbody, tr, td { 
+                display: block !important; 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                border: none !important; 
+            }
+
+            /* Display toggles */
             .screen-layout { display: none !important; }
             .print-layout { display: block !important; }
-            .no-print, .floating-buttons, .floating-summary-card { display: none !important; }
+            .no-print, .floating-buttons { display: none !important; }
             .print-only { display: block !important; }
             
+            /* Visual simplification */
             .shadow-lg, .shadow-sm, .shadow-md, .shadow-xl { box-shadow: none !important; border-radius: 0 !important; }
             .bg-white { background-color: white !important; border: 1px solid #ddd !important; border-radius: 4px !important; }
+            
             .print-header { display: block !important; margin-bottom: 12px !important; }
-            .w-full.max-w-5xl, .bg-white.rounded-2xl, .bg-white.rounded-xl { display: block !important; break-inside: auto !important; }
+            .print-footer { display: block !important; }
             
-            /* iOS Safari Print Fixes */
-            .modal-overlay, #modalValidation, #modalFinish { display: none !important; opacity: 0 !important; visibility: hidden !important; }
-            #summaryContent, .bg-gradient-to-r { display: block !important; overflow: visible !important; break-inside: avoid !important; page-break-inside: avoid !important; }
-            table.main-table:last-of-type { page-break-before: auto !important; break-before: auto !important; overflow: visible !important; height: auto !important; }
+            /* Container block enforcement */
+            .w-full.max-w-5xl, .bg-white.rounded-2xl, .bg-white.rounded-xl, #summaryContent {
+                display: block !important;
+                break-inside: auto !important;
+            }
             
-            .check-item-row { page-break-inside: avoid !important; break-inside: avoid !important; display: block !important; }
-            .check-item { display: block !important; width: 100% !important; page-break-inside: avoid !important; break-inside: avoid !important; -webkit-column-break-inside: avoid !important; padding: 8px 0 !important; border: none !important; border-bottom: 1px solid #e5e7eb !important; border-radius: 0 !important; }
-            .section-header-row { display: block !important; page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; break-after: avoid !important; }
-            .safe-page-break { display: block !important; page-break-before: always !important; break-before: page !important; width: 100% !important; height: 0px !important; border: none !important; clear: both !important; visibility: hidden; }
+            /* Checklist Item Layout */
+            .check-item-row { 
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                display: block !important;
+            }
+            .check-item { 
+                display: block !important; 
+                width: 100% !important;
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                -webkit-column-break-inside: avoid !important;
+                padding: 8px 0 !important; 
+                border: none !important; 
+                border-bottom: 1px solid #e5e7eb !important; 
+                border-radius: 0 !important; 
+                box-shadow: none !important; 
+            }
+
+            .section-header-row { 
+                display: block !important; 
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+                page-break-after: avoid !important; 
+                break-after: avoid !important; 
+            }
+            
+            /* Robust Page Break */
+            .safe-page-break {
+                display: block !important;
+                page-break-before: always !important;
+                break-before: page !important;
+                -webkit-break-before: always !important;
+                width: 100% !important;
+                height: 0px !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                clear: both !important;
+                visibility: hidden;
+            }
             
             td { padding-left: 0 !important; padding-right: 0 !important; }
+            
+            /* Typography Scaling */
             body, p, span, div, label, input, textarea { font-size: 14px !important; line-height: 1.4 !important; }
             h1.text-2xl, h1.text-3xl { font-size: 20px !important; margin: 0 !important;}
+            p.text-orange-100 { margin-top: 0 !important; font-size: 12px !important;}
             h2.text-xl { font-size: 16px !important; margin-bottom: 6px !important; }
             
+            /* Cover Layout Fixes */
             .print-cover-grid { display: flex !important; flex-direction: row !important; gap: 16px !important; width: 100% !important; }
             .print-cover-grid > div { flex: 1 !important; width: 33.33% !important; page-break-inside: avoid !important; }
-            input.cover-input { background-color: transparent !important; color: #111827 !important; border: none !important; border-bottom: 1px solid #9ca3af !important; border-radius: 0 !important; font-weight: 600 !important; padding-left: 0 !important; }
+            input.cover-input { 
+                background-color: transparent !important; color: #111827 !important; border: none !important; 
+                border-bottom: 1px solid #9ca3af !important; border-radius: 0 !important; font-weight: 600 !important; 
+                box-shadow: none !important; padding-left: 0 !important; 
+            }
             
-            .hero-banner-content { display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; text-align: left !important; }
+            /* Hero Banner Restructuring */
+            .hero-banner-content { 
+                display: flex !important; flex-direction: row !important; justify-content: space-between !important; 
+                align-items: center !important; text-align: left !important;
+            }
             .hero-banner-text { text-align: left !important; width: 100% !important; }
             .hero-banner-text h1 { font-size: 26px !important; line-height: 1.3 !important; margin-bottom: 6px !important; }
-            .hero-banner-icon { display: none !important; }
-            
+            .hero-banner-text p { font-size: 16px !important; justify-content: flex-start !important; margin-top: 4px !important;}
+            .hero-banner-tag { font-size: 12px !important; padding: 4px 12px !important; margin-bottom: 8px !important; display: inline-block !important; }
+            .hero-banner-icon { width: 90px !important; height: 90px !important; flex-shrink: 0 !important; margin-left: 16px !important; }
+            .hero-banner-icon i { font-size: 45px !important; }
+
+            /* Checklist Item Grid Enforcement */
             .check-item .grid { display: flex !important; width: 100%; justify-content: space-between; align-items: flex-start; flex-direction: row; }
             .md\:col-span-1 { width: 8%; flex-shrink: 0; font-weight: bold; }
             .md\:col-span-6 { width: 50%; flex-grow: 1; padding-right: 8px; font-weight: 500; }
             .md\:col-span-2 { width: 18%; flex-shrink: 0; font-size: 12px !important;}
             .md\:col-span-3 { width: 24%; flex-shrink: 0; display: flex; justify-content: flex-end;}
             
+            /* Remarks & Radio Print Styles */
             .remarks-container { margin-top: 6px !important; padding-top: 6px !important; border-top: 1px dashed #e5e7eb !important; width: 100%; overflow: visible !important;}
             .remarks-container textarea { color: #4b5563; font-style: italic; border: none !important; background: transparent !important; resize: none !important;}
-            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
             
+            .section-header, .critical-header { padding: 8px 12px !important; border-radius: 4px !important; margin-top: 10px !important; }
+            .section-header h2, .critical-header h2 { font-size: 15px !important; margin-bottom: 0 !important;}
+            .bg-white.text-gray-700.w-8.h-8 { width: 18px !important; height: 18px !important; }
+
             .print-radio-container { display: flex; gap: 8px; justify-content: flex-end; }
-            .print-radio-box { border: 1px solid #d1d5db; border-radius: 5px; padding: 4px 12px; font-size: 12px !important; display: flex; align-items: center; gap: 5px; color: #6b7280; background-color: #f9fafb; white-space: nowrap !important; }
+            .print-radio-box { 
+                border: 1px solid #d1d5db; border-radius: 5px; padding: 4px 12px; font-size: 12px !important; 
+                display: flex; align-items: center; gap: 5px; color: #6b7280; background-color: #f9fafb; white-space: nowrap !important;
+            }
+            .print-radio-box i { font-size: 11px !important; }
             .print-radio-box.print-pass { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d !important; font-weight: bold; }
             .print-radio-box.print-fail { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c !important; font-weight: bold; }
             .print-radio-box.inactive { opacity: 0.4; border-color: #e5e7eb !important; background-color: transparent !important;}
             
             .print-images-container img { max-height: 160px !important; width: auto !important; max-width: 100% !important; margin-top: 6px !important; object-fit: contain; }
+            .print-header div { font-size: 12px !important; }
+            img[alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า"] { height: 80px !important; }
         }
     </style>
 </head>
-<body class="min-h-screen pb-24 md:pb-10">
+<body class="min-h-screen pb-10">
 
-<div class="max-w-5xl mx-auto px-4 pt-4 no-print webkit-render-fix">
-    <div class="flex flex-col md:flex-row items-center justify-between bg-white px-5 py-3 rounded-2xl shadow-sm border border-gray-100 gap-4">
-        <div class="flex items-center w-full md:w-auto overflow-x-auto gap-2 md:gap-4 pb-1 md:pb-0 font-semibold text-xs md:text-sm text-gray-400 no-scrollbar">
-            <span class="text-orange-500 whitespace-nowrap"><i class="fa-solid fa-circle-1 mr-1"></i> Dashboard</span>
-            <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
-            <span class="text-gray-700 whitespace-nowrap"><i class="fa-solid fa-circle-2 mr-1"></i> Inspection</span>
-            <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
-            <span class="text-gray-400 whitespace-nowrap"><i class="fa-solid fa-circle-3 mr-1"></i> Review</span>
-            <i class="fa-solid fa-chevron-right text-gray-300 text-[10px]"></i>
-            <span class="text-gray-400 whitespace-nowrap"><i class="fa-solid fa-circle-4 mr-1"></i> Export</span>
-        </div>
-        <div class="flex items-center gap-2 text-[11px] md:text-xs font-semibold bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100 text-gray-500 whitespace-nowrap shadow-inner transition-colors duration-300" id="autoSaveContainer">
-            <i class="fa-solid fa-cloud-arrow-up text-green-500"></i> <span id="autoSaveIndicator">Draft Auto-Saved</span>
-        </div>
-    </div>
-</div>
-
-<table class="main-table w-full max-w-5xl mx-auto mt-4 webkit-render-fix">
+<table class="main-table w-full max-w-5xl mx-auto mt-4">
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-4 px-4 md:px-0">
@@ -190,63 +222,82 @@
     </thead>
     <tbody>
         <tr>
-            <td class="pb-2 pt-0 px-4 md:px-0 mt-4 block">
-                <div class="bg-white rounded-3xl shadow-xl border border-gray-100 relative print-no-overflow">
-                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10 rounded-t-3xl"></div>
+            <td class="pt-6 pb-6 px-4 md:px-0 text-center">
+                <img src="logo ฝ่าย.png" alt="โลโก้ฝ่ายธุรกิจบริการและคุณภาพไฟฟ้า" class="mx-auto h-24 md:h-32 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
+            </td>
+        </tr>
+        <tr>
+            <td class="pb-2 pt-0 px-4 md:px-0">
+                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden relative">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 z-10"></div>
                     
-                    <div class="bg-gradient-to-br from-[#0F172A] to-[#1E293B] text-white p-6 md:p-10 relative overflow-hidden rounded-t-3xl">
-                        <div class="absolute -right-10 -bottom-10 opacity-10">
-                            <i class="fa-solid fa-bolt-lightning text-[15rem] transform -rotate-12"></i>
-                        </div>
+                    <div class="bg-gradient-to-br from-orange-500 to-[#D95D13] text-white p-8 relative overflow-hidden">
+                        <i class="fa-solid fa-bolt-lightning absolute -right-6 -top-6 text-9xl text-white opacity-10 transform rotate-12"></i>
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10 hero-banner-content">
                             <div class="hero-banner-text text-center md:text-left">
-                                <div class="inline-block bg-orange-500 text-white px-3 py-1 rounded-md text-[10px] md:text-xs font-bold tracking-wider mb-4 shadow-lg border border-orange-400">
-                                    <i class="fa-solid fa-microchip mr-1"></i> FAT INSPECTION SYSTEM
+                                <div class="hero-banner-tag inline-block bg-orange-400/30 backdrop-blur-sm px-3 py-1 rounded-full text-orange-50 text-[10px] md:text-xs font-semibold tracking-wider mb-3 border border-orange-400/50 shadow-sm">
+                                    <i class="fa-solid fa-microchip mr-1"></i> FACTORY ACCEPTANCE TEST
                                 </div>
-                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white m-0">Factory Acceptance Test</h1>
-                                <p class="text-gray-400 mt-2 font-medium flex items-center justify-center md:justify-start gap-2 m-0 text-sm md:text-base">
-                                    Main Distribution Board (MDB) Checklist
+                                <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white drop-shadow-sm m-0">Check list ตรวจสอบตู้ MDB ที่โรงงาน</h1>
+                                <p class="text-orange-100 mt-2 font-medium flex items-center justify-center md:justify-start gap-2 m-0">
+                                    <i class="fa-solid fa-shield-halved opacity-80"></i> Main Distribution Board (MDB) Factory Test
                                 </p>
                             </div>
-                            <div class="hero-banner-icon bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-xl border border-orange-300/30 transform hover:scale-105 transition-transform">
+                            <div class="hero-banner-icon bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-inner">
                                 <i class="fa-solid fa-clipboard-check text-4xl md:text-5xl text-white drop-shadow-md"></i>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="p-6 md:p-8 bg-white relative z-20 rounded-b-3xl">
+                    <div class="p-6 md:p-8 bg-gray-50/50">
                         <div class="grid md:grid-cols-3 gap-5 md:gap-6 print-cover-grid">
-                            
-                            <div class="bg-[#F8FAFC] p-4 md:p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-500 transition-all group-hover:w-1.5"></div>
-                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-building-flag text-orange-500 text-sm"></i> Project / MDB No.
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-signature text-orange-400 text-sm"></i> Reference Spec
                                 </label>
-                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border-b-2 border-gray-300 hover:border-orange-400 rounded-t-lg px-3 py-2 bg-white focus:bg-orange-50/50 focus:outline-none focus:border-orange-500 transition-colors font-semibold text-gray-800 ml-1 shadow-sm">
-                            </div>
-
-                            <div class="bg-[#F8FAFC] p-4 md:p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 transition-all group-hover:w-1.5"></div>
-                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-user-check text-blue-500 text-sm"></i> ผู้ตรวจสอบ (Inspector)
-                                </label>
-                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-300 hover:border-blue-400 rounded-t-lg px-3 py-2 bg-white focus:bg-blue-50/50 focus:outline-none focus:border-blue-500 transition-colors font-semibold text-gray-800 ml-1 shadow-sm">
-                            </div>
-
-                            <div class="bg-[#F8FAFC] p-4 md:p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                                <div class="absolute top-0 left-0 w-1 h-full bg-green-500 transition-all group-hover:w-1.5"></div>
-                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
-                                    <i class="fa-solid fa-file-signature text-green-500 text-sm"></i> Reference Spec
-                                </label>
-                                <div class="flex gap-2 mt-2 ml-1">
-                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-3 py-2 bg-gray-100 text-gray-500 font-semibold cursor-not-allowed focus:outline-none rounded-t-lg cover-input shadow-sm">
-                                    <a href="#" class="bg-white hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center border border-gray-300 shadow-sm no-print" title="ดาวน์โหลด Spec">
-                                        <i class="fa-solid fa-download"></i>
+                                <div class="flex gap-2 mt-2">
+                                    <input type="text" id="referenceSpec" value="BQD-3042" readonly class="w-full border-b-2 border-gray-200 px-2 py-2 bg-gray-50 text-gray-600 font-semibold cursor-not-allowed focus:outline-none rounded-t-md cover-input">
+                                    <a href="BQD-3042.pdf" download="BQD-3042.pdf" class="bg-orange-50 hover:bg-orange-500 hover:text-white text-orange-600 px-3 md:px-4 py-2 rounded-lg transition-all whitespace-nowrap flex items-center justify-center gap-2 no-print font-medium border border-orange-200 hover:border-orange-500 shadow-sm" style="text-decoration: none;">
+                                        <i class="fa-solid fa-download"></i> <span class="hidden md:inline">โหลดไฟล์</span>
                                     </a>
                                 </div>
                             </div>
-                            
+
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-orange-100 shadow-sm hover:shadow-md transition-shadow ring-1 ring-orange-500/10 relative overflow-hidden">
+                                <div class="absolute top-0 left-0 w-1 h-full bg-orange-400"></div>
+                                <label class="text-[11px] md:text-xs font-bold text-orange-600 uppercase tracking-wider mb-2 flex items-center gap-2 pl-2">
+                                    <i class="fa-solid fa-user-check text-sm"></i> ผู้ตรวจสอบ (Inspector)
+                                </label>
+                                <input type="text" id="inspectorName" placeholder="ระบุชื่อผู้ตรวจสอบ..." class="cover-input w-full mt-2 border-b-2 border-gray-200 hover:border-orange-300 rounded-t-md px-2 py-2 bg-gray-50 focus:bg-orange-50 focus:outline-none focus:border-orange-500 transition-colors font-medium text-gray-800 ml-1">
+                            </div>
+
+                            <div class="bg-white p-4 md:p-5 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                <label class="text-[11px] md:text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-building-flag text-orange-400 text-sm"></i> Project / MDB No.
+                                </label>
+                                <input type="text" id="projectNo" placeholder="ระบุชื่อหรือรหัสโครงการ..." class="cover-input w-full mt-2 border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all font-medium text-gray-800 shadow-inner">
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="pt-6 pb-2 px-4 md:px-0">
+                <div class="w-full bg-white md:bg-gray-50 border-l-4 border-orange-500 rounded-r-xl shadow-sm p-5 text-left flex flex-col md:flex-row items-center md:items-start gap-4">
+                    <div class="bg-orange-100 p-3 rounded-full text-orange-600 hidden md:block">
+                        <i class="fa-solid fa-book-open-reader text-xl"></i>
+                    </div>
+                    <div class="w-full">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-relaxed mb-1">
+                            ข้อกำหนดคุณลักษณะเฉพาะหมายเลข BQD-3042
+                        </h2>
+                        <h3 class="text-base md:text-lg font-bold text-gray-700 leading-relaxed mb-1">
+                            ตู้แผงสวิตช์รวม (Main Distribution Board)
+                        </h3>
+                        <p class="text-sm md:text-base text-gray-500 font-medium bg-white border border-gray-200 shadow-sm inline-block px-3 py-1 rounded-md mt-1">
+                            (Type II : Non Design Verification Test)
+                        </p>
                     </div>
                 </div>
             </td>
@@ -254,39 +305,11 @@
     </tbody>
 </table>
 
-<div class="max-w-5xl mx-auto px-4 mt-4 no-print webkit-render-fix">
-    <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex w-full md:w-auto justify-between md:justify-start gap-4 md:gap-8 divide-x divide-gray-100">
-            <div class="text-center md:text-left px-2">
-                <div class="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-list-check"></i> Completed</div>
-                <div class="text-xl md:text-2xl font-bold text-gray-800"><span id="topProgCompleted">0</span><span class="text-gray-400 text-lg">/<span id="topProgTotal">0</span></span></div>
-            </div>
-            <div class="text-center md:text-left pl-4 md:pl-8">
-                <div class="text-[10px] md:text-xs text-green-500 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-check"></i> PASS</div>
-                <div class="text-xl md:text-2xl font-bold text-green-600" id="topProgPass">0</div>
-            </div>
-            <div class="text-center md:text-left pl-4 md:pl-8">
-                <div class="text-[10px] md:text-xs text-red-500 font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-xmark"></i> FAIL</div>
-                <div class="text-xl md:text-2xl font-bold text-red-600" id="topProgFail">0</div>
-            </div>
-        </div>
-        <div class="w-full md:w-1/3 bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <div class="flex justify-between text-xs font-bold text-gray-500 mb-2">
-                <span><i class="fa-solid fa-bars-progress mr-1 text-orange-500"></i> Overall Progress</span> 
-                <span id="topProgPercent" class="text-orange-600 font-extrabold">0%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden shadow-inner">
-                <div id="topProgBar" class="bg-gradient-to-r from-orange-400 to-orange-600 h-2.5 rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="checklistContainer" class="mt-4 webkit-render-fix"></div>
+<div id="checklistContainer"></div>
 
 <div class="safe-page-break print-only"></div>
 
-<table class="main-table w-full max-w-5xl mx-auto mt-6 webkit-render-fix">
+<table class="main-table w-full max-w-5xl mx-auto mt-6 md:mt-0">
     <thead class="print-header">
         <tr>
             <td class="pb-2 pt-2 px-4 md:px-0">
@@ -301,40 +324,28 @@
     <tbody>
         <tr>
             <td class="pt-4 pb-4 px-4 md:px-0">
-                <div class="bg-white rounded-3xl shadow-xl border border-gray-200 print-no-overflow" id="summaryWrapper">
-                    <div class="bg-gradient-to-r from-[#1E293B] to-[#334155] p-6 text-white border-b-4 border-orange-500 rounded-t-3xl">
-                        <h2 class="text-xl md:text-2xl font-bold flex items-center gap-3 m-0">
-                            <i class="fa-solid fa-clipboard-list text-orange-400"></i>
-                            สรุปผลการตรวจสอบ (Inspection Summary) 
-                        </h2>
+                <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                    <h2 class="text-xl font-bold mb-4 mea-text border-b pb-3 flex justify-between items-center">
+                        <div>
+                            <i class="fa-solid fa-clipboard-check mr-2"></i>
+                            สรุปการตรวจสอบ (Summary Report) 
+                            <span class="text-gray-700 text-lg font-medium ml-2 hidden md:inline">โดย <span class="displayInspectorName mea-text"></span></span>
+                        </div>
+                    </h2>
+                    
+                    <div class="flex flex-col md:flex-row justify-between md:items-center gap-2 mb-4 bg-orange-50 p-3 rounded-lg border border-orange-200 shadow-inner">
+                        <div class="text-xs">
+                            <span class="font-semibold text-gray-600">Project / MDB No:</span> 
+                            <span class="displaySummaryProject text-mea-orange font-bold text-base ml-1">-</span>
+                        </div>
+                        <div class="text-xs">
+                            <span class="font-semibold text-gray-600">วันที่ประเมิน:</span> 
+                            <span class="displayTimestamp text-mea-orange font-bold ml-1">-</span>
+                        </div>
                     </div>
                     
-                    <div class="p-6">
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                                <p class="text-xs text-gray-500 font-bold uppercase mb-1">Project No.</p>
-                                <p class="displaySummaryProject font-bold text-gray-800 text-lg truncate">-</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                                <p class="text-xs text-gray-500 font-bold uppercase mb-1">Inspector</p>
-                                <p class="displayInspectorName font-bold text-gray-800 text-lg truncate">-</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                                <p class="text-xs text-gray-500 font-bold uppercase mb-1">Total Items</p>
-                                <p id="sumTotal" class="font-bold text-blue-600 text-xl">0</p>
-                            </div>
-                            <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 text-center">
-                                <p class="text-xs text-gray-500 font-bold uppercase mb-1">Inspection Date</p>
-                                <p class="displayTimestamp font-bold text-gray-800 text-sm mt-1">-</p>
-                            </div>
-                        </div>
-                        
-                        <div id="summaryContent" class="bg-gray-50/50 rounded-2xl border border-gray-100 p-4 md:p-6 min-h-[150px]">
-                            <div class="flex flex-col items-center justify-center text-gray-400 py-8">
-                                <i class="fa-solid fa-tasks text-4xl mb-3 opacity-50"></i>
-                                <p class="text-sm font-medium">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>
-                            </div>
-                        </div>
+                    <div id="summaryContent" class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>
                     </div>
                 </div>
             </td>
@@ -342,99 +353,27 @@
     </tbody>
 </table>
 
-<div class="floating-summary-card bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden no-print webkit-render-fix">
-    <div class="bg-[#1E293B] text-white p-3 text-center border-b-[3px] border-orange-500">
-        <h3 class="text-sm font-bold tracking-wide"><i class="fa-solid fa-chart-pie mr-2 text-orange-400"></i>LIVE STATUS</h3>
-    </div>
-    <div class="p-4 space-y-3">
-        <div class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
-            <span class="text-gray-500 font-semibold"><i class="fa-solid fa-check text-green-500 mr-1"></i> PASS</span>
-            <span class="font-bold text-green-600 text-lg" id="floatPass">0</span>
-        </div>
-        <div class="flex justify-between items-center text-sm border-b border-gray-50 pb-2">
-            <span class="text-gray-500 font-semibold"><i class="fa-solid fa-xmark text-red-500 mr-1"></i> FAIL</span>
-            <span class="font-bold text-red-600 text-lg" id="floatFail">0</span>
-        </div>
-        <div class="flex justify-between items-center text-sm pb-1">
-            <span class="text-gray-500 font-semibold"><i class="fa-solid fa-hourglass-half text-orange-400 mr-1"></i> Remain</span>
-            <span class="font-bold text-orange-500 text-lg" id="floatRemain">0</span>
-        </div>
-        <div class="pt-2 border-t border-gray-100">
-            <div class="flex justify-between text-xs font-bold text-gray-400 mb-1">
-                <span>Progress</span> <span id="floatPercent" class="text-gray-700">0%</span>
-            </div>
-            <div class="w-full bg-gray-100 rounded-full h-1.5">
-                <div id="floatBar" class="bg-orange-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="floating-buttons no-print">
-    <button id="btnClear" class="bg-white hover:bg-gray-50 text-red-500 border border-red-200 md:border-transparent md:bg-red-50 md:text-red-600 md:hover:bg-red-100 w-12 h-12 md:w-auto md:h-auto md:px-6 md:py-3 rounded-full shadow-sm md:shadow-lg font-bold flex items-center justify-center gap-2 transition-all">
-        <i class="fa-solid fa-trash-can text-lg"></i> <span class="hidden md:inline">ล้างข้อมูล</span>
+    <button id="btnExport" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
+        <i class="fa-solid fa-file-excel text-sm md:text-xl"></i> ดาวน์โหลด Excel
     </button>
-    <button id="btnPrint" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 md:border-transparent md:bg-[#1E293B] md:text-white md:hover:bg-[#0F172A] w-12 h-12 md:w-auto md:h-auto md:px-6 md:py-3 rounded-full shadow-sm md:shadow-lg font-bold flex items-center justify-center gap-2 transition-all">
-        <i class="fa-solid fa-print text-lg md:text-orange-400"></i> <span class="hidden md:inline">พิมพ์ / PDF</span>
+    <button id="btnPrint" class="mea-bg hover:opacity-90 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
+        <i class="fa-solid fa-print text-sm md:text-xl"></i> พิมพ์ / PDF
     </button>
-    <button id="btnExport" class="bg-orange-500 hover:bg-orange-600 text-white md:px-8 md:py-4 w-auto px-6 py-3 rounded-full shadow-lg font-bold flex items-center justify-center gap-2 text-sm md:text-base transition-all transform hover:scale-105 border border-orange-400">
-        <i class="fa-solid fa-file-excel text-lg"></i> <span>ดาวน์โหลด Report</span>
+    <button id="btnClear" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg font-semibold flex items-center justify-center gap-2 text-xs md:text-base transition-all">
+        <i class="fa-solid fa-trash text-sm md:text-xl"></i> ล้างข้อมูล
     </button>
-</div>
-
-<div id="modalValidation" class="modal-overlay">
-    <div class="modal-content">
-        <div class="p-6 border-b border-gray-100 bg-red-50 rounded-t-xl flex justify-between items-center">
-            <h3 class="text-lg font-bold text-red-700 flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-xl"></i> ไม่สามารถดำเนินการได้</h3>
-            <button onclick="UI.hideModal('modalValidation')" class="text-red-400 hover:text-red-700"><i class="fa-solid fa-times text-xl"></i></button>
-        </div>
-        <div class="p-6 text-gray-700">
-            <p class="mb-4 font-medium text-sm">กรุณาตรวจสอบและแก้ไขข้อมูลดังต่อไปนี้ก่อนทำการ Export/Print:</p>
-            <ul id="validationErrorList" class="space-y-2 text-sm text-red-600 bg-white border border-red-100 p-4 rounded-lg list-disc pl-6 shadow-inner">
-                </ul>
-        </div>
-        <div class="p-4 bg-gray-50 rounded-b-xl flex justify-end">
-            <button onclick="UI.hideModal('modalValidation')" class="bg-gray-800 hover:bg-black text-white px-6 py-2.5 rounded-lg font-semibold shadow-md transition-colors">รับทราบและกลับไปแก้ไข</button>
-        </div>
-    </div>
-</div>
-
-<div id="modalFinish" class="modal-overlay">
-    <div class="modal-content text-center pt-8">
-        <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg">
-            <i class="fa-solid fa-check text-4xl"></i>
-        </div>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">Inspection Completed!</h3>
-        <p class="text-gray-500 font-medium mb-6 px-6">ไฟล์สรุปผลการตรวจสอบได้ถูกสร้างและดาวน์โหลดเรียบร้อยแล้ว</p>
-        
-        <div class="bg-gray-50 p-6 rounded-b-xl flex flex-col gap-3">
-            <button onclick="Core.clearData()" class="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-all flex justify-center items-center gap-2">
-                <i class="fa-solid fa-plus-circle"></i> Start New Inspection
-            </button>
-            <button onclick="UI.hideModal('modalFinish')" class="w-full bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 px-6 py-3 rounded-xl font-semibold shadow-sm transition-colors flex justify-center items-center gap-2">
-                <i class="fa-solid fa-pen-to-square"></i> Continue Editing
-            </button>
-        </div>
-    </div>
 </div>
 
 <script>
-/**
- * Professional FAT Inspection System - Refactored Code
- * - Separated logic into logical modules (Config, Utils, DataStore, UI, Export, Core).
- * - Improved performance using event delegation and debounced inputs.
- * - Reduced repeated DOM reads by centralizing State.
- * - Fixed Safari specific rendering issues during print and standard view.
- */
-
-// --- 1. Constants & Configuration ---
+// --- Constants & Configuration ---
 const CONFIG = {
     STORAGE_KEY: "mdb_fat_checklist",
-    MAX_IMAGE_WIDTH: 800,
-    IMAGE_COMPRESSION_QUALITY: 0.7,
-    DEFAULT_SPEC: "BQD-3042"
+    MAX_IMAGE_WIDTH: 600,
+    IMAGE_COMPRESSION_QUALITY: 0.6
 };
 
+// Data Schema
 const SECTIONS_DATA = [
     {
         title:"Section 1 : การตรวจสอบโครงสร้างและตู้ (Enclosure & Structure)",
@@ -515,181 +454,55 @@ const SECTIONS_DATA = [
     }
 ];
 
-// --- 2. Utility Functions ---
-const Utils = {
-    escapeHTML: (str) => str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)),
-    
-    debounce: (func, delay) => {
-        let timeoutId;
-        return (...args) => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func(...args), delay);
-        };
-    },
-    
-    generateId: () => 'img_' + Math.random().toString(36).substring(2, 11),
-
-    resizeTextarea: (el) => {
-        if (!el) return;
-        el.style.height = "auto";
-        el.style.height = el.scrollHeight + "px";
-    },
-
-    processImageFile: (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement("canvas");
-                    let scale = CONFIG.MAX_IMAGE_WIDTH / img.width;
-                    if (scale > 1) scale = 1; 
-                    
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-                    
-                    const ctx = canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    resolve(canvas.toDataURL("image/jpeg", CONFIG.IMAGE_COMPRESSION_QUALITY));
-                };
-                img.onerror = reject;
-                img.src = event.target.result;
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
-};
-
-// --- 3. Centralized Application State ---
-const State = {
-    data: {
-        referenceSpec: CONFIG.DEFAULT_SPEC,
-        projectNo: "",
-        inspector: "",
-        remarks: [], // Maintained array schema for backward compatibility
-        radios: {},
-        photos: {} 
-    },
-    
-    totalItems: 0,
-    checkItemsMap: [], // Fast mapping from array index to radioName
-
-    initSchema() {
-        let count = 0;
-        SECTIONS_DATA.forEach((section, sIdx) => {
-            section.items.forEach((item, iIdx) => {
-                const radioName = `section${sIdx}_item${iIdx}`;
-                this.checkItemsMap.push(radioName);
-                if(this.data.remarks.length <= count) this.data.remarks.push("");
-                count++;
-            });
-        });
-        this.totalItems = count;
-    },
-
-    syncFromDOM() {
-        // Read directly from DOM to sync any loose ends
-        this.data.projectNo = document.getElementById("projectNo")?.value || "";
-        this.data.inspector = document.getElementById("inspectorName")?.value || "";
-        this.data.referenceSpec = document.getElementById("referenceSpec")?.value || CONFIG.DEFAULT_SPEC;
-        
-        DOMCache.checkItems.forEach((item, idx) => {
-            const radioName = item.dataset.radioname;
-            const textarea = item.querySelector('.remarks-input');
-            const checkedRadio = item.querySelector(`input[name="${radioName}"]:checked`);
-            const imgs = item.querySelectorAll('.preview-img');
-            
-            this.data.remarks[idx] = textarea ? textarea.value : "";
-            if (checkedRadio) this.data.radios[radioName] = checkedRadio.value;
-            
-            if (imgs.length > 0) {
-                this.data.photos[radioName] = Array.from(imgs).map(img => img.src);
-            } else {
-                delete this.data.photos[radioName];
-            }
-        });
-    }
-};
-
-// --- 4. DOM Cache ---
-const DOMCache = {
-    init() {
-        this.checklistContainer = document.getElementById("checklistContainer");
-        this.summaryContent = document.getElementById("summaryContent");
-        
-        this.inputs = {
+// --- Core Application Logic ---
+const App = {
+    DOM: {
+        checklistContainer: document.getElementById("checklistContainer"),
+        summaryContent: document.getElementById("summaryContent"),
+        inputs: {
             inspector: document.getElementById("inspectorName"),
             project: document.getElementById("projectNo"),
             refSpec: document.getElementById("referenceSpec")
-        };
-        
-        this.displays = {
+        },
+        displays: {
             inspectors: document.querySelectorAll(".displayInspectorName"),
             projects: document.querySelectorAll(".displaySummaryProject"),
             timestamps: document.querySelectorAll(".displayTimestamp")
-        };
-        
-        this.buttons = {
+        },
+        buttons: {
             export: document.getElementById("btnExport"),
             print: document.getElementById("btnPrint"),
             clear: document.getElementById("btnClear")
-        };
-        
-        this.autoSave = document.getElementById("autoSaveContainer");
-    },
-    
-    cacheCheckItems() {
-        this.checkItems = document.querySelectorAll('.check-item');
-    }
-};
-
-// --- 5. Storage Manager ---
-const DataStore = {
-    save() {
-        State.syncFromDOM();
-        try {
-            localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(State.data));
-            UI.showAutoSaveIndicator();
-        } catch (e) {
-            if (e.name === 'QuotaExceededError') console.warn("Local storage full");
         }
     },
 
-    load() {
-        const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
-        if (!saved) return false;
+    init() {
+        this.renderChecklist();
+        this.bindEvents();
+        this.loadState();
+        this.updateTime();
         
-        try {
-            const parsed = JSON.parse(saved);
-            State.data = { ...State.data, ...parsed };
-            return true;
-        } catch (e) {
-            console.error("Failed to parse local storage data");
-            return false;
-        }
-    }
-};
+        // Refresh time every minute
+        setInterval(() => this.updateTime(), 60000);
+    },
 
-// --- 6. UI & Rendering Manager ---
-const UI = {
+    // --- Rendering Logic ---
     renderChecklist() {
         let fullHtml = ""; 
         SECTIONS_DATA.forEach((section, sIndex) => {
             fullHtml += `<div class="safe-page-break print-only"></div>`;
             fullHtml += this.buildSectionHeader(section, sIndex);
-            section.items.forEach((item, iIndex) => {
-                fullHtml += this.buildChecklistItem(item, sIndex, iIndex);
+            section.items.forEach((item, i) => {
+                fullHtml += this.buildChecklistItem(item, sIndex, i);
             });
             fullHtml += `</tbody></table>`;
         });
-        DOMCache.checklistContainer.innerHTML = fullHtml;
-        DOMCache.cacheCheckItems(); // Cache DOM elements after rendering
+        this.DOM.checklistContainer.innerHTML = fullHtml;
     },
 
     buildSectionHeader(section, index) {
         return `
-        <table class="main-table w-full max-w-5xl mx-auto ${index > 0 ? 'mt-6' : 'mt-4'} webkit-render-fix">
+        <table class="main-table w-full max-w-5xl mx-auto ${index > 0 ? 'mt-6 md:mt-0' : 'mt-2 md:mt-4'}">
             <thead class="print-header">
                 <tr>
                     <td class="pb-2 pt-2 px-4 md:px-0">
@@ -703,17 +516,17 @@ const UI = {
             </thead>
             <tbody>
                 <tr class="section-header-row">
-                    <td class="pb-3 pt-2 px-4 md:px-0">
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden page-break-safe">
-                            <div class=" ${section.critical ? 'critical-header' : 'section-header'} text-white p-4">
-                                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-0">
-                                    <h2 class="font-bold text-lg md:text-xl flex items-center gap-3 m-0">
-                                        <div class="bg-white/20 backdrop-blur-sm text-white w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center shadow-inner border border-white/30">
-                                            <i class="fa-solid ${section.icon} text-sm md:text-base drop-shadow-sm"></i>
+                    <td class="pb-2 pt-2 px-4 md:px-0">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class=" ${section.critical ? 'critical-header' : 'section-header'} text-white p-3">
+                                <div class="flex items-center justify-between">
+                                    <h2 class="font-bold text-lg flex items-center gap-3 m-0">
+                                        <div class="bg-white text-gray-700 w-6 h-6 md:w-8 md:h-8 rounded flex items-center justify-center shadow-sm">
+                                            <i class="fa-solid ${section.icon} text-xs md:text-sm"></i>
                                         </div>
                                         ${section.title}
                                     </h2>
-                                    ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold shadow-md flex items-center gap-1 border border-red-100"><i class="fa-solid fa-triangle-exclamation"></i> CRITICAL TEST</span>' : ''}
+                                    ${section.critical ? '<span class="bg-white text-red-600 px-3 py-1 rounded-full text-[10px] md:text-xs font-bold shadow-sm">CRITICAL TEST</span>' : ''}
                                 </div>
                             </div>
                         </div>
@@ -727,23 +540,23 @@ const UI = {
         const specHtml = item[2].replace(/\n/g, '<br>');
         
         return `
-        <tr class="check-item-row page-break-safe">
-            <td class="pb-3 px-4 md:px-0">
-                <div class="check-item card-pending bg-white border border-gray-200 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 relative" data-radioname="${radioName}">
-                    <div class="grid md:grid-cols-12 gap-3 items-start">
-                        <div class="md:col-span-1"><span class="font-bold text-lg md:text-xl text-gray-800 bg-gray-100 px-2 py-1 rounded-md border border-gray-200">${item[0]}</span></div>
-                        <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug mt-1">${descHtml}</div></div>
-                        <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug bg-blue-50/50 p-2 rounded-lg inline-block w-full border border-blue-100/50 mt-1">${specHtml}</span></div>
+        <tr class="check-item-row">
+            <td class="pb-2 px-4 md:px-0">
+                <div class="check-item bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-md transition-shadow" data-radioname="${radioName}">
+                    <div class="grid md:grid-cols-12 gap-2 items-start">
+                        <div class="md:col-span-1"><span class="font-bold text-base md:text-lg text-gray-800">${item[0]}</span></div>
+                        <div class="md:col-span-6"><div class="font-medium text-gray-800 leading-snug">${descHtml}</div></div>
+                        <div class="md:col-span-2"><span class="text-xs text-gray-500 leading-snug bg-gray-50 p-1.5 rounded inline-block w-full border border-gray-100">${specHtml}</span></div>
                         
-                        <div class="md:col-span-3 screen-layout mt-2 md:mt-0">
+                        <div class="md:col-span-3 screen-layout">
                             <div class="flex gap-2">
-                                <label class="radio-card pass-option border border-gray-300 rounded-xl px-2 py-2 md:px-3 md:py-2.5 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-green-50 text-sm shadow-sm flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+                                <label class="radio-card pass-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
                                     <input type="radio" name="${radioName}" value="Pass" class="sr-only">
-                                    <i class="fa-solid fa-circle-check text-lg md:text-base opacity-70"></i> <span>ผ่าน</span>
+                                    <i class="fa-solid fa-circle-check"></i> ผ่าน
                                 </label>
-                                <label class="radio-card fail-option border border-gray-300 rounded-xl px-2 py-2 md:px-3 md:py-2.5 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-red-50 text-sm shadow-sm flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+                                <label class="radio-card fail-option border border-gray-300 rounded-lg px-2 py-1.5 md:px-3 md:py-2 cursor-pointer flex-1 text-center bg-gray-50 hover:bg-gray-100 text-sm shadow-sm">
                                     <input type="radio" name="${radioName}" value="Fail" class="sr-only">
-                                    <i class="fa-solid fa-circle-xmark text-lg md:text-base opacity-70"></i> <span>ไม่ผ่าน</span>
+                                    <i class="fa-solid fa-circle-xmark"></i> ไม่ผ่าน
                                 </label>
                             </div>
                         </div>
@@ -756,26 +569,24 @@ const UI = {
                         </div>
                     </div>
                     
-                    <div class="remarks-container screen-layout mt-4 pt-3 border-t border-dashed border-gray-200">
-                        <label class="block text-[11px] md:text-xs font-bold text-gray-500 mb-1 uppercase tracking-wider flex justify-between items-center">
-                            <span><i class="fa-solid fa-comment-dots mr-1 text-orange-400"></i> หมายเหตุ / Corrective Action <span class="req-asterisk hidden text-red-500 ml-1">*ระบุสาเหตุ</span></span>
-                        </label>
-                        <textarea class="remarks-input w-full border border-gray-300 rounded-xl px-4 py-2 text-sm bg-white hover:border-orange-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all shadow-inner placeholder-gray-300" 
-                                  rows="1" placeholder="ระบุรายละเอียดเพิ่มเติม..."></textarea>
+                    <div class="remarks-container screen-layout mt-3">
+                        <label class="block text-[10px] md:text-xs font-semibold text-gray-400 mb-1 uppercase tracking-wider">หมายเหตุ (Remarks)</label>
+                        <textarea class="remarks-input w-full border border-gray-200 rounded-lg px-3 py-1.5 md:py-2 text-xs md:text-sm bg-gray-50 hover:bg-gray-100 focus:bg-white focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400 transition-all shadow-inner" 
+                                  rows="1" placeholder=""></textarea>
                         
-                        <div class="photo-upload-container mt-3" data-radioname="${radioName}">
+                        <div class="photo-upload-container mt-2" data-radioname="${radioName}">
                             <input type="file" accept="image/*" multiple class="hidden photo-input" id="photo_${radioName}">
-                            <button type="button" class="text-xs bg-white hover:bg-orange-50 hover:text-orange-600 hover:border-orange-300 text-gray-600 py-2 px-4 rounded-lg flex items-center gap-2 border border-gray-300 transition-all shadow-sm font-medium" onclick="document.getElementById('photo_${radioName}').click()">
-                                <i class="fa-solid fa-camera text-orange-500"></i> แนบรูปภาพประกอบ
+                            <button type="button" class="text-[10px] md:text-xs bg-gray-100 hover:bg-orange-50 hover:text-orange-600 hover:border-orange-200 text-gray-600 py-1.5 px-3 rounded-lg flex items-center gap-2 border border-gray-300 transition-colors shadow-sm" onclick="document.getElementById('photo_${radioName}').click()">
+                                <i class="fa-solid fa-images"></i> แนบรูปภาพ / ถ่ายรูป
                             </button>
-                            <div class="mt-3 preview-container flex flex-wrap gap-3 empty:hidden"></div>
+                            <div class="mt-2 preview-container flex flex-wrap gap-2 empty:hidden"></div>
                         </div>
                     </div>
 
-                    <div class="print-layout remarks-container print-remarks-box hidden page-break-safe">
+                    <div class="print-layout remarks-container print-remarks-box hidden">
                         <span class="text-[10px] font-bold text-gray-500 block mb-0.5">หมายเหตุ: <span class="print-remark-text font-normal text-gray-700"></span></span>
                     </div>
-                    <div class="print-layout mt-1 hidden print-photo-box page-break-safe">
+                    <div class="print-layout mt-1 hidden print-photo-box">
                         <span class="text-[10px] font-bold text-gray-500 block mb-0.5">ภาพประกอบ:</span>
                         <div class="print-images-container flex flex-wrap gap-2"></div>
                     </div>
@@ -784,52 +595,107 @@ const UI = {
         </tr>`;
     },
 
-    restoreUIFromState() {
-        if (DOMCache.inputs.refSpec) DOMCache.inputs.refSpec.value = State.data.referenceSpec || CONFIG.DEFAULT_SPEC;
-        
-        if (DOMCache.inputs.project) {
-            DOMCache.inputs.project.value = State.data.projectNo || "";
-            this.updateDisplayTexts(DOMCache.displays.projects, State.data.projectNo, "-");
+    // --- State Management ---
+    extractState() {
+        const state = {
+            referenceSpec: this.DOM.inputs.refSpec?.value || "BQD-3042",
+            projectNo: this.DOM.inputs.project?.value || "",
+            inspector: this.DOM.inputs.inspector?.value || "",
+            remarks: [],
+            radios: {},
+            photos: {} 
+        };
+
+        const checkItems = document.querySelectorAll('.check-item');
+        checkItems.forEach(item => {
+            const radioName = item.dataset.radioname;
+            
+            // Textarea
+            const textarea = item.querySelector('.remarks-input');
+            state.remarks.push(textarea ? textarea.value : "");
+            
+            // Radio
+            const checkedRadio = item.querySelector(`input[name="${radioName}"]:checked`);
+            if (checkedRadio) state.radios[radioName] = checkedRadio.value;
+            
+            // Photos
+            const imgs = item.querySelectorAll('.preview-img');
+            if(imgs.length > 0) {
+                state.photos[radioName] = Array.from(imgs).map(img => img.src);
+            }
+        });
+
+        return state;
+    },
+
+    saveState() {
+        const data = this.extractState();
+        try {
+            localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                alert("พื้นที่จัดเก็บในเบราว์เซอร์เต็ม ไม่สามารถบันทึกรูปภาพเพิ่มได้");
+            }
         }
-        if (DOMCache.inputs.inspector) {
-            DOMCache.inputs.inspector.value = State.data.inspector || "";
-            this.updateDisplayTexts(DOMCache.displays.inspectors, State.data.inspector, "-");
+        this.renderSummary();
+    },
+
+    loadState() {
+        if(this.DOM.inputs.refSpec) this.DOM.inputs.refSpec.value = "BQD-3042";
+        
+        const saved = localStorage.getItem(CONFIG.STORAGE_KEY);
+        if(!saved) return;
+        
+        const data = JSON.parse(saved);
+        
+        // Restore Inputs
+        if(this.DOM.inputs.project) {
+            this.DOM.inputs.project.value = data.projectNo || "";
+            this.updateDisplayTexts(this.DOM.displays.projects, data.projectNo, "-");
+        }
+        if(this.DOM.inputs.inspector) {
+            this.DOM.inputs.inspector.value = data.inspector || "";
+            this.updateDisplayTexts(this.DOM.displays.inspectors, data.inspector, "(ยังไม่ระบุชื่อ)");
         }
 
-        DOMCache.checkItems.forEach((item, index) => {
+        // Restore Items
+        const checkItems = document.querySelectorAll('.check-item');
+        checkItems.forEach((item, index) => {
             const radioName = item.dataset.radioname;
+
+            // Remarks
             const textarea = item.querySelector('.remarks-input');
-            
-            // Restore Textareas
-            if (textarea && State.data.remarks && State.data.remarks[index] !== undefined) {
-                textarea.value = State.data.remarks[index];
-                Utils.resizeTextarea(textarea);
+            if (textarea && data.remarks && data.remarks[index] !== undefined) {
+                textarea.value = data.remarks[index];
+                this.resizeTextarea(textarea);
             }
 
-            // Restore Radios
-            if (State.data.radios && State.data.radios[radioName]) {
-                const radio = item.querySelector(`input[name="${radioName}"][value="${State.data.radios[radioName]}"]`);
+            // Radios
+            if (data.radios && data.radios[radioName]) {
+                const radio = item.querySelector(`input[name="${radioName}"][value="${data.radios[radioName]}"]`);
                 if (radio) {
                     radio.checked = true;
                     this.updateRadioVisuals(radio);
                 }
             }
 
-            // Restore Photos
-            if (State.data.photos && State.data.photos[radioName]) {
-                State.data.photos[radioName].forEach(base64Str => {
+            // Photos
+            if (data.photos && data.photos[radioName]) {
+                data.photos[radioName].forEach(base64Str => {
                     this.addImageToDOM(item, base64Str);
                 });
             }
             
+            // Sync specific print view for item
             this.syncPrintView(item);
         });
 
         this.renderSummary();
     },
 
+    // --- DOM Updates & Helpers ---
     updateDisplayTexts(nodes, value, fallback) {
-        const val = value?.trim() || fallback;
+        const val = value.trim() || fallback;
         nodes.forEach(el => el.innerText = val);
     },
 
@@ -837,19 +703,78 @@ const UI = {
         const now = new Date();
         const formattedDate = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
         const formattedTime = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-        const timeStr = `${formattedDate} ${formattedTime} น.`;
-        this.updateDisplayTexts(DOMCache.displays.timestamps, timeStr, "-");
+        const timeStr = `${formattedDate} เวลา ${formattedTime} น.`;
+        this.updateDisplayTexts(this.DOM.displays.timestamps, timeStr, "-");
     },
-    
-    showAutoSaveIndicator() {
-        if(DOMCache.autoSave) {
-            const ind = document.getElementById('autoSaveIndicator');
-            const now = new Date();
-            ind.innerHTML = `Saved ${now.toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit', second:'2-digit'})}`;
-            DOMCache.autoSave.classList.add('bg-green-50', 'border-green-200');
-            setTimeout(() => {
-                DOMCache.autoSave.classList.remove('bg-green-50', 'border-green-200');
-            }, 1000);
+
+    resizeTextarea(el) {
+        el.style.height = "auto";
+        el.style.height = el.scrollHeight + "px";
+    },
+
+    escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+    },
+
+    // --- Event Listeners ---
+    bindEvents() {
+        // Document level delegation for inputs
+        document.addEventListener("change", (e) => this.handleChange(e));
+        document.addEventListener("input", (e) => this.handleInput(e));
+        document.addEventListener("click", (e) => this.handleClick(e));
+
+        // Top input listeners
+        this.DOM.inputs.inspector?.addEventListener("input", (e) => {
+            this.updateDisplayTexts(this.DOM.displays.inspectors, e.target.value, "(ยังไม่ระบุชื่อ)");
+            this.saveState();
+        });
+        
+        this.DOM.inputs.project?.addEventListener("input", (e) => {
+            this.updateDisplayTexts(this.DOM.displays.projects, e.target.value, "-");
+            this.saveState();
+        });
+
+        // Action Buttons
+        this.DOM.buttons.clear?.addEventListener("click", () => this.handleClear());
+        this.DOM.buttons.print?.addEventListener("click", () => this.handlePrint());
+        this.DOM.buttons.export?.addEventListener("click", () => this.handleExport());
+    },
+
+    handleChange(e) {
+        if (e.target.type === "radio") {
+            this.updateRadioVisuals(e.target);
+            this.syncPrintView(e.target.closest('.check-item'));
+            this.saveState();
+        } else if (e.target.classList.contains("photo-input")) {
+            this.handleImageUpload(e.target);
+        }
+    },
+
+    handleInput(e) {
+        if (e.target.classList.contains("remarks-input")) {
+            this.resizeTextarea(e.target);
+            this.syncPrintView(e.target.closest('.check-item'));
+            this.saveState(); // Debounce could be added here for huge checklists
+        }
+    },
+
+    handleClick(e) {
+        const btn = e.target.closest('.remove-photo-btn');
+        if (btn) {
+            const photoItem = btn.closest('.photo-item');
+            const imgId = photoItem.dataset.imgid;
+            const checkItem = btn.closest('.check-item');
+            
+            photoItem.remove();
+            
+            const printImg = checkItem.querySelector(`.print-img[data-imgid="${imgId}"]`);
+            if (printImg) printImg.remove();
+            
+            const printImagesContainer = checkItem.querySelector('.print-images-container');
+            if (printImagesContainer && printImagesContainer.children.length === 0) {
+                checkItem.querySelector('.print-photo-box').classList.add('hidden');
+            }
+            this.saveState();
         }
     },
 
@@ -858,28 +783,8 @@ const UI = {
         group.forEach(r => r.closest("label").classList.remove("pass-selected", "fail-selected"));
         
         const label = radioInput.closest("label");
-        const itemCard = radioInput.closest('.check-item');
-        const remarkContainer = itemCard.querySelector('.remarks-container');
-        const reqAsterisk = remarkContainer.querySelector('.req-asterisk');
-        
-        itemCard.classList.remove('card-pending', 'card-pass', 'card-fail');
-        
-        if (radioInput.value === "Pass") {
-            label.classList.add("pass-selected");
-            itemCard.classList.add("card-pass");
-            remarkContainer.classList.remove('remarks-required');
-            reqAsterisk.classList.add('hidden');
-        } else {
-            label.classList.add("fail-selected");
-            itemCard.classList.add("card-fail");
-            reqAsterisk.classList.remove('hidden');
-            
-            // Focus remark input on Fail
-            const remarkInput = itemCard.querySelector('.remarks-input');
-            if(!remarkInput.value.trim()) {
-                setTimeout(() => remarkInput.focus(), 100);
-            }
-        }
+        if(radioInput.value === "Pass") label.classList.add("pass-selected");
+        else label.classList.add("fail-selected");
     },
 
     syncPrintView(itemNode) {
@@ -915,23 +820,70 @@ const UI = {
         }
     },
 
+    // --- Image Handling ---
+    async handleImageUpload(inputEl) {
+        const files = inputEl.files;
+        if (!files || files.length === 0) return;
+
+        const checkItem = inputEl.closest('.check-item');
+        
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            try {
+                const base64 = await this.processImageFile(file);
+                this.addImageToDOM(checkItem, base64);
+            } catch (err) {
+                console.error("Error processing image:", err);
+            }
+        }
+        inputEl.value = "";
+        this.saveState();
+    },
+
+    processImageFile(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    let scale = CONFIG.MAX_IMAGE_WIDTH / img.width;
+                    if(scale > 1) scale = 1; 
+                    
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL("image/jpeg", CONFIG.IMAGE_COMPRESSION_QUALITY));
+                };
+                img.onerror = reject;
+                img.src = event.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    },
+
     addImageToDOM(checkItemNode, base64Str) {
-        const imgId = Utils.generateId();
+        const imgId = 'img_' + Math.random().toString(36).substring(2, 11);
         const previewContainer = checkItemNode.querySelector('.preview-container');
         const printBox = checkItemNode.querySelector('.print-photo-box');
         const printImagesContainer = checkItemNode.querySelector('.print-images-container');
         
+        // Screen UI
         const previewWrapper = document.createElement('div');
-        previewWrapper.className = 'relative inline-block photo-item shadow-sm transition-transform hover:scale-105';
+        previewWrapper.className = 'relative inline-block photo-item shadow-sm';
         previewWrapper.dataset.imgid = imgId;
         previewWrapper.innerHTML = `
-            <img src="${base64Str}" class="h-24 w-auto rounded-lg border border-gray-300 object-cover preview-img shadow-sm">
-            <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md border-2 border-white transition-colors">
+            <img src="${base64Str}" class="h-20 w-auto rounded border border-gray-300 object-cover preview-img">
+            <button type="button" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:bg-red-600 remove-photo-btn shadow-md">
                 <i class="fa-solid fa-times"></i>
             </button>
         `;
         previewContainer.appendChild(previewWrapper);
         
+        // Print UI
         const printImg = document.createElement('img');
         printImg.src = base64Str;
         printImg.className = 'print-img rounded border border-gray-300 object-contain';
@@ -940,41 +892,40 @@ const UI = {
         printBox.classList.remove('hidden');
     },
 
+    // --- Dynamic Summary ---
     renderSummary() {
-        // Sync state before summarizing to ensure accurate computations
-        State.syncFromDOM();
-        const state = State.data;
-        
-        let passCount = 0, failCount = 0, pendingCount = 0;
+        const state = this.extractState();
+        let passCount = 0;
+        let pendingCount = 0;
         let failList = [];
         
-        if (DOMCache.checkItems.length === 0) return;
-        const totalItems = State.totalItems;
+        const itemsDomMap = document.querySelectorAll('.check-item');
+        if (itemsDomMap.length === 0) return;
 
         SECTIONS_DATA.forEach((section, sIndex) => {
             section.items.forEach((item, i) => {
                 const radioName = `section${sIndex}_item${i}`;
                 const radioValue = state.radios[radioName];
                 
-                const itemNumberSafe = Utils.escapeHTML(item[0]);
-                const itemDescSafe = Utils.escapeHTML(item[1].split('\n')[0]); 
+                // Safe formatting
+                const itemNumberSafe = this.escapeHTML(item[0]);
+                const itemDescSafe = this.escapeHTML(item[1].split('\n')[0]); 
 
                 if (!radioValue) {
                     pendingCount++;
                 } else if (radioValue === 'Pass') {
                     passCount++;
                 } else if (radioValue === 'Fail') {
-                    failCount++;
-                    
+                    // Find remarks from DOM state sync
                     const node = document.querySelector(`.check-item[data-radioname="${radioName}"]`);
                     const remarkRaw = node ? node.querySelector('.remarks-input').value.trim() : "";
-                    const remarkSafe = remarkRaw ? Utils.escapeHTML(remarkRaw) : '<span class="text-red-500 font-bold italic"><i class="fa-solid fa-exclamation-circle"></i> จำเป็นต้องระบุสาเหตุ (Missing Remark)</span>';
+                    const remarkSafe = remarkRaw ? this.escapeHTML(remarkRaw) : '<span class="text-gray-400 italic">ไม่ได้ระบุหมายเหตุ</span>';
                     
                     let photoHtml = '';
                     const photos = state.photos[radioName];
                     if (photos && photos.length > 0) {
-                        let imgTags = photos.map(src => `<img src="${src}" class="h-20 w-auto max-w-full rounded border border-gray-300 object-contain bg-white">`).join('');
-                        photoHtml = `<div class="mt-3"><span class="text-[10px] font-bold text-gray-500 mb-1 block uppercase">ภาพประกอบ (${photos.length} รูป)</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
+                        let imgTags = photos.map(src => `<img src="${src}" class="h-16 w-auto max-w-full rounded border border-gray-300 object-contain bg-white">`).join('');
+                        photoHtml = `<div class="mt-2"><span class="text-[10px] font-bold text-gray-500 mb-1 block">ภาพประกอบ (${photos.length} รูป):</span><div class="flex flex-wrap gap-2">${imgTags}</div></div>`;
                     }
 
                     failList.push({ title: `${itemNumberSafe} ${itemDescSafe}`, remark: remarkSafe, photoHtml: photoHtml });
@@ -982,239 +933,58 @@ const UI = {
             });
         });
 
-        this.updateProgressUI(passCount, failCount, pendingCount, totalItems);
-
-        if (pendingCount === totalItems) {
-            DOMCache.summaryContent.innerHTML = `<div class="flex flex-col items-center justify-center text-gray-400 py-8"><i class="fa-solid fa-tasks text-4xl mb-3 opacity-50"></i><p class="text-sm font-medium">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p></div>`;
+        if (pendingCount === itemsDomMap.length) {
+            this.DOM.summaryContent.innerHTML = `<p class="text-gray-500 text-center text-sm">กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล</p>`;
             return;
         }
 
         let html = '';
         if (failList.length === 0 && pendingCount === 0) {
-            html = `<div class="bg-green-50 border border-green-300 text-green-700 px-6 py-4 rounded-xl flex items-center shadow-sm"><div class="bg-white p-2 rounded-full mr-4 shadow-sm border border-green-100"><i class="fa-solid fa-check-circle text-3xl text-green-500"></i></div><div><p class="font-bold text-lg mb-1">Passed (ผ่านเกณฑ์ทั้งหมด)</p><p class="text-sm text-green-600 font-medium">การตรวจสอบเสร็จสมบูรณ์ ระบบไม่พบข้อบกพร่อง พร้อมสำหรับการออกเอกสาร</p></div></div>`;
+            html = `<div class="bg-green-50 border border-green-300 text-green-700 px-4 py-3 rounded-lg flex items-center shadow-sm"><i class="fa-solid fa-circle-check text-2xl mr-3"></i><div><p class="font-bold text-sm">ผ่านเกณฑ์ทั้งหมด (All Passed)</p><p class="text-xs mt-0.5">การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง</p></div></div>`;
         } else {
             if (failList.length > 0) {
-                html += `<div class="bg-red-50 border border-red-300 text-red-700 px-5 py-4 rounded-xl mb-4 flex items-center shadow-sm"><div class="bg-white p-2 rounded-full mr-4 shadow-sm border border-red-100"><i class="fa-solid fa-circle-xmark text-2xl text-red-500"></i></div><div><p class="font-bold text-base md:text-lg">พบรายการไม่ผ่าน จำนวน ${failList.length} ข้อ</p><p class="text-xs md:text-sm mt-1 text-red-600">กรุณาตรวจสอบรายละเอียดและเพิ่ม Remark ด้านล่าง</p></div></div><div class="space-y-3">`;
+                html += `<div class="bg-red-50 border border-red-300 text-red-700 px-3 py-2 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-circle-xmark text-lg mr-2"></i><p class="font-bold text-sm">พบรายการ ไม่ผ่าน จำนวน ${failList.length} ข้อ</p></div><div class="space-y-2">`;
                 failList.forEach(fail => {
-                    html += `<div class="bg-white border-l-4 border-l-red-500 border-t border-r border-b border-gray-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow page-break-safe"><p class="font-bold text-gray-800 text-sm md:text-base border-b border-gray-100 pb-2 mb-2"><i class="fa-solid fa-xmark text-red-500 mr-1"></i> ข้อ ${fail.title}</p><div class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100"><span class="font-bold text-xs uppercase text-gray-500 block mb-1">หมายเหตุ (Remark)</span> ${fail.remark} ${fail.photoHtml}</div></div>`;
+                    html += `<div class="bg-white border border-red-200 p-2 rounded-lg shadow-sm" style="page-break-inside: avoid; break-inside: avoid;"><p class="font-bold text-red-600 text-xs"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ข้อ ${fail.title}</p><div class="text-xs text-gray-700 mt-1 bg-gray-50 p-2 rounded border border-gray-100"><span class="font-semibold text-[10px]">หมายเหตุ:</span> ${fail.remark} ${fail.photoHtml}</div></div>`;
                 });
                 html += `</div>`;
             } else {
-                html += `<div class="bg-blue-50 border border-blue-200 text-blue-700 px-5 py-4 rounded-xl mb-4 flex items-center shadow-sm"><i class="fa-solid fa-info-circle text-2xl mr-3 text-blue-500"></i><div><p class="font-bold text-sm md:text-base">ตรวจผ่านแล้ว ${passCount} ข้อ</p><p class="text-xs mt-1 opacity-80">ไม่พบข้อบกพร่องในรายการที่ประเมินแล้ว</p></div></div>`;
+                 html += `<div class="bg-blue-50 border border-blue-300 text-blue-700 px-4 py-3 rounded-lg mb-3 flex items-center shadow-sm"><i class="fa-solid fa-info-circle text-xl mr-3"></i><p class="font-bold text-sm">ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)</p></div>`;
             }
             if (pendingCount > 0) {
-                html += `<div class="mt-4 bg-orange-50/50 border border-orange-100 rounded-lg px-4 py-3 text-sm text-orange-600 font-medium flex items-center gap-2"><i class="fa-solid fa-circle-notch fa-spin"></i> ยังมีรายการที่รอตรวจสอบอีก ${pendingCount} ข้อ</div>`;
+                html += `<p class="text-xs text-orange-600 mt-3 font-medium"><i class="fa-solid fa-clock mr-1"></i> * ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ</p>`;
             }
         }
-        DOMCache.summaryContent.innerHTML = html;
+        this.DOM.summaryContent.innerHTML = html;
     },
 
-    updateProgressUI(pass, fail, pending, total) {
-        const completed = total - pending;
-        const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
-        
-        document.getElementById('topProgCompleted').innerText = completed;
-        document.getElementById('topProgTotal').innerText = total;
-        document.getElementById('topProgPass').innerText = pass;
-        document.getElementById('topProgFail').innerText = fail;
-        document.getElementById('topProgPercent').innerText = pct + '%';
-        document.getElementById('topProgBar').style.width = pct + '%';
-        
-        document.getElementById('floatPass').innerText = pass;
-        document.getElementById('floatFail').innerText = fail;
-        document.getElementById('floatRemain').innerText = pending;
-        document.getElementById('floatPercent').innerText = pct + '%';
-        document.getElementById('floatBar').style.width = pct + '%';
-        
-        const sumTotal = document.getElementById('sumTotal');
-        if (sumTotal) sumTotal.innerText = total;
-    },
-
-    showModal(modalId) {
-        document.getElementById(modalId).classList.add('active');
-    },
-    
-    hideModal(modalId) {
-        document.getElementById(modalId).classList.remove('active');
-    }
-};
-
-// --- 7. Event & Interaction Controller ---
-const EventController = {
-    bind() {
-        document.addEventListener("change", this.handleChange.bind(this));
-        
-        // Debounce textarea input to prevent lag during heavy DOM manipulation
-        const debouncedSaveAndSummary = Utils.debounce(() => {
-            DataStore.save();
-            UI.renderSummary();
-        }, 500);
-
-        document.addEventListener("input", (e) => {
-            if (e.target.classList.contains("remarks-input")) {
-                Utils.resizeTextarea(e.target);
-                
-                // Remove error highlight on typing
-                if(e.target.value.trim() !== '') {
-                    e.target.closest('.remarks-container').classList.remove('remarks-required');
-                }
-                
-                UI.syncPrintView(e.target.closest('.check-item'));
-                debouncedSaveAndSummary();
-            }
-        });
-        
-        document.addEventListener("click", this.handleClick.bind(this));
-
-        // Header Inputs
-        const headerInputHandler = (e, displayNodes) => {
-            UI.updateDisplayTexts(displayNodes, e.target.value, "-");
-            DataStore.save();
-        };
-
-        DOMCache.inputs.inspector?.addEventListener("input", (e) => headerInputHandler(e, DOMCache.displays.inspectors));
-        DOMCache.inputs.project?.addEventListener("input", (e) => headerInputHandler(e, DOMCache.displays.projects));
-
-        // Buttons
-        DOMCache.buttons.clear?.addEventListener("click", () => Core.clearData());
-        DOMCache.buttons.print?.addEventListener("click", () => ExportController.handleAction('print'));
-        DOMCache.buttons.export?.addEventListener("click", () => ExportController.handleAction('excel'));
-    },
-
-    handleChange(e) {
-        if (e.target.type === "radio") {
-            UI.updateRadioVisuals(e.target);
-            UI.syncPrintView(e.target.closest('.check-item'));
-            DataStore.save();
-            UI.renderSummary();
-        } else if (e.target.classList.contains("photo-input")) {
-            this.handleImageUpload(e.target);
+    // --- Action Handlers ---
+    handleClear() {
+        if (confirm("ต้องการล้างข้อมูลทั้งหมดหรือไม่? (รูปภาพที่แนบไว้จะถูกลบด้วย)")) {
+            localStorage.removeItem(CONFIG.STORAGE_KEY);
+            location.reload();
         }
     },
 
-    handleClick(e) {
-        const btn = e.target.closest('.remove-photo-btn');
-        if (btn) {
-            const photoItem = btn.closest('.photo-item');
-            const imgId = photoItem.dataset.imgid;
-            const checkItem = btn.closest('.check-item');
-            
-            photoItem.remove();
-            
-            const printImg = checkItem.querySelector(`.print-img[data-imgid="${imgId}"]`);
-            if (printImg) printImg.remove();
-            
-            const printImagesContainer = checkItem.querySelector('.print-images-container');
-            if (printImagesContainer && printImagesContainer.children.length === 0) {
-                checkItem.querySelector('.print-photo-box').classList.add('hidden');
-            }
-            
-            DataStore.save();
-            UI.renderSummary();
-        }
-    },
-
-    async handleImageUpload(inputEl) {
-        const files = inputEl.files;
-        if (!files || files.length === 0) return;
-        
-        const checkItem = inputEl.closest('.check-item');
-        
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            try {
-                const base64 = await Utils.processImageFile(file);
-                UI.addImageToDOM(checkItem, base64);
-            } catch (err) {
-                console.error("Error processing image:", err);
-            }
-        }
-        inputEl.value = "";
-        DataStore.save();
-        UI.renderSummary();
-    }
-};
-
-// --- 8. Export Service (Print & Excel) ---
-const ExportController = {
-    validate() {
-        State.syncFromDOM();
-        const state = State.data;
-        let errors = [];
-        
-        if(!state.projectNo.trim()) errors.push("กรุณาระบุ <b>Project / MDB No.</b> ในส่วนข้อมูลโครงการ");
-        if(!state.inspector.trim()) errors.push("กรุณาระบุ <b>ชื่อผู้ตรวจสอบ</b>");
-        
-        let pending = 0;
-        let failNoRemark = 0;
-        
-        DOMCache.checkItems.forEach(item => {
-            const rName = item.dataset.radioname;
-            const checked = item.querySelector(`input[name="${rName}"]:checked`);
-            
-            if(!checked) {
-                pending++;
-            } else if(checked.value === 'Fail') {
-                const remarkInput = item.querySelector('.remarks-input');
-                const remark = remarkInput.value.trim();
-                if(!remark) {
-                    failNoRemark++;
-                    item.querySelector('.remarks-container').classList.add('remarks-required');
-                }
-            }
-        });
-        
-        if(pending > 0) errors.push(`มีรายการที่ยังไม่ได้ตรวจสอบอีก <b>${pending} ข้อ</b>`);
-        if(failNoRemark > 0) errors.push(`พบรายการไม่ผ่าน <b>${failNoRemark} ข้อ</b> ที่ยังไม่ได้ระบุ <b>หมายเหตุ (Remark)</b>`);
-        
-        return { valid: errors.length === 0, errors };
-    },
-
-    async handleAction(type) {
-        const validation = this.validate();
-        if(!validation.valid) {
-            const ul = document.getElementById('validationErrorList');
-            ul.innerHTML = validation.errors.map(err => `<li>${err}</li>`).join('');
-            UI.showModal('modalValidation');
-            return;
-        }
-
-        if(type === 'print') {
-            this.executePrint();
-        } else {
-            await this.executeExcel();
-        }
-    },
-
-    executePrint() {
-        // Optimize textareas for printing to prevent heavy reflows
+    handlePrint() {
+        // Double check textareas are expanded
         document.querySelectorAll(".remarks-input").forEach(ta => {
             if(ta.value.trim() === "") ta.value = " "; 
-            // Avoid calling resizeTextarea loop for print, we ensure CSS handles it or we do it carefully
-            ta.style.height = "auto";
-            ta.style.height = (ta.scrollHeight || 40) + "px";
+            this.resizeTextarea(ta);
         });
         
-        DOMCache.checkItems.forEach(item => UI.syncPrintView(item));
-        UI.updateTime();
+        // Force sync all elements
+        document.querySelectorAll('.check-item').forEach(item => this.syncPrintView(item));
+        this.updateTime();
 
-        // Hardware Acceleration reset trick for Safari before printing
-        const wrapper = document.getElementById('summaryWrapper');
-        if(wrapper) {
-            wrapper.classList.remove('overflow-hidden');
-            wrapper.style.transform = 'none';
-        }
+        // Hack to force WebKit/Safari to reflow DOM before print
+        document.body.style.display = 'none';
+        document.body.offsetHeight; 
+        document.body.style.display = '';
 
         setTimeout(() => {
             try {
                 window.print();
-                
-                // WAIT longer for iOS Safari print spooler to finish before showing modal
-                setTimeout(() => {
-                    if(wrapper) wrapper.classList.add('overflow-hidden'); // Restore
-                    UI.showModal('modalFinish');
-                }, 1500); 
-                
             } catch (e) {
                 console.error("Print failed:", e);
                 alert("ไม่สามารถสั่งพิมพ์ได้ กรุณาตรวจสอบเบราว์เซอร์ของคุณ");
@@ -1222,20 +992,19 @@ const ExportController = {
         }, 500);
     },
 
-    async executeExcel() {
+    async handleExport() {
         if (typeof ExcelJS === 'undefined') {
             alert("กำลังโหลดระบบ Excel กรุณารอสักครู่แล้วลองกดใหม่อีกครั้ง");
             return;
         }
 
-        const btn = DOMCache.buttons.export;
+        const btn = this.DOM.buttons.export;
         const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังสร้าง...';
         btn.disabled = true;
 
         try {
-            State.syncFromDOM();
-            const state = State.data;
+            const state = this.extractState();
             const now = new Date();
             const dateStr = now.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -1246,6 +1015,7 @@ const ExportController = {
                 { width: 8 }, { width: 55 }, { width: 25 }, { width: 15 }, { width: 45 }
             ];
 
+            // Header Section
             sheet.mergeCells('A1:E1');
             const titleCell = sheet.getCell('A1');
             titleCell.value = 'MDB Factory Acceptance Test (FAT) Checklist';
@@ -1279,7 +1049,7 @@ const ExportController = {
             headerRow.height = 25;
             headerRow.eachCell((cell) => {
                 cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E293B' } }; 
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF4B5563' } }; 
                 cell.alignment = { vertical: 'middle', horizontal: 'center' };
                 cell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
             });
@@ -1289,12 +1059,13 @@ const ExportController = {
             let failList = [];
             let inputIndex = 0;
 
+            // Generate Rows
             SECTIONS_DATA.forEach((section, sIndex) => {
                 const secRow = sheet.addRow([section.title]);
                 sheet.mergeCells(`A${secRow.number}:E${secRow.number}`);
                 const secCell = sheet.getCell(`A${secRow.number}`);
-                secCell.font = { bold: true, color: { argb: 'FF1E293B' } };
-                secCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } };
+                secCell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+                secCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: section.critical ? 'FFEF4444' : 'FFF37021' } };
                 secCell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
                 secCell.border = { top: {style:'thin'}, left: {style:'thin'}, bottom: {style:'thin'}, right: {style:'thin'} };
                 secRow.height = 25;
@@ -1307,7 +1078,7 @@ const ExportController = {
                     
                     const imgsCount = state.photos[radioName] ? state.photos[radioName].length : 0;
                     let remarkText = state.remarks[inputIndex]?.trim() || "";
-                    if(imgsCount > 0) remarkText += (remarkText ? `\n[แนบภาพ ${imgsCount} รูป]` : `[แนบภาพ ${imgsCount} รูป]`);
+                    if(imgsCount > 0) remarkText += (remarkText ? `\n[มีภาพถ่ายแนบ ${imgsCount} รูป]` : `[มีภาพถ่ายแนบ ${imgsCount} รูป]`);
                     
                     if (radioVal) {
                         if (radioVal === "Pass") {
@@ -1317,7 +1088,7 @@ const ExportController = {
                         } else {
                             resultText = "ไม่ผ่าน";
                             resultColor = 'FFDC2626'; 
-                            failList.push({ title: `ข้อ ${item[0]} ${item[1].replace(/\n/g, ' ')}`, remark: remarkText || "ไม่ระบุสาเหตุ" });
+                            failList.push({ title: `ข้อ ${item[0]} ${item[1].replace(/\n/g, ' ')}`, remark: remarkText || "ไม่ได้ระบุหมายเหตุ" });
                         }
                     } else {
                         pendingCount++;
@@ -1333,10 +1104,12 @@ const ExportController = {
                         if (colNum === 1) cell.font = { bold: true };
                         if (colNum === 4 && resultText !== "-") cell.font = { color: { argb: resultColor }, bold: true };
                     });
+
                     inputIndex++;
                 });
             });
 
+            // Summary Section in Excel
             sheet.addRow([]);
             const sumHeaderRow = sheet.addRow(['สรุปการตรวจสอบ (Summary Report)']);
             sheet.mergeCells(`A${sumHeaderRow.number}:E${sumHeaderRow.number}`);
@@ -1345,10 +1118,12 @@ const ExportController = {
             sumHeaderRow.getCell(1).alignment = { vertical: 'middle', horizontal: 'center' };
             sumHeaderRow.height = 30;
 
-            if (pendingCount === State.totalItems) {
-                sheet.addRow(['ยังไม่ได้ทำการตรวจสอบ']);
+            const totalItems = SECTIONS_DATA.reduce((acc, sec) => acc + sec.items.length, 0);
+
+            if (pendingCount === totalItems) {
+                sheet.addRow(['กรุณาทำรายการตรวจสอบเพื่อดูสรุปผล']);
             } else if (failList.length === 0 && pendingCount === 0) {
-                const r = sheet.addRow(['✓ ผ่านเกณฑ์ทั้งหมด (All Passed)']);
+                const r = sheet.addRow(['✓ ผ่านเกณฑ์ทั้งหมด (All Passed) - การตรวจสอบสมบูรณ์แบบ ไม่มีข้อบกพร่อง']);
                 sheet.mergeCells(`A${r.number}:E${r.number}`);
                 r.getCell(1).font = { bold: true, color: { argb: 'FF15803D' } }; 
             } else {
@@ -1364,9 +1139,14 @@ const ExportController = {
                         failRow.getCell(5).alignment = { wrapText: true, vertical: 'top' };
                     });
                 } else {
-                    const r = sheet.addRow([`ℹ ผ่านเกณฑ์แล้ว ${passCount} ข้อ`]);
+                    const r = sheet.addRow([`ℹ ผ่านเกณฑ์แล้ว ${passCount} ข้อ (ยังไม่พบข้อบกพร่อง)`]);
                     sheet.mergeCells(`A${r.number}:E${r.number}`);
                     r.getCell(1).font = { bold: true, color: { argb: 'FF1D4ED8' } }; 
+                }
+                if (pendingCount > 0) {
+                    const r = sheet.addRow([`* ยังมีรายการที่รอการตรวจสอบอีก ${pendingCount} ข้อ`]);
+                    sheet.mergeCells(`A${r.number}:E${r.number}`);
+                    r.getCell(1).font = { bold: true, color: { argb: 'FFEA580C' } }; 
                 }
             }
 
@@ -1393,7 +1173,6 @@ const ExportController = {
             setTimeout(() => {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
-                UI.showModal('modalFinish');
             }, 100);
 
         } catch (err) {
@@ -1406,33 +1185,9 @@ const ExportController = {
     }
 };
 
-// --- 9. Core Application Bootstrapper ---
-const Core = {
-    init() {
-        State.initSchema();
-        DOMCache.init();
-        
-        UI.renderChecklist();
-        EventController.bind();
-        
-        DataStore.load();
-        UI.restoreUIFromState();
-        
-        UI.updateTime();
-        // Refresh time every minute safely
-        setInterval(() => UI.updateTime(), 60000);
-    },
-
-    clearData() {
-        if (confirm("ต้องการล้างข้อมูลทั้งหมดหรือไม่? (รูปภาพที่แนบไว้จะถูกลบด้วย)")) {
-            localStorage.removeItem(CONFIG.STORAGE_KEY);
-            location.reload();
-        }
-    }
-};
-
+// --- Boot Application ---
 window.addEventListener("DOMContentLoaded", () => {
-    Core.init();
+    App.init();
 });
 </script>
 </body>
